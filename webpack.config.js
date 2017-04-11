@@ -1,11 +1,11 @@
 const path = require('path');
 
 module.exports = {
+    target: "electron-renderer",
     entry: { index: ['babel-polyfill', "./app/index.ts"] },
     output: {
         path: path.resolve(__dirname, "dist"),
         filename: "[name].js",
-        libraryTarget: "umd"
     },
     resolve: {
         // Add `.ts` and `.tsx` as a resolvable extension.
