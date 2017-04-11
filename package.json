@@ -6,11 +6,15 @@
   "scripts": {},
   "author": "",
   "license": "MIT",
+  "repository": "https://github.com/Norgerman/live2d-electron",
   "devDependencies": {
     "@types/electron": "^1.4.35",
+    "@types/pixi.js": "^4.4.2",
     "electron": "^1.6.2",
     "typescript": "^2.2.2"
   },
   "dependencies": {
+    "pixi-live2d": "^1.2.1",
+    "pixi.js": "^4.4.4"
   }
 }

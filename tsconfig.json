@@ -6,6 +6,9 @@
         "moduleResolution": "node",
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
-        "strictNullChecks": true
+        "strictNullChecks": true,
+        "lib": [
+            "dom"
+        ]
     }
 }
