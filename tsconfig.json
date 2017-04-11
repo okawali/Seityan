@@ -1,0 +1,11 @@
+{
+    "compilerOptions": {
+        "removeComments": false,
+        "target": "es6",
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "strictNullChecks": true
+    }
+}

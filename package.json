@@ -1,0 +1,18 @@
+{
+  "name": "live2d-electron",
+  "version": "1.0.0",
+  "description": "a",
+  "main": "main.js",
+  "scripts": {},
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/electron": "^1.4.35",
+    "@types/glob": "^5.0.30",
+    "electron": "^1.6.2",
+    "typescript": "^2.2.2"
+  },
+  "dependencies": {
+    "glob": "^7.1.1"
+  }
+}
