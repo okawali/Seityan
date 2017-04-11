@@ -5,13 +5,15 @@ import * as url from "url";
 let win: Electron.BrowserWindow | null;
 
 function createWindow() {
-    win = new BrowserWindow({ width: 530, height: 760, autoHideMenuBar:true,  frame: true, show: true, transparent: false, resizable: true })
+    win = new BrowserWindow({ width: 550, height: 860, autoHideMenuBar: true, frame: false, show: true, transparent: true, resizable: true })
 
     win.loadURL(url.format({
-        pathname: path.join(__dirname, "sampleApp1", 'sampleApp1.html'),
+        pathname: path.join(__dirname, "index.html"),
         protocol: 'file:',
         slashes: true,
     }))
+
+    // win.webContents.openDevTools();
 
     win.on('closed', () => {
         win = null
