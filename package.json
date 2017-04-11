@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "live2d-electron",
   "main": "main.js",
-  "scripts": {},
+  "scripts": {
+    "build": "tsc && webpack"
+  },
   "author": "",
   "license": "MIT",
   "repository": "https://github.com/Norgerman/live2d-electron",
