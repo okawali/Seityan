@@ -2,10 +2,11 @@
   "name": "live2d-electron",
   "version": "1.0.0",
   "description": "live2d-electron",
-  "main": "main.js",
+  "main": "dist/main.js",
   "scripts": {
     "start": "electron .",
-    "build": "tsc && webpack"
+    "build": "tsc && webpack",
+    "package": "electron-packager ./dist electron-live2d --asar=true --platform=all --arch=x64 --out=release-builds"
   },
   "author": "",
   "license": "MIT",
@@ -19,6 +20,7 @@
     "babel-preset-latest": "^6.24.1",
     "brfs": "^1.4.3",
     "electron": "^1.6.2",
+    "electron-packager": "^8.6.0",
     "transform-loader": "^0.2.4",
     "ts-loader": "^2.0.3",
     "typescript": "^2.2.2",
