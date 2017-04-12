@@ -1,7 +1,7 @@
 import { app, BrowserWindow, ipcMain } from "electron";
 import * as path from "path";
 import * as url from "url";
-import { AppTray } from "./electronMain/uiElements/AppTray";
+import { AppTray } from "./electronMain/uiElements/appTray";
 
 let win: Electron.BrowserWindow | null;
 let tray: AppTray;
