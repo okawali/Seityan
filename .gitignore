@@ -2,5 +2,8 @@ node_modules
 *.js
 .vscode
 !webpack.config.js
+dist/index.js
+dist/main.js
+dist/electronMain/
 npm-debug*
 release-build/
