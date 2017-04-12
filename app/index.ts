@@ -5,6 +5,7 @@ import "pixi-live2d";
 import * as path from "path";
 import * as models from "./utils/models";
 import { WindowDragger } from "./uiElements/windowDragger";
+import XfBase from "./xunfei/xfbase"
 
 const renderer = new PIXI.WebGLRenderer(500, 800, { transparent: true });
 const element = document.getElementById('app')
@@ -46,3 +47,9 @@ function animate() {
 }
 
 animate();
+
+(function() {
+    var test = new XfBase();
+    console.log("试问，汝是吾的Master吗？")
+    test.tts("试问，汝是吾的Master吗？")
+})();
