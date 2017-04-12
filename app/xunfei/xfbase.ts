@@ -91,9 +91,3 @@ export default class XfBase {
     };
 }
 
-
-document.onload = function() {
-    var test = new XfBase();
-    console.log("试问，汝是吾的Master吗？")
-    test.tts("试问，汝是吾的Master吗？")
-}
