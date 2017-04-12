@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+        "removeComments": true,
+        "outDir": "./dist/",
+        "target": "es6",
+        "moduleResolution": "node",
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "strictNullChecks": true,
+        "baseUrl": "./app",
+        "lib": [
+            "dom",
+            "es2016"
+        ]
+    },
+    "include": [
+        "app"
+    ]
+}

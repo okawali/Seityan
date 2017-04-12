@@ -1,0 +1,38 @@
+{
+  "name": "live2d-electron",
+  "version": "1.0.0",
+  "description": "live2d-electron",
+  "main": "dist/main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "tsc && webpack",
+    "test": "",
+    "package": "electron-packager ./dist electron-live2d --asar=true --platform=all --arch=x64 --out=release-builds"
+  },
+  "author": "",
+  "license": "MIT",
+  "repository": "https://github.com/Norgerman/live2d-electron",
+  "devDependencies": {
+    "@types/electron": "^1.4.35",
+    "@types/pixi.js": "^4.4.2",
+    "@types/request": "0.0.42",
+    "@types/request-promise-native": "^1.0.2",
+    "babel-core": "^6.24.1",
+    "babel-loader": "^6.4.1",
+    "babel-polyfill": "^6.23.0",
+    "babel-preset-latest": "^6.24.1",
+    "brfs": "^1.4.3",
+    "electron": "^1.6.2",
+    "electron-packager": "^8.6.0",
+    "transform-loader": "^0.2.4",
+    "ts-loader": "^2.0.3",
+    "typescript": "^2.2.2",
+    "webpack": "^2.3.3"
+  },
+  "dependencies": {
+    "pixi-live2d": "git://github.com/sunxfancy/pixi-live2d",
+    "pixi.js": "^4.4.4",
+    "request": "^2.81.0",
+    "request-promise-native": "^1.0.3"
+  }
+}
