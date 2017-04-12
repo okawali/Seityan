@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from "electron";
+import { app, BrowserWindow, ipcMain } from "electron";
 import * as path from "path";
 import * as url from "url";
 
@@ -14,7 +14,7 @@ function createWindow() {
     }))
 
     // win.webContents.openDevTools();
-
+    
     win.on('closed', () => {
         win = null
     })
