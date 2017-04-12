@@ -1,0 +1,28 @@
+language: node_js
+node_js: node
+os:
+- linux
+- osx
+dist: trusty
+sudo: true
+git:
+  depth: 3
+addons:
+  apt:
+    packages:
+    - rpm
+cache:
+  directories:
+  - node_modules
+install:
+- npm install
+script:
+- npm test
+
+deploy:
+  provider: releases
+  api_key: "GITHUB OAUTH TOKEN"
+  file: "FILE TO UPLOAD"
+  skip_cleanup: true
+  on:
+    tags: true

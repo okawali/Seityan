@@ -5,7 +5,7 @@ module.exports = {
     entry: { index: ['babel-polyfill', "./app/index.ts"] },
     output: {
         path: path.resolve(__dirname, "dist"),
-        filename: "[name].js",
+        filename: "[name].js"
     },
     resolve: {
         // Add `.ts` and `.tsx` as a resolvable extension.

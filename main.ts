@@ -1,12 +1,18 @@
-import { app, BrowserWindow } from "electron";
+import { app, BrowserWindow, ipcMain } from "electron";
 import * as path from "path";
 import * as url from "url";
+import { AppTray } from "./electronMain/uiElements/appTray";
 
 let win: Electron.BrowserWindow | null;
+let tray: AppTray;
 
 function createWindow() {
-    win = new BrowserWindow({ width: 550, height: 860, autoHideMenuBar: true, frame: false, show: true, transparent: true, resizable: true })
-
+    win = new BrowserWindow({
+        width: 550, height: 860,
+        autoHideMenuBar: true, frame: false,
+        show: true, transparent: true,
+        resizable: true, skipTaskbar: true
+    })
     win.loadURL(url.format({
         pathname: path.join(__dirname, "index.html"),
         protocol: 'file:',
@@ -18,9 +24,22 @@ function createWindow() {
     win.on('closed', () => {
         win = null
     })
+
+    tray.on("minimize", () => {
+        win!.minimize();
+    });
+
+    tray.on("restore", () => {
+        win!.restore();
+    });
 }
 
-app.on('ready', createWindow)
+function onAppReady() {
+    tray = new AppTray()
+    createWindow()
+}
+
+app.on('ready', onAppReady)
 
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
