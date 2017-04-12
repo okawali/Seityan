@@ -2,5 +2,6 @@ node_modules
 *.js
 .vscode
 !webpack.config.js
-dist
+dist/index.js
+dist/main.js
 npm-debug*
