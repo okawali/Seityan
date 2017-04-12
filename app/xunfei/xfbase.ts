@@ -1,4 +1,3 @@
-
 declare class IFlyTtsSession {
     constructor(config: object);
     start(ssb_param:object, content:string, callback: (err:any, obj:any) => any);
