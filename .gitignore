@@ -4,4 +4,6 @@ node_modules
 !webpack.config.js
 dist/index.js
 dist/main.js
+dist/electronMain/
 npm-debug*
+release-build/
