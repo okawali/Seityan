@@ -1,8 +1,8 @@
 import * as PIXI from "pixi.js";
 import "pixi-live2d";
 import * as path from "path";
-import * as models from "./Models";
-import { WindowDragger } from "./WindowDragger";
+import * as models from "./utils/models";
+import { WindowDragger } from "./uiElements/windowDragger";
 
 const renderer = new PIXI.WebGLRenderer(500, 800, { transparent: true });
 const element = document.getElementById('app')
