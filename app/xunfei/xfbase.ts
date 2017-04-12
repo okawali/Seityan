@@ -6,7 +6,7 @@ declare class IFlyTtsSession {
 
 
 import {RequestPromise} from 'request-promise-native';
-
+import {appid, appkey} from './conf';
 
 export default class XfBase {
     constructor() {
@@ -46,15 +46,16 @@ export default class XfBase {
     private play(content, vcn){
         this.reset();
         
-        var ssb_param = {"appid": '替换成你的appid', "appkey":"替换成你的appkey", "synid":"12345", "params" : "ent=aisound,aue=lame,vcn="+vcn};
-
+        var ssb_param = {"appid": appid, "appkey": appkey, "synid":"12345", "params" : "ent=aisound,aue=lame,vcn="+vcn};
+        var audioPalyUrl = this.audioPalyUrl;
+        var iaudio = this.iaudio;
         this.session.start(ssb_param, content, function (err, obj)
         {
-            var audio_url = this.audioPalyUrl + obj.audio_url;
+            var audio_url = audioPalyUrl + obj.audio_url;
             if( audio_url != null && audio_url != undefined )
             {
-                this.iaudio.src = audio_url;
-                this.iaudio.play();
+                iaudio.src = audio_url;
+                iaudio.play();
             }
         });
     };
@@ -88,4 +89,11 @@ export default class XfBase {
         this.iaudio.src = '';
         //window.iaudio.play();
     };
+}
+
+
+document.onload = function() {
+    var test = new XfBase();
+    console.log("试问，汝是吾的Master吗？")
+    test.tts("试问，汝是吾的Master吗？")
 }
