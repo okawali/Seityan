@@ -6,6 +6,7 @@
   "scripts": {
     "start": "electron .",
     "build": "tsc && webpack",
+    "test": "",
     "package": "electron-packager ./dist electron-live2d --asar=true --platform=all --arch=x64 --out=release-builds"
   },
   "author": "",
