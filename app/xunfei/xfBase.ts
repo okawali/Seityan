@@ -1,5 +1,5 @@
 
-import rp from 'request-promise-native';
+import * as rp from 'request-promise-native';
 
 export default class XfBase {
     constructor() {
@@ -14,6 +14,6 @@ export default class XfBase {
     }
 
     public IATEnd() {
-        
+
     }
 }
