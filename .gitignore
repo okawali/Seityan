@@ -1,6 +1,6 @@
 node_modules
-app/*.js
+*.js
 .vscode
-main.js
+!webpack.config.js
 dist
 npm-debug*

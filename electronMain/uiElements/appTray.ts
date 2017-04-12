@@ -1,5 +1,5 @@
 import { Tray, Menu } from "electron"
 
-class AppTray {
+export class AppTray {
 
 }
