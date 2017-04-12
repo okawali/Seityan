@@ -6,3 +6,5 @@ node_modules
 !dist/lib/**/*.js
 npm-debug*
 release-build/
+release-builds/
+.DS_Store
