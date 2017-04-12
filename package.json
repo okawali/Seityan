@@ -4,6 +4,7 @@
   "description": "live2d-electron",
   "main": "main.js",
   "scripts": {
+    "start": "electron .",
     "build": "tsc && webpack"
   },
   "author": "",
@@ -24,7 +25,7 @@
     "webpack": "^2.3.3"
   },
   "dependencies": {
-    "pixi-live2d": "^1.2.1",
+    "pixi-live2d": "git://github.com/sunxfancy/pixi-live2d",
     "pixi.js": "^4.4.4"
   }
 }

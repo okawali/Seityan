@@ -1,3 +1,5 @@
+"use strict";
+
 import * as PIXI from "pixi.js";
 import "pixi-live2d";
 import * as path from "path";
