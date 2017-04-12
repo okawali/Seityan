@@ -1,6 +1,7 @@
 {
     "compilerOptions": {
         "removeComments": false,
+        "outDir": "./dist/",
         "target": "es6",
         "module": "commonjs",
         "moduleResolution": "node",
@@ -8,7 +9,8 @@
         "emitDecoratorMetadata": true,
         "strictNullChecks": true
     },
-    "files": [
-        "main.ts"
+    "exclude": [
+        "node_modules",
+        "app"
     ]
 }

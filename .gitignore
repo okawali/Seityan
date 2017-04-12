@@ -1,5 +1,8 @@
 node_modules
-app/*.js
+*.js
 .vscode
-main.js
-dist
+!webpack.config.js
+!dist/lib/*.js
+!dist/lib/**/*.js
+npm-debug*
+release-build/
