@@ -3,3 +3,4 @@ app/*.js
 .vscode
 main.js
 dist
+npm-debug*
