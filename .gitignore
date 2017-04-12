@@ -7,3 +7,5 @@ node_modules
 npm-debug*
 release-build/
 app/xunfei/conf.ts
+.DS_Store
+
