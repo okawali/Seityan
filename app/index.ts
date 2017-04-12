@@ -30,10 +30,10 @@ live2dSprite.on('mousemove', (event: PIXI.interaction.InteractionEvent) => {
 });
 
 
-renderer.view.addEventListener('mousewheel', evt => {
-    if (evt.wheelDelta > 0) {
+renderer.view.addEventListener('mousewheel', event => {
+    if (event.wheelDelta > 0) {
         live2dSprite.adjustScale(0, 0, 1.1);
-    } else if (evt.wheelDelta < 0) {
+    } else if (event.wheelDelta < 0) {
         live2dSprite.adjustScale(0, 0, 0.9);
     }
 });
