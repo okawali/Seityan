@@ -24,10 +24,8 @@
     "babel-loader": "^6.4.1",
     "babel-polyfill": "^6.23.0",
     "babel-preset-latest": "^6.24.1",
-    "brfs": "^1.4.3",
     "electron": "^1.6.2",
     "electron-packager": "^8.6.0",
-    "transform-loader": "^0.2.4",
     "ts-loader": "^2.0.3",
     "typescript": "^2.2.2",
     "webpack": "^2.3.3"
