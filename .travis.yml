@@ -13,13 +13,16 @@ addons:
 cache:
   directories:
   - node_modules
+  
 install:
 - npm install
 
 before_script:
 - chmod +x build/package.sh
+- chmod +x build/createConf.sh
 
 script:
+- build/createConf.sh
 - npm run build
 - build/package.sh
 
