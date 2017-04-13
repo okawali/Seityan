@@ -1,7 +1,7 @@
-#!/bin/sh
+#!/bin/bash
 if [[ "$TRAVIS_OS_NAME" == "osx" ]];
 then
-    DIR_NAME="electron-live2d-drawin-x64"
+    DIR_NAME="electron-live2d-darwin-x64"
     npm run package-osx-x64
 else
     DIR_NAME="electron-live2d-linux-x64"
