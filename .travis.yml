@@ -10,14 +10,18 @@ git:
 addons:
   apt:
     packages:
-    - rpm
 cache:
   directories:
   - node_modules
 install:
 - npm install
+
+before_script:
+- chmod +x build/package.sh
+
 script:
-- npm test
+- npm run build
+- build/package.sh
 
 notifications:
   email:
@@ -25,8 +29,10 @@ notifications:
 
 deploy:
   provider: releases
-  api_key: "GITHUB OAUTH TOKEN"
-  file: "FILE TO UPLOAD"
+  api_key: a532207747af7e9e7465c0871e7caad980e8b667
+  file: 
+    - release-builds/electron-live2d-linux-x64.tar.gz
+    - release-builds/electron-live2d-drawin-x64.tar.gz
   skip_cleanup: true
   on:
     tags: true
