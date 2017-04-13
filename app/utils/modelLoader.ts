@@ -9,10 +9,19 @@ export interface ModelDescription {
 export default class ModelLoder {
     static loadModel(model: ModelDescription): object | null {
         var modelPath = path.join(model.basePath, model.modelFile);
-        if (fs.existsSync(path.join(modelPath))) {
+        try {
+            fs.accessSync(modelPath, fs.constants.F_OK | fs.constants.R_OK)
             return JSON.parse(fs.readFileSync(modelPath, "utf-8"));
-        } else {
-            return null;
+        } catch (err) {
+            try {
+                modelPath = path.join("resources", "app.asar", model.basePath, model.modelFile);
+                fs.accessSync(modelPath, fs.constants.F_OK | fs.constants.R_OK);
+                return JSON.parse(fs.readFileSync(modelPath, "utf-8"));
+            }
+            catch (err) {
+                return null;
+            }
         }
+
     }
 }
