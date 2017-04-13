@@ -6,7 +6,6 @@ platform:
 clone_depth: 3
 
 cache: 
-  - node_modules
 
 install:
   - ps: Install-Product node $env:nodejs_version

@@ -12,7 +12,6 @@ addons:
     packages:
 cache:
   directories:
-  - node_modules
   
 install:
 - npm install
