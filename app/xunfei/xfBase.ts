@@ -13,7 +13,11 @@ import {RequestPromise} from 'request-promise-native';
 import {appid, appkey} from './conf';
 
 export default class XfBase {
-    constructor() {
+
+    private audioplay;
+
+    constructor(audioplay?: (url:string, host?:string) =>void) {
+        this.audioplay = audioplay;
         this.onError = this.onError.bind(this);
         this.onProcess = this.onProcess.bind(this);
         this.onResult = this.onResult.bind(this);
@@ -21,7 +25,7 @@ export default class XfBase {
     }
 
     public tts(data: string) {
-        this.play(data, 'aisxping');
+        this.play(data, 'vixy', '9');
     }
 
     public iatBegin() {
@@ -60,19 +64,25 @@ export default class XfBase {
     private audio_state = 0;
     /***********************************************local Variables**********************************************************/
 
-    private play(content, vcn){
+    private play(content, vcn, spd){
         this.reset();
         
-        var ssb_param = {"appid": appid, "appkey": appkey, "synid":"12345", "params" : "ent=aisound,aue=lame,vcn="+vcn};
+        var ssb_param = {"appid": appid, "appkey": appkey, "synid":"12345", "params" : `ent=aisound,aue=lame,vcn=${vcn},spd=${spd}`};
         var audioPalyUrl = this.audioPalyUrl;
         var iaudio = this.iaudio;
+        var audioplay = this.audioplay;
         this.session.start(ssb_param, content, function (err, obj)
         {
-            var audio_url = audioPalyUrl + obj.audio_url;
+            var audio_url = obj.audio_url;
             if( audio_url != null && audio_url != undefined )
             {
-                iaudio.src = audio_url;
-                iaudio.play();
+                if (audioplay) {
+                    audioplay(audio_url, audioPalyUrl);
+                    console.log('use external audio player:', audioPalyUrl+audio_url);
+                } else {
+                    iaudio.src = audioPalyUrl + audio_url;
+                    iaudio.play();
+                }
             }
         });
     };
