@@ -15,7 +15,7 @@ install:
 before_build:
   - ps: build\createConf.ps1
 
-build:
+build_script:
   - npm run build
 
 after_build:
