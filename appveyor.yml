@@ -1,4 +1,3 @@
-# Test against the latest version of this Node.js version
 environment:
   nodejs_version: "7"
 
@@ -6,23 +5,18 @@ platform:
   - x64
 clone_depth: 3
 
-# Install scripts. (runs after repo cloning)
+cache: 
+  - node_modules
+
 install:
-  # Get the latest stable version of Node.js or io.js
   - ps: Install-Product node $env:nodejs_version
-  # install modules
   - npm install
-  
-# Post-install test scripts.
-test_script:
-  # Output useful info for debugging.
-  - node --version
-  - npm --version
-  # run tests
-  - npm test
 
-after_test:
-  - ps: if ($env:APPVEYOR_REPO_TAG -eq "true") { npm run publish }
+before_build:
+  - ps: build\createConf.ps1
 
-# Don't actually build.
-build: off
+build:
+  - npm run build
+
+after_build:
+  -  ps: build\package.ps1

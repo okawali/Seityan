@@ -32,7 +32,7 @@ notifications:
 
 deploy:
   provider: releases
-  api_key: a532207747af7e9e7465c0871e7caad980e8b667
+  api_key: ""
   file: 
     - release-builds/electron-live2d-linux-x64.tar.gz
     - release-builds/electron-live2d-drawin-x64.tar.gz
