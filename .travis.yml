@@ -10,9 +10,6 @@ git:
 addons:
   apt:
     packages:
-cache:
-  directories:
-  
 install:
 - npm install
 
