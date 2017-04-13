@@ -5,7 +5,7 @@ import "pixi-live2d";
 import * as path from "path";
 import * as models from "./utils/models";
 import { WindowDragger } from "./uiElements/windowDragger";
-import XfBase from "./xunfei/xfbase"
+import XfBase from "./xunfei/xfBase"
 
 const renderer = new PIXI.WebGLRenderer(500, 800, { transparent: true });
 const element = document.getElementById('app')

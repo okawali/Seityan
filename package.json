@@ -8,7 +8,9 @@
     "build": "tsc && webpack",
     "test": "",
     "package": "electron-packager ./dist electron-live2d --asar=true --platform=all --arch=x64 --out=release-builds",
-    "package-win32-x64": "electron-packager ./dist electron-live2d --asar=true --platform=win32 --arch=x64 --out=release-builds"
+    "package-win32-x64": "electron-packager ./dist electron-live2d --asar=true --platform=win32 --arch=x64 --out=release-builds",
+    "package-linux-x64": "electron-packager ./dist electron-live2d --asar=true --platform=linux --arch=x64 --out=release-builds",
+    "package-osx-x64": "electron-packager ./dist electron-live2d --asar=true --platform=darwin --arch=x64 --out=release-builds"
   },
   "author": "",
   "license": "MIT",
