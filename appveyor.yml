@@ -19,4 +19,5 @@ build_script:
   - npm run build
 
 after_build:
-  -  ps: build\package.ps1
+  - npm run package-win32-x64
+  - ps: build\package.ps1
