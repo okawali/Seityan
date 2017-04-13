@@ -12,6 +12,12 @@ export class AppTray {
         this._minimized = false;
         this._tray = new Tray(path.join(__dirname, "../../", "image", "icon.png"));
         this._contextMenu = Menu.buildFromTemplate([
+            {
+                label: "always on top",
+                type: "checkbox",
+                checked: true,
+                click: this.onAlwaysOnTopChanged.bind(this)
+            },
             { role: "quit" }
         ]);
         this._tray.setContextMenu(this._contextMenu);
@@ -23,6 +29,13 @@ export class AppTray {
     on(event: string | symbol, listener: Function): AppTray {
         this._eventEmitter.on(event, listener);
         return this;
+    }
+
+    private onAlwaysOnTopChanged(menuItem: Electron.MenuItem,
+        browserWindow: Electron.BrowserWindow,
+        event: Electron.Event): void {
+
+        this._eventEmitter.emit("setAlwaysTop", menuItem.checked);
     }
 
     private onTrayClick(modifiers: Electron.Modifiers, bounds: Electron.Rectangle): void {

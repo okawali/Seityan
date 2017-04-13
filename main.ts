@@ -11,8 +11,10 @@ function createWindow() {
         width: 550, height: 860,
         autoHideMenuBar: true, frame: false,
         show: true, transparent: true,
-        resizable: true, skipTaskbar: true
+        resizable: false, skipTaskbar: true,
+        alwaysOnTop: true
     })
+
     win.loadURL(url.format({
         pathname: path.join(__dirname, "index.html"),
         protocol: 'file:',
@@ -31,6 +33,10 @@ function createWindow() {
 
     tray.on("restore", () => {
         win!.restore();
+    });
+
+    tray.on("setAlwaysTop", (value: boolean) => {
+        win!.setAlwaysOnTop(value);
     });
 }
 
