@@ -8,7 +8,7 @@ let tray: AppTray;
 
 function createWindow() {
     win = new BrowserWindow({
-        width: 550, height: 860,
+        width: 300, height: 400,
         autoHideMenuBar: true, frame: false,
         show: true, transparent: true,
         resizable: false, skipTaskbar: true,
@@ -20,8 +20,6 @@ function createWindow() {
         protocol: 'file:',
         slashes: true,
     }))
-
-    // win.webContents.openDevTools();
 
     win.on('closed', () => {
         win = null
@@ -38,6 +36,11 @@ function createWindow() {
     tray.on("setAlwaysTop", (value: boolean) => {
         win!.setAlwaysOnTop(value);
     });
+
+    ipcMain.on("resize", (event, arg) => {
+        win!.setSize(Math.ceil(arg.width), Math.ceil(arg.height));
+    })
+
 }
 
 function onAppReady() {
