@@ -10,7 +10,7 @@ export class AppTray {
 
     constructor() {
         this._minimized = false;
-        this._tray = new Tray(path.join(__dirname, "../../", "assets", "image", "smallicon.png"));
+        this._tray = new Tray(path.join(__dirname, "assets", "image", "smallicon.png"));
         this._contextMenu = Menu.buildFromTemplate([
             {
                 label: "always on top",

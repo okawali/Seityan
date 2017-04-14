@@ -5,13 +5,13 @@
   "main": "dist/main.js",
   "scripts": {
     "start": "cd dist && electron .",
-    "build": "webpack",
-    "watch": "webpack --watch",
+    "watch": "webpack --watch --config webpack.config.app.js",
+    "build": "webpack --config webpack.config.main.js && webpack --config webpack.config.app.js",
     "test": "",
-    "package": "electron-packager ./dist electron-live2d --asar=true --platform=all --arch=x64 --out=release-builds",
-    "package-win32-x64": "electron-packager ./dist electron-live2d --asar=true --platform=win32 --arch=x64 --out=release-builds",
-    "package-linux-x64": "electron-packager ./dist electron-live2d --asar=true --platform=linux --arch=x64 --out=release-builds",
-    "package-osx-x64": "electron-packager ./dist electron-live2d --asar=true --platform=darwin --arch=x64 --out=release-builds"
+    "package": "electron-packager ./dist electron-live2d --overwrite --asar=true --platform=all --arch=x64 --out=release-builds",
+    "package-win32-x64": "electron-packager ./dist electron-live2d --overwrite --asar=true --platform=win32 --arch=x64 --out=release-builds",
+    "package-linux-x64": "electron-packager ./dist electron-live2d --overwrite --asar=true --platform=linux --arch=x64 --out=release-builds",
+    "package-osx-x64": "electron-packager ./dist electron-live2d --overwrite --asar=true --platform=darwin --arch=x64 --out=release-builds"
   },
   "author": "",
   "license": "MIT",
