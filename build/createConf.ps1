@@ -5,6 +5,7 @@ $stream = New-Object System.IO.FileStream($path, [System.IO.FileMode]::Create, [
 $writer = New-Object System.IO.StreamWriter($stream, $encoding)
 foreach ($i in $content) 
 {
+    [System.Console]::WriteLine($1)
     $writer.WriteLine($i)
 }
 $writer.dispose();
