@@ -7,7 +7,8 @@
         "moduleResolution": "node",
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
-        "strictNullChecks": true
+        "strictNullChecks": true,
+        "baseUrl": "."
     },
     "exclude": [
         "node_modules",

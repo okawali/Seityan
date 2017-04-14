@@ -1,11 +1,11 @@
 node_modules
 *.js
 .vscode
-!webpack.config.js
+!webpack.config.app.js
+!webpack.config.main.js
 !dist/lib/*.js
 !dist/lib/**/*.js
 npm-debug*
-release-build/
 release-builds/
 app/utils/conf.ts
 .DS_Store
