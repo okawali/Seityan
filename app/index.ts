@@ -16,16 +16,16 @@ const dragger = new WindowDragger(element);
 element!.appendChild(renderer.view);
 const stage = new PIXI.Container();
 
-var model = ModelLoader.loadModel(models.blanc);
-
 var live2dSprite: PIXI.Live2DSprite | null = null;
 
 var resizable = false;
 
 function createModel() {
+    var model = ModelLoader.loadModel(models.blanc);
+
     live2dSprite = new PIXI.Live2DSprite(model!, {
         lipSyncWithSound: true,
-        debugLog: true,
+        debugLog: false,
         modelBasePath: models.blanc.basePath,
         ignoreLayout: true
     });
@@ -73,8 +73,7 @@ renderer.view.addEventListener('mousewheel', event => {
     if (scale != 1 && resizable) {
         var newSize = { width: currentSize.width * scale, height: currentSize.height * scale }
         renderer.resize(newSize.width, newSize.height);
-        stage.removeChild(live2dSprite!);
-        createModel();
+        live2dSprite!.resize(newSize.width, newSize.height);
         ipcRenderer.send("resize", newSize);
     }
 });

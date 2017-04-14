@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 
 module.exports = {
     target: "electron-renderer",
@@ -8,8 +9,10 @@ module.exports = {
         filename: "[name].js"
     },
     resolve: {
-        // Add `.ts` and `.tsx` as a resolvable extension.
-        extensions: ['.ts', '.tsx', '.js'] // note if using webpack 1 you'd also need a '' in the array as well
+        extensions: ['.ts', '.tsx', '.js'],
+        alias: {
+            "ajv": path.resolve(__dirname, "node_modules/ajv/dist/ajv.bundle.js") //fix ajv require error
+        }
     },
     module: {
         rules: [
@@ -19,7 +22,7 @@ module.exports = {
                     path.resolve(__dirname, "app")
                 ],
                 exclude: [
-                    "node_modules"
+                    /node_modules/
                 ],
                 use: [
                     {
