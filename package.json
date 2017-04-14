@@ -35,8 +35,6 @@
     "axios": "^0.16.1",
     "pixi-live2d": "git://github.com/sunxfancy/pixi-live2d",
     "pixi.js": "^4.4.4",
-    "request": "^2.81.0",
-    "request-promise-native": "^1.0.3",
     "tone": "^0.10.0"
   }
 }
