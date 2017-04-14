@@ -30,9 +30,8 @@ deploy:
   provider: releases
   api_key:
     secure: XtsXAeKYmA+gQ8x5z11Gp4GOBBf6E3+7a085JmukHDbH1h3izmbgvJx/pNYmsq6srn4165+T51tCWbH25PE2BtScrMq7TuZhtbvtqY8S7TXRZWYk1FoAPKytsfB4OHr71TnpwrdbJAJJsXWO5xeGyMZLJbgwpIsOVhACFmnQyd7OApZ4w8IPVpiodt7TkvS38oiHjImEsagSLQIVdueYOnOzgAU4kcrHWxRXNY37i3HPAUF3og5XZsRbchGf/PjDwNkb7ozitA1aQgD64omsODbU1vyj05F+cWBE6QOZfpZ8vhWfo2sKo7DtJcNd1NZg3xpFxyxTHICj3JKDps5JBS4BwPdBw3tznesIkWJU8ULtWW0nrEFCezsuvPs1/SucipUGx1nf4Pl1g/8sOBUnX93h9CHSNeRm5x7lpsE6PgQWi84ANA3g2S3buRUSoSX+qa/gWq1TwMsAKbEvjfwCyrTUYzQg3gvDAarFhNuJhBIK/21wWhhtP/CcFiVHw600zQHbrEv9et3pUAuKDCymxYqJJW39fRHQZcwBKl18HljCNrH1UtNvJH2DnrkweDdgeHNOXFiIUPc4ytzUSm2uBDDDxIX/EEFvtGN27Ue6Vggo0RzXbneJsVTDmLwZnXDE5xncHKjswpPfMoPxU3ShLBcKd6SWRlTG1QfWHBWqWt0=
-  file:
-    - release-builds/electron-live2d-linux-x64.tar.gz
-    - release-builds/electron-live2d-darwin-x64.tar.gz
+  file_glob: true
+  file: release-builds/*
   skip_cleanup: true
   on:
     tags: true
