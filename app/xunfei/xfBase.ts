@@ -10,7 +10,7 @@ declare class IFlyIatSession {
 }
 
 import {RequestPromise} from 'request-promise-native';
-import {appid, appkey} from './conf';
+import {xunfeiAppId, xunfeiAppKey} from '../utils/conf';
 
 export default class XfBase {
 
@@ -31,7 +31,7 @@ export default class XfBase {
     public iatBegin() {
         var ssb_param = {
             "grammar_list": null,
-            "params": `appid=${appid},appidkey=${appkey}, lang = sms, acous = anhui, aue=speex-wb;-1, usr = mkchen, ssm = 1, sub = iat, net_type = wifi, rse = utf8, ent =sms16k, rst = plain, auf  = audio/L16;rate=16000, vad_enable = 1, vad_timeout = 5000, vad_speech_tail = 500, compress = igzip`
+            "params": `appid=${xunfeiAppId},appidkey=${xunfeiAppKey}, lang = sms, acous = anhui, aue=speex-wb;-1, usr = mkchen, ssm = 1, sub = iat, net_type = wifi, rse = utf8, ent =sms16k, rst = plain, auf  = audio/L16;rate=16000, vad_enable = 1, vad_timeout = 5000, vad_speech_tail = 500, compress = igzip`
         };
         this.iat_result = '';
         /* 调用开始录音接口，通过function(volume)和function(err, obj)回调音量和识别结果 */
@@ -67,7 +67,7 @@ export default class XfBase {
     private play(content, vcn, spd){
         this.reset();
         
-        var ssb_param = {"appid": appid, "appkey": appkey, "synid":"12345", "params" : `ent=aisound,aue=lame,vcn=${vcn},spd=${spd}`};
+        var ssb_param = {"appid": xunfeiAppId, "appkey": xunfeiAppKey, "synid":"12345", "params" : `ent=aisound,aue=lame,vcn=${vcn},spd=${spd}`};
         var audioPalyUrl = this.audioPalyUrl;
         var iaudio = this.iaudio;
         var audioplay = this.audioplay;

@@ -7,6 +7,6 @@ node_modules
 npm-debug*
 release-build/
 release-builds/
-app/xunfei/conf.ts
+app/utils/conf.ts
 .DS_Store
 
