@@ -10,28 +10,30 @@ git:
 addons:
   apt:
     packages:
+cache:
+  directories:
+  - node_modules
+
 install:
 - npm install
-
 before_script:
 - chmod +x build/package.sh
 - chmod +x build/createConf.sh
-
 script:
 - build/createConf.sh
 - npm run build
 - build/package.sh
-
 notifications:
   email:
     on_success: never
-
 deploy:
   provider: releases
-  api_key: ""
-  file: 
+  api_key:
+    secure: KiBcYD4RYLO17YPm/YG9OLWQ2bXXmBNr86ZHsKU2lnra/e+725j7kKZDIjjgi6wxX5WupF+n8wR9G8X8m/M5CjNgEEYW4SLGQ1pbgJJ2hXKoo3hC14PGQsX1+A5ztAqqI2rvxE5NFNRN9oLFi2xq2ZvRwJNGO7Gl6X1OCwQXfHdxy3BYcruipYQsOxB1BCMHTsX38D8iiZiyLy+/A/4oJVk5N1wMDNGLDD7kCVBJyuVCXsAGmsGLovEt9Q8/cdO1OWQXldLn7hgsa2ZgU+cgRuV/w+2CQABEP5ete92+aOHt4RahV+r+vaP9MTq2p5QYZsIz9XPtFGEDpXVMtg8w9zEDtk/NjEDy/LkwDjldZ7Y7gp91i18vC//8/q+8HaYPj7D9HGNsoVFMp3jbzGYy55czxXo9qdlQtvCHbpllM2x8MkjZoUYDIwPBwrUWHXoYcKz9C/hW8XJWZ/gtSMSjPe0jl5Y3tCZ4mbbBcO6kqo8ihDmVmKAE0ogEWG+CCPhAtyE+LJoFHkW5iz7spdCzCapMw5uL8oOiSXZ7NgXR11QD20cHJc0UJiLJMxugXRl7Tjdsvw3reyENNRH8nbiT0/UoHCwfNOxVWoNdHBWKKjIy7phbXVLovkL6YsuzsgwrO2pd5tRhs8cpyu1I5eFXmJQ1d0W5Nv7NOEf34sRasv8=
+  file:
     - release-builds/electron-live2d-linux-x64.tar.gz
     - release-builds/electron-live2d-drawin-x64.tar.gz
   skip_cleanup: true
   on:
     tags: true
+    repo: Norgerman/live2d-electron
