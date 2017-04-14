@@ -1,6 +1,9 @@
 environment:
   nodejs_version: "7"
-
+  XUNFEI_APP_ID:
+    secure: 0yuuz2CEPL+tXdU5UTlLTw==
+  XUNFEI_APP_KEY:
+    secure: MJX5AWtT57sMgTOVAPvCH4w9qQ4tsubSIb01stadk7g=
 platform: 
   - x64
 clone_depth: 3
@@ -22,7 +25,7 @@ after_build:
 artifacts:
   - path: release-builds/electron-live2d-win32-x64.zip
     name: electron-live2d-win-x64
-    
+
 deploy:
   provider: GitHub
   auth_token:

@@ -4,7 +4,7 @@ import * as PIXI from "pixi.js";
 import "pixi-live2d";
 import * as path from "path";
 import * as models from "./utils/models";
-import ModelLoader from "./utils/modelLoader";
+import { ModelLoader, ModelDescription } from "./utils/modelLoader";
 import { WindowDragger } from "./uiElements/windowDragger";
 import XfBase from "./xunfei/xfBase"
 import { ipcRenderer } from "electron";
@@ -15,14 +15,14 @@ const element = document.getElementById('app')
 const dragger = new WindowDragger(element);
 element!.appendChild(renderer.view);
 const stage = new PIXI.Container();
+const defaultModel = models.blanc;
 
 var live2dSprite: PIXI.Live2DSprite | null = null;
 
 var resizable = false;
 
-function createModel() {
-    var model = ModelLoader.loadModel(models.blanc);
-
+async function createModelAsync(modelDescription: ModelDescription) {
+    var model = await ModelLoader.loadModelAsync(modelDescription);
     live2dSprite = new PIXI.Live2DSprite(model!, {
         lipSyncWithSound: true,
         debugLog: false,
@@ -59,6 +59,11 @@ function createModel() {
     stage.addChild(live2dSprite!);
 
     live2dSprite!.startRandomMotion('idle');
+
+    var test = new XfBase(live2dSprite!.playSound.bind(live2dSprite!));
+    console.log("试问，汝是吾的Master吗？")
+    test.tts("试问，汝是吾的Master吗？")
+    test.iatBegin();
 }
 
 renderer.view.addEventListener('mousewheel', event => {
@@ -78,7 +83,7 @@ renderer.view.addEventListener('mousewheel', event => {
     }
 });
 
-createModel();
+createModelAsync(defaultModel).catch(console.error);
 
 function animate() {
     requestAnimationFrame(animate);
@@ -86,11 +91,3 @@ function animate() {
 }
 
 animate();
-live2dSprite!.setLipSync(0.5);
-
-(function () {
-    var test = new XfBase(live2dSprite!.playSound.bind(live2dSprite!));
-    console.log("试问，汝是吾的Master吗？")
-    test.tts("试问，汝是吾的Master吗？")
-    test.iatBegin();
-})();
