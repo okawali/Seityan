@@ -4,6 +4,12 @@ environment:
     secure: 0yuuz2CEPL+tXdU5UTlLTw==
   XUNFEI_APP_KEY:
     secure: MJX5AWtT57sMgTOVAPvCH4w9qQ4tsubSIb01stadk7g=
+  FACEPP_KEY:
+    secure: 3rd662BZdj8RVHFpg9aCOezzev3uYg97KBPZucNsvHDJuuqO3kMHYAQq4ZrkIv5Z
+  FACEPP_SECRET:
+    secure: D0d8kHC5hCtMbzn2JAG9xX2G9/zTS+ica7UB9cGwwQF91RZWwm/yXs2JYzg2je1W
+  YYY_KEY:
+    secure: JOb4IN61SFeGz0b9IsyjsW25djfTvEeGPyiTGXakDiTtnzMFEE6Ja6fJL6+FpZjx
 platform: 
   - x64
 clone_depth: 3
