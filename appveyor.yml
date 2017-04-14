@@ -18,3 +18,15 @@ build_script:
 after_build:
   - npm run package-win32-x64
   - ps: build\package.ps1
+  
+deploy:
+  provider: GitHub
+  auth_token:
+    secure: 2bhzwda2nhlr7agSQL96Lu81Hsmxdod21jyXjEXX36DYM1d8L8bIW5hNGb5hOCL0
+  artifact: release-builds/electron-live2d-win32-x64.zip
+  draft: false
+  prerelease: false
+  force_update: true
+  on:
+    branch: master
+    appveyor_repo_tag: true
