@@ -1,10 +1,10 @@
-import * as pp from 'request-promise-native';
+import asios from 'axios';
 import {yyyKey} from '../utils/conf'
 
 export default class SentenceAnalyser {
-    private base_url = "http://ltpapi.voicecloud.cn/analysis/";
-    public async wordCut(str: string) {
-        return pp.post(this.base_url, {
+    private static base_url = "http://ltpapi.voicecloud.cn/analysis/";
+    public static async wordCut(str: string) {
+        return asios.post(this.base_url, {
             body: {
                 text: str,
                 pattern: 'ws',
@@ -14,8 +14,8 @@ export default class SentenceAnalyser {
         });
     }
 
-    public async deepAnalyse(str: string) {
-        return pp.post(this.base_url, {
+    public static async deepAnalyse(str: string) {
+        return asios.post(this.base_url, {
             body: {
                 text: str,
                 pattern: 'all',
