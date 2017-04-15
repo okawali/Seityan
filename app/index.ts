@@ -51,6 +51,8 @@ async function createModelAsync(modelDescription: ModelDescription) {
             const point: PIXI.Point = event.data.global;
             if (live2dSprite!.hitTest('body', point.x, point.y)) {
                 live2dSprite!.startRandomMotionOnce('tap_body');
+            } else if (live2dSprite!.hitTest("head", point.x, point.y)) {
+                live2dSprite!.startRandomMotionOnce('flick_head');
             }
         });
 
