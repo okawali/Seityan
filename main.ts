@@ -12,8 +12,7 @@ function createWindow() {
         autoHideMenuBar: true, frame: false,
         show: true, transparent: true,
         resizable: false, skipTaskbar: true,
-        alwaysOnTop: true,
-        hasShadow: false
+        alwaysOnTop: true, hasShadow: false
     })
 
     win.loadURL(url.format({
