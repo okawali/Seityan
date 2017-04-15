@@ -1,6 +1,7 @@
 import { app, BrowserWindow, ipcMain, dialog } from "electron";
 import * as path from "path";
 import * as url from "url";
+import os from 'os';
 import { AppTray } from "./electronMain/uiElements/appTray";
 
 let win: Electron.BrowserWindow | null;
@@ -12,13 +13,9 @@ function createWindow() {
         autoHideMenuBar: true, frame: false,
         show: true, transparent: true,
         resizable: false, skipTaskbar: true,
-<<<<<<< Updated upstream
-        alwaysOnTop: true, hasShadow: false
-=======
         alwaysOnTop: true,
         hasShadow: false,
-        icon: path.join(__dirname, '/assets/image/linux.png')
->>>>>>> Stashed changes
+        icon: os.platform() == 'linux' ? path.join(__dirname, '/assets/image/linux.png') : undefined
     })
 
     win.loadURL(url.format({
