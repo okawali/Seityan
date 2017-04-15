@@ -1,7 +1,7 @@
-Write-Object "checking environment"
+Write-Output "checking environment"
 If (Test-Path env:APPVEYOR_PULL_REQUEST_NUMBER) 
 {
-    Write-Object "build from pull request"
+    Write-Output "build from pull request"
     $env:XUNFEI_APP_ID=1
     $env:XUNFEI_APP_KEY=2
     $env:FACEPP_KEY=3
