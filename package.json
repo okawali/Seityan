@@ -5,6 +5,7 @@
   "main": "dist/main.js",
   "scripts": {
     "start": "cd dist && electron .",
+    "watch": "webpack --watch --config webpack.config.app.js",
     "build": "webpack --config webpack.config.main.js && webpack --config webpack.config.app.js",
     "test": "",
     "package": "electron-packager ./dist electron-live2d --overwrite --asar=true --platform=all --arch=x64 --out=release-builds",
@@ -18,8 +19,6 @@
   "devDependencies": {
     "@types/electron": "^1.4.35",
     "@types/pixi.js": "^4.4.2",
-    "@types/request": "0.0.42",
-    "@types/request-promise-native": "^1.0.2",
     "babel-core": "^6.24.1",
     "babel-loader": "^6.4.1",
     "babel-polyfill": "^6.23.0",
@@ -34,8 +33,6 @@
     "axios": "^0.16.1",
     "pixi-live2d": "git://github.com/sunxfancy/pixi-live2d",
     "pixi.js": "^4.4.4",
-    "request": "^2.81.0",
-    "request-promise-native": "^1.0.3",
     "tone": "^0.10.0"
   }
 }

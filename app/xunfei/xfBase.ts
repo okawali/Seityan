@@ -9,7 +9,7 @@ declare class IFlyIatSession {
     stop();
 }
 
-import {RequestPromise} from 'request-promise-native';
+// import {RequestPromise} from 'request-promise-native';
 import {xunfeiAppId, xunfeiAppKey} from '../utils/conf';
 
 export default class XfBase {
