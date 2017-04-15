@@ -19,6 +19,7 @@ install:
   - npm install
 
 before_build:
+  - ps: build\checkEnv.ps1
   - ps: build\createConf.ps1
 
 build_script:
