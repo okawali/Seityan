@@ -8,7 +8,7 @@
 	{
 		"center_x":0.0,
 		"y":1,
-		"width":2
+		"width":1.5
 	},
 	"expressions":[
 		{"name":"f04.exp.json","file":"expressions/f04.exp.json"},
@@ -21,7 +21,7 @@
 		{"name":"f03.exp.json","file":"expressions/f03.exp.json"}
 	],
 	"motions":{
-		"":[
+		"tap_body":[
 			{"file":"motions/Epsilon2.1_m_01.mtn"},
 			{"file":"motions/Epsilon2.1_m_02.mtn"},
 			{"file":"motions/Epsilon2.1_m_03.mtn"},

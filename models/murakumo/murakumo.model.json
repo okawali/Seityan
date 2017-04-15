@@ -8,8 +8,8 @@
     "layout":
 	{
 		"center_x":0,
-		"y": 0.6,
-		"width":2.4
+		"y": 1,
+		"width":2
 	},
 	"hit_areas":
 	[

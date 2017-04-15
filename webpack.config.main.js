@@ -24,7 +24,8 @@ module.exports = {
                 test: /\.ts$/,
                 exclude: [
                     /node_modules/,
-                    /app\//
+                    /app\//,
+                    /models\//
                 ],
                 use: [
                     {

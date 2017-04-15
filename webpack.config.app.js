@@ -22,7 +22,8 @@ module.exports = {
                     path.resolve(__dirname, "app")
                 ],
                 exclude: [
-                    /node_modules/
+                    /node_modules/,
+                    /models\//
                 ],
                 use: [
                     {
