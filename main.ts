@@ -12,7 +12,13 @@ function createWindow() {
         autoHideMenuBar: true, frame: false,
         show: true, transparent: true,
         resizable: false, skipTaskbar: true,
+<<<<<<< Updated upstream
         alwaysOnTop: true, hasShadow: false
+=======
+        alwaysOnTop: true,
+        hasShadow: false,
+        icon: path.join(__dirname, '/assets/image/linux.png')
+>>>>>>> Stashed changes
     })
 
     win.loadURL(url.format({
