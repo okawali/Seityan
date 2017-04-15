@@ -11,7 +11,7 @@ function createWindow() {
         width: 300, height: 400,
         autoHideMenuBar: true, frame: false,
         show: true, transparent: true,
-        resizable: true, skipTaskbar: true,
+        resizable: false, skipTaskbar: true,
         alwaysOnTop: true
     })
 
