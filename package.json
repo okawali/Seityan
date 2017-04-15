@@ -19,8 +19,6 @@
   "devDependencies": {
     "@types/electron": "^1.4.35",
     "@types/pixi.js": "^4.4.2",
-    "@types/request": "0.0.42",
-    "@types/request-promise-native": "^1.0.2",
     "babel-core": "^6.24.1",
     "babel-loader": "^6.4.1",
     "babel-polyfill": "^6.23.0",
