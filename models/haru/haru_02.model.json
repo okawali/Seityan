@@ -19,9 +19,9 @@
 	],
 	"layout":
 	{
-		"center_x":-0.5,
+		"center_x":0,
 		"y":1,
-		"width":2
+		"width": 1.5
 	},
 	"hit_areas":
 	[

@@ -3,7 +3,7 @@
 import * as PIXI from "pixi.js";
 import "pixi-live2d";
 import * as path from "path";
-import * as models from "./utils/models";
+import models from "./utils/models";
 import { ModelLoader, ModelDescription } from "./utils/modelLoader";
 import { WindowDragger } from "./uiElements/windowDragger";
 import XfBase from "./xunfei/xfBase"
@@ -15,7 +15,8 @@ const element = document.getElementById('app')
 const dragger = new WindowDragger(element);
 element!.appendChild(renderer.view);
 const stage = new PIXI.Container();
-const defaultModel = models.blanc;
+const defaultModel = models[0];
+var xf: XfBase | null;
 
 var live2dSprite: PIXI.Live2DSprite | null = null;
 
@@ -23,11 +24,14 @@ var resizable = false;
 
 async function createModelAsync(modelDescription: ModelDescription) {
     var model = await ModelLoader.loadModelAsync(modelDescription);
+    if (live2dSprite !== null) {
+        stage.removeChild(live2dSprite);
+    }
+
     live2dSprite = new PIXI.Live2DSprite(model!, {
         lipSyncWithSound: true,
-        debugLog: false,
-        modelBasePath: models.blanc.basePath,
-        ignoreLayout: true
+        debugLog: true,
+        modelBasePath: modelDescription.basePath,
     });
 
     live2dSprite!.on("removed", obj => {
@@ -60,11 +64,12 @@ async function createModelAsync(modelDescription: ModelDescription) {
 
     live2dSprite!.startRandomMotion('idle');
 
-    var test = new XfBase(live2dSprite!.playSound.bind(live2dSprite!));
-    console.log("试问，汝是吾的Master吗？")
-    test.tts("试问，汝是吾的Master吗？")
-    test.iatBegin();
-    
+    if (!xf) {
+        xf = new XfBase();
+        xf.iatBegin();
+    }
+    xf.audioplay = live2dSprite!.playSound.bind(live2dSprite!);
+    xf.tts("试问，汝是吾的Master吗？")
 }
 
 renderer.view.addEventListener('mousewheel', event => {
@@ -83,6 +88,22 @@ renderer.view.addEventListener('mousewheel', event => {
         ipcRenderer.send("resize", newSize);
     }
 });
+
+ipcRenderer.on("loadModel", loadModel)
+
+function loadModel(event: Electron.IpcRendererEvent, name: string, buildIn: boolean): void {
+    console.log(name, buildIn);
+    let model: ModelDescription | null = null;
+    if (buildIn) {
+        let findedModels = models.filter(i => i.name == name);
+        if (findedModels.length > 0) {
+            model = findedModels[0];
+        }
+    } else {
+        model = ModelLoader.parseModelPath(name);
+    }
+    createModelAsync(model!);
+}
 
 createModelAsync(defaultModel).catch(console.error);
 

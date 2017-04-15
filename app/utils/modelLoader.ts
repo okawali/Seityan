@@ -15,4 +15,11 @@ export class ModelLoader {
         var response = await axios.get(modelPath);
         return response.data;
     }
+
+    static parseModelPath(path: string): ModelDescription {
+        var index = path.lastIndexOf("/");
+        var basePath = path.substr(0, index + 1);
+        var modelFile = path.substr(index + 1);
+        return { basePath, modelFile };
+    }
 }

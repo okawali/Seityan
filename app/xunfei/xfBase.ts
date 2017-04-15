@@ -9,12 +9,11 @@ declare class IFlyIatSession {
     stop();
 }
 
-// import {RequestPromise} from 'request-promise-native';
 import {xunfeiAppId, xunfeiAppKey} from '../utils/conf';
 
 export default class XfBase {
 
-    private audioplay;
+    public audioplay;
 
     constructor(audioplay?: (url:string, host?:string) =>void) {
         this.audioplay = audioplay;

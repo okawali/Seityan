@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain } from "electron";
+import { app, BrowserWindow, ipcMain, dialog } from "electron";
 import * as path from "path";
 import * as url from "url";
 import { AppTray } from "./electronMain/uiElements/appTray";
@@ -35,6 +35,28 @@ function createWindow() {
 
     tray.on("setAlwaysTop", (value: boolean) => {
         win!.setAlwaysOnTop(value);
+    });
+
+    tray.on("loadInternalModel", (arg: { name: string, buildIn: boolean }) => {
+        win!.webContents.send("loadModel", arg.name, arg.buildIn);
+    })
+
+    tray.on("loadExternalModel", _ => {
+        dialog.showOpenDialog({
+            properties: ["openFile"], filters: [
+                { name: "Model", extensions: ["model.json"] },
+                { name: "Json", extensions: ["json"] },
+                {name: "All Files", extensions: ["*"] }
+            ]
+        }, files => {
+            if (files && files.length > 0) {
+                var name = files[0].replace(/\\/g, "/");
+                tray.setPrevSelectModelAsExternal();
+                win!.webContents.send("loadModel", name, false);
+            } else {
+                tray.restorePrevSelectedModel();
+            }
+        })
     });
 
     ipcMain.on("resize", (event, arg) => {
