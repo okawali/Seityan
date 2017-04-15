@@ -51,6 +51,7 @@ function createWindow() {
         }, files => {
             if (files && files.length > 0) {
                 var name = files[0].replace(/\\/g, "/");
+                tray.setPrevSelectModelAsExternal();
                 win!.webContents.send("loadModel", name, false);
             } else {
                 tray.restorePrevSelectedModel();

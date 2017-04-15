@@ -78,10 +78,13 @@ export class AppTray {
         }
     }
 
+    setPrevSelectModelAsExternal() {
+        this._prevSelectedModel = "open model";
+    }
+
     private onAlwaysOnTopChanged(menuItem: Electron.MenuItem,
         browserWindow: Electron.BrowserWindow,
         event: Electron.Event): void {
-
         this._eventEmitter.emit("setAlwaysTop", menuItem.checked);
     }
 
