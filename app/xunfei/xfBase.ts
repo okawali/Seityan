@@ -13,9 +13,9 @@ import {xunfeiAppId, xunfeiAppKey} from '../utils/conf';
 
 export default class XfBase {
     public callback: (value) => void
-    public audioplay;
+    public audioplay?: (url: string, host?: string) => Promise<void>;
 
-    constructor(audioplay?: (url:string, host?:string) =>void) {
+    constructor(audioplay?: (url: string, host?: string) => Promise<void>) {
         this.audioplay = audioplay;
         this.onError = this.onError.bind(this);
         this.onProcess = this.onProcess.bind(this);
@@ -95,8 +95,7 @@ export default class XfBase {
                 if( audio_url != null && audio_url != undefined )
                 {
                     if (audioplay) {
-                        audioplay(audio_url, audioPalyUrl);
-                        resolve();
+                        resolve(audioplay(audio_url, audioPalyUrl));
                     } else {
                         iaudio.src = audioPalyUrl + audio_url;
                         iaudio.play();

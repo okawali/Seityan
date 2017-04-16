@@ -69,7 +69,7 @@ async function createModelAsync(modelDescription: ModelDescription) {
 
     if (!xf) xf = new XfBase();
     xf.audioplay = live2dSprite!.playSound.bind(live2dSprite!);
-    xf.tts("试问，汝是吾的Master吗？")
+    xf.tts("试问，汝是吾的Master吗？").then(() => console.log("play end"));
 }
 
 renderer.view.addEventListener('mousewheel', event => {
