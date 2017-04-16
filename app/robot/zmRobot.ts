@@ -1,4 +1,4 @@
-import {zmAppId} from '../utils/conf'
+import {zhimaAppId} from '../utils/conf'
 import asios from 'axios';
 
 export default class ZMRobt {
@@ -7,7 +7,7 @@ export default class ZMRobt {
 
     public input(str: string, callback?: (ret:string) => void) {
         if (callback) this.callback = callback;
-        asios.post(ZMRobt.url, {appId: zmAppId, query: str})
+        asios.post(ZMRobt.url, {appId: zhimaAppId, query: str})
             .then((resp)=> {
                 this.output(resp.data);    
             }).catch((reason) => {
