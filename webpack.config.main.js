@@ -13,10 +13,7 @@ module.exports = {
         filename: "[name].js"
     },
     resolve: {
-        extensions: ['.ts', '.tsx', '.js'],
-        alias: {
-            "ajv": path.resolve(__dirname, "node_modules/ajv/dist/ajv.bundle.js") //fix ajv require error
-        }
+        extensions: ['.ts', '.tsx', '.js']
     },
     module: {
         rules: [
