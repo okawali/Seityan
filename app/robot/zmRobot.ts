@@ -17,7 +17,10 @@ export default class ZMRobt {
 
     public response(data: any) {
         console.log(data);
-        return "好的，我明白了";
+        if (data.resultCode == "0000")
+            return "好的，我明白了。";
+        else
+            return "等等，我不太清楚啊！";
     }
 
     public output(str: string) {
