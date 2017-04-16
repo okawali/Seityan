@@ -18,8 +18,10 @@ export interface Entity {
     entity: any
 }
 
-export interface ZMPlugin {
+export class ZMPlugin {
     intent: string
     zmRobot: ZMRobot
-    response(data: ZMReturn): string;
+    response(data: ZMReturn): string {
+        return "";
+    }
 }

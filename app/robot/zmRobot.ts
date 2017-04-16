@@ -10,8 +10,8 @@ export default class ZMRobt {
         this.plugins = new Map();
         console.log('plugins', plugins);
         for (let i in plugins) {
-            var plugin = plugins[i] as ZMPlugin;
-            if (!plugin) console.log("error! plugin is null, it can not translate to ZMPlugin");
+            var plugin = plugins[i];
+            if (!(plugin instanceof ZMPlugin)) console.log("error! plugin is null, it can not translate to ZMPlugin");
             this.plugins.set(plugin.intent, plugin);
             plugin.zmRobot = this;
         }
