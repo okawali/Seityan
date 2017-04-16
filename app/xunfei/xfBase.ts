@@ -1,6 +1,7 @@
 declare class IFlyTtsSession {
     constructor(config: object);
     start(ssb_param:object, content:string, callback: (err:any, obj:any) => any);
+    stop();
 }
 
 declare class IFlyIatSession {
@@ -83,18 +84,21 @@ export default class XfBase {
      */
     private async play(content: string, vcn: string, spd: string){
         return new Promise<void>((resolve, reject) => {
-            this.reset();
+            // this.reset();
             
             var ssb_param = {"appid": xunfeiAppId, "appkey": xunfeiAppKey, "synid":"12345", "params" : `ent=aisound,aue=lame,vcn=${vcn},spd=${spd}`};
             var audioPalyUrl = this.audioPalyUrl;
             var iaudio = this.iaudio;
             var audioplay = this.audioplay;
-            this.session.start(ssb_param, content, function (err, obj)
+            var session = this.session;
+            session.stop();
+            session.start(ssb_param, content, function (err, obj)
             {
                 var audio_url = obj.audio_url;
                 if( audio_url != null && audio_url != undefined )
                 {
                     if (audioplay) {
+                        session.stop();
                         resolve(audioplay(audio_url, audioPalyUrl));
                     } else {
                         iaudio.src = audioPalyUrl + audio_url;
@@ -157,6 +161,7 @@ export default class XfBase {
         }
         this.mic_open = false;
         console.log('Result: '+this.iat_result);
+        this.iatSession.stop();
         if (this.callback) this.callback(this.iat_result);
         // volumeEvent.stop();
     }

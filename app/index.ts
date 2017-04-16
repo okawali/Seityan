@@ -9,6 +9,9 @@ import { WindowDragger } from "./uiElements/windowDragger";
 import XfBase from "./xunfei/xfBase";
 import { ipcRenderer } from "electron";
 import { randomTips } from "./utils/randomTips";
+import MainRobot from './robot/mainRobot'
+
+
 
 const initSize = { width: 300, height: 400 }
 const renderer = new PIXI.WebGLRenderer(initSize.width, initSize.height, { transparent: true, autoResize: true });
@@ -18,7 +21,7 @@ element!.appendChild(renderer.view);
 const stage = new PIXI.Container();
 const defaultModel = models[0];
 var xf: XfBase | null;
-
+var mainRobot: MainRobot;
 var live2dSprite: PIXI.Live2DSprite | null = null;
 
 var resizable = false;
@@ -68,6 +71,7 @@ async function createModelAsync(modelDescription: ModelDescription) {
     live2dSprite!.startRandomMotion('idle');
 
     if (!xf) xf = new XfBase();
+    mainRobot = new MainRobot(xf);
     xf.audioplay = live2dSprite!.playSound.bind(live2dSprite!);
     xf.tts("试问，汝是吾的Master吗？").then(() => console.log("play end"));
 }
