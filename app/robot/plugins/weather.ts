@@ -9,4 +9,4 @@ class Weather implements ZMPlugin {
     }
 }
 
-exports = new Weather();
+export var weather = new Weather();
