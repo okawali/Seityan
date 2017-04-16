@@ -10,6 +10,8 @@ environment:
     secure: D0d8kHC5hCtMbzn2JAG9xX2G9/zTS+ica7UB9cGwwQF91RZWwm/yXs2JYzg2je1W
   YYY_KEY:
     secure: JOb4IN61SFeGz0b9IsyjsW25djfTvEeGPyiTGXakDiTtnzMFEE6Ja6fJL6+FpZjx
+  ZHIMA_APP_ID:
+    secure: icslgjHvmbTQl/wMqEfo/g==
 platform: 
   - x64
 clone_depth: 3
