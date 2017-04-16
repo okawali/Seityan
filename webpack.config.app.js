@@ -23,9 +23,6 @@ module.exports = {
                     /models\//
                 ],
                 use: [
-                    // {
-                    //     loader: "babel-loader"
-                    // },
                     {
                         loader: "ts-loader",
                         options: {

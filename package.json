@@ -19,10 +19,6 @@
   "devDependencies": {
     "@types/electron": "^1.4.35",
     "@types/pixi.js": "^4.4.2",
-    "babel-core": "^6.24.1",
-    "babel-loader": "^6.4.1",
-    "babel-polyfill": "^6.23.0",
-    "babel-preset-latest": "^6.24.1",
     "electron": "^1.6.2",
     "electron-packager": "^8.6.0",
     "ts-loader": "^2.0.3",
