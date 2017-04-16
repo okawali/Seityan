@@ -6,8 +6,9 @@ import * as path from "path";
 import models from "./utils/models";
 import { ModelLoader, ModelDescription } from "./utils/modelLoader";
 import { WindowDragger } from "./uiElements/windowDragger";
-import XfBase from "./xunfei/xfBase"
+import XfBase from "./xunfei/xfBase";
 import { ipcRenderer } from "electron";
+import { randomTips } from "./utils/randomTips";
 
 const initSize = { width: 300, height: 400 }
 const renderer = new PIXI.WebGLRenderer(initSize.width, initSize.height, { transparent: true, autoResize: true });
@@ -66,10 +67,7 @@ async function createModelAsync(modelDescription: ModelDescription) {
 
     live2dSprite!.startRandomMotion('idle');
 
-    if (!xf) {
-        xf = new XfBase();
-        xf.iatBegin();
-    }
+    if (!xf) xf = new XfBase();
     xf.audioplay = live2dSprite!.playSound.bind(live2dSprite!);
     xf.tts("试问，汝是吾的Master吗？")
 }
@@ -105,6 +103,15 @@ function loadModel(event: Electron.IpcRendererEvent, name: string, buildIn: bool
         model = ModelLoader.parseModelPath(name);
     }
     createModelAsync(model!);
+}
+
+
+// 响应主进程中的全局快捷键事件，开始响应用户语音，再按第二下快捷会即刻停止语音输入
+ipcRenderer.on("start-listening", startListening);
+function startListening() {
+    if (!xf) return;
+    if (xf.isListening()) xf.iatEnd(); 
+    else  {xf.tts(randomTips()); xf.iatBegin();}
 }
 
 createModelAsync(defaultModel).catch(console.error);
