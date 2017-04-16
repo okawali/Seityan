@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain, dialog } from "electron";
+import { app, BrowserWindow, ipcMain, dialog, globalShortcut } from "electron";
 import * as path from "path";
 import * as url from "url";
 import * as os from 'os';
@@ -66,6 +66,11 @@ function createWindow() {
         win!.setSize(Math.ceil(arg.width), Math.ceil(arg.height));
     })
 
+    globalShortcut.register('Alt+Q', () => {
+        win!.webContents.send("start-listening");
+    })
+
+
 }
 
 function onAppReady() {
@@ -85,4 +90,8 @@ app.on('activate', () => {
     if (win === null) {
         createWindow()
     }
+})
+
+app.on('will-quit', () => {
+    globalShortcut.unregisterAll();
 })

@@ -12,7 +12,7 @@ declare class IFlyIatSession {
 import {xunfeiAppId, xunfeiAppKey} from '../utils/conf';
 
 export default class XfBase {
-
+    public callback: (value) => void
     public audioplay;
 
     constructor(audioplay?: (url:string, host?:string) =>void) {
@@ -21,10 +21,21 @@ export default class XfBase {
         this.onProcess = this.onProcess.bind(this);
         this.onResult = this.onResult.bind(this);
         this.onVolume = this.onVolume.bind(this);
+        this.iatSession = new IFlyIatSession({
+            "callback":{
+                "onResult": this.onResult,
+                "onVolume": this.onVolume,
+                "onError": this.onError,
+                "onProcess": this.onProcess
+            }
+        });
     }
 
-    public tts(data: string) {
-        this.play(data, 'vixy', '9');
+    public async tts(data: string) {
+        return this.play(data, 'vixy', '9');
+    }
+    public isListening(): boolean {
+        return this.mic_open;
     }
 
     public iatBegin() {
@@ -37,11 +48,13 @@ export default class XfBase {
         this.iatSession.start(ssb_param);
         this.mic_open = true;
         // volumeEvent.start();
+        console.log('开始录音...');
     }
 
     public iatEnd() {
         this.iatSession.stop();
         this.mic_open = false;
+        console.log('结束录音');
     }
 
     private audioPalyUrl = "http://h5.xf-yun.com/audioStream/";
@@ -63,26 +76,36 @@ export default class XfBase {
     private audio_state = 0;
     /***********************************************local Variables**********************************************************/
 
-    private play(content, vcn, spd){
-        this.reset();
-        
-        var ssb_param = {"appid": xunfeiAppId, "appkey": xunfeiAppKey, "synid":"12345", "params" : `ent=aisound,aue=lame,vcn=${vcn},spd=${spd}`};
-        var audioPalyUrl = this.audioPalyUrl;
-        var iaudio = this.iaudio;
-        var audioplay = this.audioplay;
-        this.session.start(ssb_param, content, function (err, obj)
-        {
-            var audio_url = obj.audio_url;
-            if( audio_url != null && audio_url != undefined )
+    /**
+     * @content 播放的语音内容
+     * @vcn 播音员
+     * @spd 速度，1-9，不过怎么感觉没啥用呢
+     */
+    private async play(content: string, vcn: string, spd: string){
+        return new Promise<void>((resolve, reject) => {
+            this.reset();
+            
+            var ssb_param = {"appid": xunfeiAppId, "appkey": xunfeiAppKey, "synid":"12345", "params" : `ent=aisound,aue=lame,vcn=${vcn},spd=${spd}`};
+            var audioPalyUrl = this.audioPalyUrl;
+            var iaudio = this.iaudio;
+            var audioplay = this.audioplay;
+            this.session.start(ssb_param, content, function (err, obj)
             {
-                if (audioplay) {
-                    audioplay(audio_url, audioPalyUrl);
-                    console.log('use external audio player:', audioPalyUrl+audio_url);
-                } else {
-                    iaudio.src = audioPalyUrl + audio_url;
-                    iaudio.play();
+                var audio_url = obj.audio_url;
+                if( audio_url != null && audio_url != undefined )
+                {
+                    if (audioplay) {
+                        audioplay(audio_url, audioPalyUrl);
+                        resolve();
+                    } else {
+                        iaudio.src = audioPalyUrl + audio_url;
+                        iaudio.play();
+                        iaudio.onended = () => {
+                            resolve();
+                        }
+                    }
                 }
-            }
+            });
         });
     };
     /**
@@ -134,7 +157,8 @@ export default class XfBase {
             this.iat_result = 'error code : ' + err + ", error description : " + result;
         }
         this.mic_open = false;
-        console.log(this.iat_result);
+        console.log('Result: '+this.iat_result);
+        if (this.callback) this.callback(this.iat_result);
         // volumeEvent.stop();
     }
     private onProcess(status) {
@@ -167,14 +191,7 @@ export default class XfBase {
     private onVolume(volume) {
         // volumeEvent.listen(volume);
     }
-    private iatSession = new IFlyIatSession({
-        "callback":{
-            "onResult": this.onResult,
-            "onVolume": this.onVolume,
-            "onError": this.onError,
-            "onProcess": this.onProcess
-        }
-    });
+    private iatSession;
 
 }
 
