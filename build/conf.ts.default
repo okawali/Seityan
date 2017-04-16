@@ -1,0 +1,6 @@
+export var xunfeiAppId = "1";
+export var xunfeiAppKey = "2";
+export var faceppKey = "3";
+export var faceppSecret = "4";
+export var yyyKey = "5";
+export var zhimaAppId = "6";
