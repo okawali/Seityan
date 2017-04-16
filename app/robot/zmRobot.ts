@@ -1,9 +1,19 @@
 import {zhimaAppId} from '../utils/conf'
 import asios from 'axios';
-
+import {ZMPlugin, ZMReturn} from './zmPlugin';
+import * as plugins from './plugins'
 export default class ZMRobt {
     public callback: (ret:string) => void
     static url = "http://dev.zhimabot.com:8080/zhimabot/analysis";
+    private plugins: Map<string, ZMPlugin>;
+    constructor() {
+        for (let i in plugins) {
+            var plugin = plugins[i] as ZMPlugin;
+            if (!plugin) console.log("error! plugin is null, it can not translate to ZMPlugin");
+            this.plugins.set(plugin.intent, plugin);
+            plugin.zmRobot = this;
+        }
+    }
 
     public input(str: string, callback?: (ret:string) => void) {
         if (callback) this.callback = callback;
@@ -15,7 +25,7 @@ export default class ZMRobt {
             })
     }
 
-    public response(data: any) {
+    public response(data: ZMReturn): string {
         console.log(data);
         if (data.resultCode == "0000")
             return "好的，我明白了。";
