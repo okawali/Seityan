@@ -98,13 +98,8 @@ export default class XfBase {
                 if( audio_url != null && audio_url != undefined )
                 {
                     if (audioplay) {
-<<<<<<< HEAD
                         session.stop();
-                        audioplay(audio_url, audioPalyUrl);
-                        resolve();
-=======
                         resolve(audioplay(audio_url, audioPalyUrl));
->>>>>>> master
                     } else {
                         iaudio.src = audioPalyUrl + audio_url;
                         iaudio.play();
