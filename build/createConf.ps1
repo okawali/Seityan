@@ -1,16 +1,9 @@
-$encoding = New-Object System.Text.UTF8Encoding $False
-$content = [System.String]::Format("export var xunfeiAppId = '{0}'", $env:XUNFEI_APP_ID), `
-    [System.String]::Format("export var xunfeiAppKey = '{0}'", $env:XUNFEI_APP_KEY), `
-    [System.String]::Format("export var faceppKey = '{0}'", $env:FACEPP_KEY), `
-    [System.String]::Format("export var faceppSecret = '{0}'", $env:FACEPP_SECRET), `
-    [System.String]::Format("export var yyyKey = '{0}'", $env:YYY_KEY), `
-    [System.String]::Format("export var zhimaAppId = '{0}'", $env:ZHIMA_APP_ID)
-$path = Join-Path (Get-Item -Path ".\").FullName "app\utils\conf.ts"
-$stream = New-Object System.IO.FileStream($path, [System.IO.FileMode]::Create, [System.IO.FileAccess]::Write)
-$writer = New-Object System.IO.StreamWriter($stream, $encoding)
-foreach ($i in $content) 
+If (Test-Path env:APPVEYOR_PULL_REQUEST_NUMBER) 
 {
-    $writer.WriteLine($i)
+    Copy-Item build\conf.ts.default app\utils\conf.ts
 }
-$writer.dispose();
-$stream.dispose();
+Else 
+{
+    nuget install secure-file -ExcludeVersion
+    .\secure-file\tools\secure-file.exe -decrypt build\conf.ts.win.enc -secret $env:SECRET_FILE_KEY -out app\utils\conf.ts
+}

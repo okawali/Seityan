@@ -1,7 +1,7 @@
 import ZMRobot from '../zmRobot'
 import {ZMPlugin, ZMReturn} from '../zmPlugin'
 
-class Weather implements ZMPlugin {
+class Weather extends ZMPlugin {
     intent = "ask_weather"
     public zmRobot: ZMRobot
     public response(data: ZMReturn): string {
