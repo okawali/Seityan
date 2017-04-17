@@ -116,7 +116,7 @@ ipcRenderer.on("start-listening", startListening);
 function startListening() {
     if (!xf) return;
     if (xf.isListening()) xf.iatEnd(); 
-    else  {xf.tts(randomTips()); xf.iatBegin();}
+    else  {xf.tts(randomTips()).then(() => {xf!.iatBegin();})}
 }
 
 createModelAsync(defaultModel).catch(console.error);
