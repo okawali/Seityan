@@ -4,3 +4,5 @@ export var faceppKey = "3";
 export var faceppSecret = "4";
 export var yyyKey = "5";
 export var zhimaAppId = "6";
+export var weatherAppId = "7";
+export var weatherAppKey = "8";
