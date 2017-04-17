@@ -99,9 +99,7 @@ export default class XfBase {
                 {
                     if (audioplay) {
                         session.stop();
-                        audioplay(audio_url, audioPalyUrl).then(()=>{
-                            resolve();
-                        });
+                        resolve(audioplay(audio_url, audioPalyUrl));
                     } else {
                         iaudio.src = audioPalyUrl + audio_url;
                         iaudio.play();
