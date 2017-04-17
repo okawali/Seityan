@@ -7,11 +7,12 @@ import models from "./utils/models";
 import { ModelLoader, ModelDescription } from "./utils/modelLoader";
 import { WindowDragger } from "./uiElements/windowDragger";
 import XfBase from "./xunfei/xfBase";
-import { ipcRenderer } from "electron";
+import { ipcRenderer, webFrame } from "electron";
 import { randomTips } from "./utils/randomTips";
 import MainRobot from './robot/mainRobot'
 
-
+webFrame.setVisualZoomLevelLimits(1, 1);
+webFrame.setLayoutZoomLevelLimits(1, 1);
 
 const initSize = { width: 300, height: 400 }
 const renderer = new PIXI.WebGLRenderer(initSize.width, initSize.height, { transparent: true, autoResize: true });
