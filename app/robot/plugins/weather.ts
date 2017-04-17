@@ -6,7 +6,7 @@ import axios from 'axios'
 class Weather extends ZMPlugin {
     intent = "ask_weather"
     public zmRobot: ZMRobot
-    public response(data: ZMReturn): string {
+    public response(data: ZMReturn, query: string): string {
         WeatherAPI.getDaily().then((value)=> {
             console.log(value.data);
         })
