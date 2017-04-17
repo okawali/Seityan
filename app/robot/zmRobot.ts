@@ -1,5 +1,5 @@
 import {zhimaAppId} from '../utils/conf'
-import asios from 'axios';
+import axios from 'axios';
 import {ZMPlugin, ZMReturn} from './zmPlugin';
 import * as plugins from './plugins'
 export default class ZMRobt {
@@ -19,7 +19,7 @@ export default class ZMRobt {
 
     public input(str: string, callback?: (ret:string) => void) {
         if (callback) this.callback = callback;
-        asios.post(ZMRobt.url, {appId: zhimaAppId, query: str})
+        axios.post(ZMRobt.url, {appId: zhimaAppId, query: str})
             .then((resp)=> {
                 this.output(this.response(resp.data));    
             }).catch((reason) => {
