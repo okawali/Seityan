@@ -1,15 +1,18 @@
 import {zhimaAppId} from '../utils/conf'
 import axios from 'axios';
 import {ZMPlugin, ZMReturn} from './zmPlugin';
+import XfBase from '../xunfei/xfBase'
 import * as plugins from './plugins'
 export default class ZMRobt {
-    public callback: (ret:string) => void
+    public callback: (ret:string) => Promise<void>
     static url = "http://dev.zhimabot.com:8080/zhimabot/analysis";
     private plugins: Map<string, ZMPlugin> = new Map();
     private context: any = {}; // 这个属性是为plugin下的持续对话设计的
     private contextMap: Map<string, any> = new Map(); // 这个是用来上下文切换保存用的
-    
-    constructor() {
+    public xf: XfBase
+
+    constructor(xf: XfBase) {
+        this.xf = xf;
         for (let i in plugins) {
             var plugin = plugins[i];
             if (!(plugin instanceof ZMPlugin)) console.log("error! plugin is null, it can not translate to ZMPlugin");
@@ -34,25 +37,30 @@ export default class ZMRobt {
         this.context = {};
     }
 
-    public input(str: string, callback?: (ret:string) => void) {
+    public async input(str: string) {
         var plugins = this.plugins;
-        if (callback) this.callback = callback;
-        axios.post(ZMRobt.url, {appId: zhimaAppId, query: str})
+        let data = await this.getFromCloud(str);
+        if (this.context['name']) {
+            var plugin = plugins.get(this.context['name']);
+            if (plugin) {
+                let ret = await this.output(await plugin.response(data, str)); 
+                return    
+            } else console.log("error: plugin can not be found");
+        } else {
+            let ret = await this.response(data, str);
+            return this.output(ret);    
+        }
+        return 
+    }
+
+    public async getFromCloud(str: string): Promise<ZMReturn> {
+        return axios.post(ZMRobt.url, {appId: zhimaAppId, query: str})
             .then((resp)=> {
-                if (this.context['name']) {
-                    var plugin = plugins.get(this.context['name']);
-                    if (plugin)
-                        plugin.response(resp.data, str);
-                    else console.log("error: plugin can not be found");
-                } else {
-                    this.output(this.response(resp.data, str));    
-                }
-            }).catch((reason) => {
-                console.log(reason);
+                return resp.data;
             })
     }
 
-    public response(data: ZMReturn, query: string): string {
+    public async response(data: ZMReturn, query: string): Promise<string> {
         console.log(data);
         if (data.resultCode == "0000") {
             var p = this.plugins.get(data.intents[0].intent);
@@ -62,8 +70,15 @@ export default class ZMRobt {
             return "等等，我不太清楚啊！"; // 云端没找到匹配项
     }
 
-    public output(str: string) {
+    public async ask(str: string) {
+        return this.output(str).then(() => {
+            return this.xf.iatBegin();
+        })
+    }
+
+    public async output(str: string) {
         if (!str) return;
-        if (this.callback) this.callback(str);
+        if (this.callback) 
+            return this.callback(str);
     }
 }

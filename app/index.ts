@@ -113,10 +113,12 @@ function loadModel(event: Electron.IpcRendererEvent, name: string, buildIn: bool
 
 // 响应主进程中的全局快捷键事件，开始响应用户语音，再按第二下快捷会即刻停止语音输入
 ipcRenderer.on("start-listening", startListening);
-function startListening() {
+async function startListening() {
     if (!xf) return;
     if (xf.isListening()) xf.iatEnd(); 
-    else  {xf.tts(randomTips()).then(() => {xf!.iatBegin();})}
+    await xf.tts(randomTips());
+    let text = await xf.iatBegin()
+    mainRobot.input(text);
 }
 
 createModelAsync(defaultModel).catch(console.error);
