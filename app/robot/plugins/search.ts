@@ -6,7 +6,7 @@ import {shell} from 'electron'
 class GoogleSearch extends ZMPlugin {
     intent = "google"
     public zmRobot: ZMRobot
-    public response(data: ZMReturn, query: string): string {
+    public async response(data: ZMReturn, query: string): Promise<string> {
         var mode = this.zmRobot.getContext("name");
         if (mode) {
             if (data.resultCode == "0000" && data.intents.length != 0 && data.intents[0].intent != "google") {
@@ -33,7 +33,7 @@ class BaiduSearch extends ZMPlugin {
     intent = "baidu"
     public zmRobot: ZMRobot
 
-    public response(data: ZMReturn, query: string): string {
+    public async response(data: ZMReturn, query: string):  Promise<string> {
         var mode = this.zmRobot.getContext("name");
         if (mode) {
             if (data.resultCode == "0000" && data.intents.length != 0 && data.intents[0].intent != "baidu") {

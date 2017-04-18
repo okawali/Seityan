@@ -21,7 +21,7 @@ export interface Entity {
 export class ZMPlugin {
     intent: string
     zmRobot: ZMRobot
-    response(data: ZMReturn, query: string): string {
+    async response(data: ZMReturn, query: string): Promise<string> {
         return "";
     }
 }

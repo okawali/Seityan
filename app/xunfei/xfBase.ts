@@ -39,17 +39,21 @@ export default class XfBase {
         return this.mic_open;
     }
 
-    public iatBegin() {
-        var ssb_param = {
-            "grammar_list": null,
-            "params": `appid=${xunfeiAppId},appidkey=${xunfeiAppKey}, lang = sms, acous = anhui, aue=speex-wb;-1, usr = mkchen, ssm = 1, sub = iat, net_type = wifi, rse = utf8, ent =sms16k, rst = plain, auf  = audio/L16;rate=16000, vad_enable = 1, vad_timeout = 5000, vad_speech_tail = 500, compress = igzip`
-        };
-        this.iat_result = '';
-        /* 调用开始录音接口，通过function(volume)和function(err, obj)回调音量和识别结果 */
-        this.iatSession.start(ssb_param);
-        this.mic_open = true;
-        // volumeEvent.start();
-        console.log('开始录音...');
+    public async iatBegin() {
+        return new Promise<string>((resolve, reject) => {
+            var ssb_param = {
+                "grammar_list": null,
+                "params": `appid=${xunfeiAppId},appidkey=${xunfeiAppKey}, lang = sms, acous = anhui, aue=speex-wb;-1, usr = mkchen, ssm = 1, sub = iat, net_type = wifi, rse = utf8, ent =sms16k, rst = plain, auf  = audio/L16;rate=16000, vad_enable = 1, vad_timeout = 5000, vad_speech_tail = 500, compress = igzip`
+            };
+            this.iat_result = '';
+            /* 调用开始录音接口，通过function(volume)和function(err, obj)回调音量和识别结果 */
+            this.mic_resolve = resolve
+            this.mic_reject = reject
+            this.iatSession.start(ssb_param);
+            this.mic_open = true;
+            // volumeEvent.start();
+            console.log('开始录音...');
+        });
     }
 
     public iatEnd() {
@@ -99,9 +103,7 @@ export default class XfBase {
                 {
                     if (audioplay) {
                         session.stop();
-                        audioplay(audio_url, audioPalyUrl).then(()=>{
-                            resolve();
-                        });
+                        resolve(audioplay(audio_url, audioPalyUrl));
                     } else {
                         iaudio.src = audioPalyUrl + audio_url;
                         iaudio.play();
@@ -149,22 +151,27 @@ export default class XfBase {
 
     private iat_result = "";
     private mic_open = false;
+    private mic_resolve: (value?: string | PromiseLike<string>) => void
+    private mic_reject: (reason?: any) => void
 
     private onResult(err, result) {
+        var error: number|string = 0;
         /* 若回调的err为空或错误码为0，则会话成功，可提取识别结果进行显示*/
         if (err == null || err == undefined || err == 0) {
             if (result == '' || result == null)
-                this.iat_result = "没有获取到识别结果";
+                error = "没有获取到识别结果";
             else
                 this.iat_result = result;
             /* 若回调的err不为空且错误码不为0，则会话失败，可提取错误码 */
         } else {
-            this.iat_result = 'error code : ' + err + ", error description : " + result;
+            error = 'error code : ' + err + ", error description : " + result;
         }
         this.mic_open = false;
         console.log('Result: '+this.iat_result);
         this.iatSession.stop();
         if (this.callback) this.callback(this.iat_result);
+        if (error==0) this.mic_resolve(this.iat_result);
+        else this.mic_reject(error);
         // volumeEvent.stop();
     }
     private onProcess(status) {
