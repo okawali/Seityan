@@ -18,7 +18,7 @@ export default class MainRobot {
     }
 
     public async output(str: string) {
-        if (!str) return;
+        if (!str || str == "") return;
         return this.xf.tts(str);
     }
 
