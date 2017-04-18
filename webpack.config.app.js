@@ -26,7 +26,7 @@ module.exports = {
                     {
                         loader: "ts-loader",
                         options: {
-                            configFileName: "tsconfig.app.json"
+                            configFileName: "tsconfig.json"
                         }
                     }
                 ]
