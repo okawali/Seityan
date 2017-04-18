@@ -24,7 +24,7 @@ All listening and speaking of the robot are in chinese, and there are no english
 
 ## Robot services
 
-It using zhima(知麻) robot to translate the chinese sentences to the intent codes, with a hand writing execution engine. It also use xunfei(讯飞) engine to achieve speech recognition and synthesis. 
+It uses zhima(知麻) robot to translate the chinese sentences to the intent codes. With a hand writing execution engine, it can execute the instructions of user which it understood. It also use xunfei(讯飞) engine to achieve speech recognition and synthesis. 
 
 
 ## Build from source
@@ -59,4 +59,3 @@ To run the project, using `npm start`:
 ```sh
 npm start
 ```
-
