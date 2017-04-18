@@ -59,3 +59,7 @@ To run the project, using `npm start`:
 ```sh
 npm start
 ```
+
+## License
+
+MIT License for our project.
