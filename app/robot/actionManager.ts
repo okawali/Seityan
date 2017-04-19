@@ -6,7 +6,8 @@ export function robotAction(name: string, ...args: string[]) {
     return (target: any, propertyKey: string, descriptor: TypedPropertyDescriptor<Function>) => {
         if (descriptor.value) {
             ActionManager.inst.registerClass(target.constructor);
-            ActionManager.inst.register(descriptor.value, target.constructor.name, name, args);
+            let types = Reflect.getMetadata("design:paramtypes", target, propertyKey);
+            ActionManager.inst.register(descriptor.value, target.constructor.name, name, args, types);
         }
     };
 }
@@ -16,6 +17,7 @@ export interface FunctionDefinion {
     func: Function
     chineseName: string
     chineseArgs: string[] 
+    argTypes: any
 } 
 
 export default class ActionManager {
@@ -38,14 +40,15 @@ export default class ActionManager {
         console.log(cons);
     }
 
-    public register(func: Function, classname: string, name: string, args: string[]) {
+    public register(func: Function, classname: string, name: string, args: string[], types: any) {
         this.function_map.set(name, {
             className: classname,
             func: func,
             chineseName: name,
-            chineseArgs: args
+            chineseArgs: args,
+            argTypes: types
         });
-        console.log("function registered", name, args);
+        console.log("function registered", name, args, types);
     }
 
     public getAction(name: string) {
