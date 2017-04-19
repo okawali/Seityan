@@ -6,7 +6,7 @@ export function robotAction(name: string, ...args: string[]) {
     return (target: any, propertyKey: string, descriptor: TypedPropertyDescriptor<Function>) => {
         if (descriptor.value) {
             ActionManager.inst.registerClass(target.constructor);
-            ActionManager.inst.register(descriptor.value, name, args);
+            ActionManager.inst.register(descriptor.value, target.constructor.name, name, args);
         }
     };
 }
@@ -21,7 +21,6 @@ export class ActionManager {
         
     }
     
-    private now_class_instance: object;
     private class_map = new Map<string, object>();
     private function_map = new Map<string, Function>();
 
@@ -32,10 +31,12 @@ export class ActionManager {
         console.log(cons);
     }
 
-    register(func: Function, name: string, args: string[]) {
-        this.function_map.set(name, func);
+    register(func: Function, classname: string, name: string, args: string[]) {
+        let this_obj = this.class_map.get(classname);
+        this.function_map.set(name, func.bind(this_obj));
         console.log("function registered", name, args);
     }
+
 }
 
 class CopyAction {
