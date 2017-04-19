@@ -12,12 +12,13 @@ export function robotAction(name: string, ...args: string[]) {
 }
 
 export interface FunctionDefinion {
+    className: string
     func: Function
     chineseName: string
     chineseArgs: string[] 
 } 
 
-export class ActionManager {
+export default class ActionManager {
     private static _instance = new ActionManager();
     public static get inst() {
         return this._instance;
@@ -30,23 +31,30 @@ export class ActionManager {
     private class_map = new Map<string, object>();
     private function_map = new Map<string, FunctionDefinion>();
 
-    registerClass(cons: FunctionConstructor) {
+    public registerClass(cons: FunctionConstructor) {
         if (this.class_map.has(cons.name)) return;
         this.class_map.set(cons.name, new cons());
         console.log("class registered", cons.name);
         console.log(cons);
     }
 
-    register(func: Function, classname: string, name: string, args: string[]) {
-        let this_obj = this.class_map.get(classname);
+    public register(func: Function, classname: string, name: string, args: string[]) {
         this.function_map.set(name, {
-            func: func.bind(this_obj),
+            className: classname,
+            func: func,
             chineseName: name,
             chineseArgs: args
         });
         console.log("function registered", name, args);
     }
 
+    public getAction(name: string) {
+        return this.function_map.get(name);
+    }
+
+    public getThisObj(name: string) {
+        return this.class_map.get(name);
+    }
 }
 
 class CopyActions {
