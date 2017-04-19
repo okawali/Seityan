@@ -5,6 +5,8 @@ import XfBase from '../xunfei/xfBase'
 import * as plugins from './plugins'
 import {ActionManager} from './actionManager'
 
+console.log(ActionManager.inst);
+
 export default class ZMRobt {
     public callback: (ret:string) => Promise<void>
     static url = "http://dev.zhimabot.com:8080/zhimabot/analysis";
