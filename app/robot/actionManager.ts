@@ -11,6 +11,12 @@ export function robotAction(name: string, ...args: string[]) {
     };
 }
 
+export interface FunctionDefinion {
+    func: Function
+    chineseName: string
+    chineseArgs: string[] 
+} 
+
 export class ActionManager {
     private static _instance = new ActionManager();
     public static get inst() {
@@ -22,7 +28,7 @@ export class ActionManager {
     }
     
     private class_map = new Map<string, object>();
-    private function_map = new Map<string, Function>();
+    private function_map = new Map<string, FunctionDefinion>();
 
     registerClass(cons: FunctionConstructor) {
         if (this.class_map.has(cons.name)) return;
@@ -33,13 +39,17 @@ export class ActionManager {
 
     register(func: Function, classname: string, name: string, args: string[]) {
         let this_obj = this.class_map.get(classname);
-        this.function_map.set(name, func.bind(this_obj));
+        this.function_map.set(name, {
+            func: func.bind(this_obj),
+            chineseName: name,
+            chineseArgs: args
+        });
         console.log("function registered", name, args);
     }
 
 }
 
-class CopyAction {
+class CopyActions {
     @robotAction('复制', '复制来源', '复制目标')
     public copy(from: string, to: string) {
         
@@ -48,5 +58,17 @@ class CopyAction {
     @robotAction('移动', '移动来源', '移动目标')
     public move(from: string, to: string) {
 
+    }
+}
+
+class MailActions {
+    @robotAction('发邮件', '内容')
+    public sendMail(to: string, content: string) {
+
+    }
+
+    @robotAction('设定自己的账户', '邮箱', '密码')
+    public setupMail(username: string, password: string) {
+        
     }
 }
