@@ -4,8 +4,7 @@ import {ZMPlugin, ZMReturn} from './zmPlugin';
 import XfBase from '../xunfei/xfBase'
 import * as plugins from './plugins'
 import ActionManager from './actionManager'
-
-console.log(ActionManager.inst);
+import ActionRunner from './actionRunner'
 
 export default class ZMRobt {
     public callback: (ret:string) => Promise<void>
@@ -14,6 +13,7 @@ export default class ZMRobt {
     private context: any = {}; // 这个属性是为plugin下的持续对话设计的
     private contextMap: Map<string, any> = new Map(); // 这个是用来上下文切换保存用的
     public xf: XfBase
+    private runner= new ActionRunner();
 
     constructor(xf: XfBase) {
         this.xf = xf;
@@ -69,7 +69,11 @@ export default class ZMRobt {
         if (data.resultCode == "0000") {
             var p = this.plugins.get(data.intents[0].intent);
             if (p) return p.response(data, query); // 如果插件有这个功能，就交给插件
-            else return "好的，我明白了，但我目前还没有这个功能。"; // 理解了，但是还没有这个插件
+            let v = ActionManager.inst.getAction(data.intents[0].intent)
+            if (v) { 
+                this.runner.run(data.intents[0].intent, data.entities); 
+                return "任务完成"; 
+            } else return "好的，我明白了，但我目前还没有这个功能。"; // 理解了，但是还没有这个插件
         } else
             return "等等，我不太清楚啊！"; // 云端没找到匹配项
     }

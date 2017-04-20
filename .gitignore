@@ -1,8 +1,7 @@
 node_modules
 *.js
 .vscode
-!webpack.config.app.js
-!webpack.config.main.js
+!webpack.config.js
 !dist/lib/*.js
 !dist/lib/**/*.js
 npm-debug*
