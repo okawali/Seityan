@@ -11,10 +11,6 @@ declare namespace uuid {
 	interface UuidStatic {
 		v1: V1;
 		v4: V4;
-		parse(id: string): number[];
-		parse(id: string, buffer: number[], offset?: number): number[];
-		parse(id: string, buffer: Buffer, offset?: number): Buffer;
-		unparse(buffer: number[] | Buffer, offset?: number): string;
 	}
 
 	interface V1 {
