@@ -28,7 +28,7 @@ var live2dSprite: PIXI.Live2DSprite | null = null;
 var resizable = false;
 
 async function createModelAsync(modelDescription: ModelDescription) {
-    var model = await ModelLoader.loadModelAsync(modelDescription);
+    var model = await ModelLoader.loadModel(modelDescription);
     if (live2dSprite !== null) {
         stage.removeChild(live2dSprite);
     }

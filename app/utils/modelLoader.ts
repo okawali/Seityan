@@ -8,7 +8,7 @@ export interface ModelDescription {
 }
 
 export class ModelLoader {
-    static async loadModelAsync(model: ModelDescription): Promise<object | null> {
+    static async loadModel(model: ModelDescription): Promise<object | null> {
         var modelPath = path.join(model.basePath, model.modelFile);
         var response = await axios.get(modelPath);
         return response.data;
