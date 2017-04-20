@@ -23,7 +23,7 @@
     "electron-packager": "^8.6.0",
     "ts-loader": "^2.0.3",
     "typescript": "^2.2.2",
-    "webpack": "^2.3.3"
+    "webpack": "^2.4.1"
   },
   "dependencies": {
     "axios": "^0.16.1",
