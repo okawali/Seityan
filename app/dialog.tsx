@@ -36,7 +36,7 @@ class App extends React.Component<{}, {open:boolean, options: AutoformProps | un
 
     onShowDialog(options: AutoformProps, id: string) {
         this.id = id;
-        this.setState({options: options});
+        this.setState({options: options, open: true});
     }
 
     render() {
