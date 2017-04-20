@@ -4,6 +4,7 @@ import {MuiThemeProvider, getMuiTheme} from 'material-ui/styles';
 import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import {RaisedButton, FlatButton, Dialog} from "material-ui"
 import * as injectTapEventPlugin from "react-tap-event-plugin"
+import Autoform from './dialogs/autoform'
 
 injectTapEventPlugin();
 
@@ -51,7 +52,11 @@ class App extends React.Component<{}, {}> {
                         open={this.state.open}
                         overlayStyle={{background: null}}
                     >
-                        Only actions can close this dialog.
+                        <Autoform config={[
+                            {name: '用户名', type: 'string', tips: '输入您的用户名'},
+                            {name: '密码', type: 'password', tips: '输入您的密码'},
+                            {name: '日期', type: 'date', tips: '当前日期'},
+                        ]} />
                     </Dialog>
                 </div>
             </MuiThemeProvider>
