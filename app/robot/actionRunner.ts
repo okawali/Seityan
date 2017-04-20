@@ -34,6 +34,6 @@ export default class ActionRunner {
 
         let func = action.func;
         let that = ActionManager.inst.getThisObj(action.className);
-        func.call(that, args);
+        func.call(that, ...args);
     }
 }
