@@ -3,7 +3,10 @@ const webpack = require('webpack');
 
 module.exports = {
     target: "electron-renderer",
-    entry: { index: ["./app/index.ts"] },
+    entry: {
+        index: ["./app/index.ts"],
+        dialog: ["./app/index.tsx"]
+    },
     output: {
         path: path.resolve(__dirname, "dist"),
         filename: "[name].js"
@@ -14,13 +17,12 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.ts$/,
+                test: /\.tsx?$/,
                 include: [
                     path.resolve(__dirname, "app")
                 ],
                 exclude: [
                     /node_modules/,
-                    /models\//
                 ],
                 use: [
                     {

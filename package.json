@@ -18,7 +18,11 @@
   "repository": "https://github.com/Norgerman/live2d-electron",
   "devDependencies": {
     "@types/electron": "^1.4.35",
+    "@types/material-ui": "^0.17.1",
     "@types/pixi.js": "^4.4.2",
+    "@types/react": "^15.0.22",
+    "@types/react-dom": "^15.5.0",
+    "@types/react-tap-event-plugin": "0.0.30",
     "electron": "^1.6.5",
     "electron-packager": "^8.6.0",
     "ts-loader": "^2.0.3",
@@ -27,8 +31,12 @@
   },
   "dependencies": {
     "axios": "^0.16.1",
+    "material-ui": "^0.17.4",
     "pixi-live2d": "git://github.com/sunxfancy/pixi-live2d",
     "pixi.js": "^4.4.4",
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4",
+    "react-tap-event-plugin": "^2.0.1",
     "reflect-metadata": "^0.1.10",
     "tone": "^0.10.0",
     "uuid": "^3.0.1"
