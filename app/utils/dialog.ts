@@ -18,7 +18,7 @@ export function show<T>(dialogOptions: any): Promise<T> {
 function showDialog<T>(dialogOptions: any, id: string, callback: (value?: T, error?: any) => void): void {
     typeActionMapper.set(id, callback);
 
-    ipcRenderer.send("showDialog", dialogOptions);
+    ipcRenderer.send("showDialog", dialogOptions, id);
 }
 
 function onDiaglogClose(event: Electron.IpcRendererEvent, id: string, value?: any, error?: any) {
