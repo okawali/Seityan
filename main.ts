@@ -49,7 +49,7 @@ function createWindow() {
             properties: ["openFile"], filters: [
                 { name: "Model", extensions: ["model.json"] },
                 { name: "Json", extensions: ["json"] },
-                {name: "All Files", extensions: ["*"] }
+                { name: "All Files", extensions: ["*"] }
             ]
         }, files => {
             if (files && files.length > 0) {
@@ -64,6 +64,14 @@ function createWindow() {
 
     ipcMain.on("resize", (event, arg) => {
         win!.setSize(Math.ceil(arg.width), Math.ceil(arg.height));
+    })
+
+    ipcMain.on("showDialog", (event, options: any, id: string) => {
+        //TODO: call dialog process;
+    })
+
+    ipcMain.on("onDialogClose", (event, id: string, value?: any, error?: any) => {
+        win!.webContents.send("onDialogClose", id, value, error);
     })
 
     globalShortcut.register('Alt+Q', () => {
