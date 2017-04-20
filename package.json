@@ -19,7 +19,7 @@
   "devDependencies": {
     "@types/electron": "^1.4.35",
     "@types/pixi.js": "^4.4.2",
-    "electron": "^1.6.2",
+    "electron": "^1.6.5",
     "electron-packager": "^8.6.0",
     "ts-loader": "^2.0.3",
     "typescript": "^2.2.2",
