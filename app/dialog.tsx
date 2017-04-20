@@ -4,27 +4,40 @@ import {MuiThemeProvider, getMuiTheme} from 'material-ui/styles';
 import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import {RaisedButton, FlatButton, Dialog} from "material-ui"
 import * as injectTapEventPlugin from "react-tap-event-plugin"
-import Autoform from './dialogs/autoform'
+import Autoform, {Form} from './dialogs/autoform'
+import { ipcRenderer } from "electron";
 
 injectTapEventPlugin();
 
-class App extends React.Component<{}, {}> {
+class App extends React.Component<{}, {open:boolean, options: Form[]}> {
     constructor(props?: {}, context?: any) {
         super(props, context);
         this.handleClose = this.handleClose.bind(this)
         this.handleOpen = this.handleOpen.bind(this)
     }
+    private id;
     state = {
         open: false,
+        options: []
     };
 
-    handleOpen = () => {
+    componentDidMount() {
+        ipcRenderer.on("showDialog", this.onShowDialog.bind(this))
+    }
+
+    handleOpen() {
         this.setState({open: true});
     };
 
-    handleClose = () => {
+    handleClose() {
         this.setState({open: false});
+        ipcRenderer.send("onDialogClose", this.id, [], 'error');
     };
+
+    onShowDialog(options: Form[], id: string) {
+        this.id = id;
+        this.setState({options: options, open: true});
+    }
 
     render() {
         const actions = [
@@ -52,11 +65,7 @@ class App extends React.Component<{}, {}> {
                         open={this.state.open}
                         overlayStyle={{background: null}}
                     >
-                        <Autoform config={[
-                            {name: '用户名', type: 'string', tips: '输入您的用户名'},
-                            {name: '密码', type: 'password', tips: '输入您的密码'},
-                            {name: '日期', type: 'date', tips: '当前日期'},
-                        ]} />
+                        <Autoform config={this.state.options} />
                     </Dialog>
                 </div>
             </MuiThemeProvider>

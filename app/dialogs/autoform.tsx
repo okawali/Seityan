@@ -7,11 +7,11 @@ export interface Form {
     tips: string
 }
 
-export interface AutofomProps {
+export interface AutoformProps {
     config: Form[]
 }
 
-export default class Autoform extends React.Component<AutofomProps, any> {
+export default class Autoform extends React.Component<AutoformProps, any> {
 
     renderForm(form: Form, key: number) {
         if (form.type == 'string') 
