@@ -1,6 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import {MuiThemeProvider, getMuiTheme} from 'material-ui/styles';
+import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import {RaisedButton, FlatButton, Dialog} from "material-ui"
 import * as injectTapEventPlugin from "react-tap-event-plugin"
 
@@ -40,7 +41,7 @@ class App extends React.Component<{}, {}> {
         ];
 
         return (
-            <MuiThemeProvider>
+            <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
                 <div>
                     <RaisedButton label="click me" onTouchTap={this.handleOpen} />
                     <Dialog
