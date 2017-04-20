@@ -30,6 +30,7 @@
     "pixi-live2d": "git://github.com/sunxfancy/pixi-live2d",
     "pixi.js": "^4.4.4",
     "reflect-metadata": "^0.1.10",
-    "tone": "^0.10.0"
+    "tone": "^0.10.0",
+    "uuid": "^3.0.1"
   }
 }

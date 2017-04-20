@@ -1,10 +1,11 @@
 import { ipcRenderer } from "electron";
+import * as uuid from "uuid/v4";
 
-var typeActionMapper: Map<string, ((value?: any, error?: any) => void)[]> = new Map<string, ((value?: any, error?: any) => void)[]>();
+var typeActionMapper: Map<string, (value?: any, error?: any) => void> = new Map<string, (value?: any, error?: any) => void>();
 
-export function show<T>(type: string): Promise<T> {
+export function show<T>(dialogOptions: any): Promise<T> {
     return new Promise<T>((resolve, reject) => {
-        showDialog<T>(type, (value, error) => {
+        showDialog<T>(dialogOptions, uuid(), (value, error) => {
             if (error) {
                 reject(error);
             } else {
@@ -14,22 +15,14 @@ export function show<T>(type: string): Promise<T> {
     });
 }
 
-function showDialog<T>(type: string, callback: (value?: T, error?: any) => void): void {
-    if (typeActionMapper.has(type)) {
-        typeActionMapper.get(type)!.push(callback);
-    } else {
-        typeActionMapper.set(type, [callback]);
-    }
+function showDialog<T>(dialogOptions: any, id: string, callback: (value?: T, error?: any) => void): void {
+    typeActionMapper.set(id, callback);
 
-    ipcRenderer.send("showDialog", type);
+    ipcRenderer.send("showDialog", dialogOptions, id);
 }
 
-function onDiaglogClose(event: Electron.IpcRendererEvent, type: string, value?: any, error?: any) {
-    var actions = typeActionMapper.get(type);
-
-    for (var action of actions!) {
-        action(value, error);
-    }
+function onDiaglogClose(event: Electron.IpcRendererEvent, id: string, value?: any, error?: any) {
+    typeActionMapper.get(id)!();
 }
 
 ipcRenderer.on("onDialogClose", onDiaglogClose)
