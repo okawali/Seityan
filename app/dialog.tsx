@@ -1,20 +1,64 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import RaisedButton  from "material-ui/RaisedButton"
+import {MuiThemeProvider, getMuiTheme} from 'material-ui/styles';
+import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
+import {RaisedButton, FlatButton, Dialog} from "material-ui"
 import * as injectTapEventPlugin from "react-tap-event-plugin"
+import Autoform from './dialogs/autoform'
 
 injectTapEventPlugin();
 
 class App extends React.Component<{}, {}> {
     constructor(props?: {}, context?: any) {
         super(props, context);
+        this.handleClose = this.handleClose.bind(this)
+        this.handleOpen = this.handleOpen.bind(this)
     }
+    state = {
+        open: false,
+    };
+
+    handleOpen = () => {
+        this.setState({open: true});
+    };
+
+    handleClose = () => {
+        this.setState({open: false});
+    };
 
     render() {
+        const actions = [
+        <FlatButton
+            label="Cancel"
+            primary={true}
+            onTouchTap={this.handleClose}
+        />,
+        <FlatButton
+            label="Submit"
+            primary={true}
+            disabled={true}
+            onTouchTap={this.handleClose}
+        />,
+        ];
+
         return (
-            <MuiThemeProvider>
-                <RaisedButton label="click me" />
+            <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
+                <div>
+                    <RaisedButton label="click me" onTouchTap={this.handleOpen} />
+                    <Dialog
+                        title="Dialog With Actions"
+                        actions={actions}
+                        modal={true}
+                        open={this.state.open}
+                        overlayStyle={{background: null}}
+                    >
+                        <Autoform config={[
+                            {name: '用户名', type: 'string', tips: '输入您的用户名'},
+                            {name: '密码', type: 'password', tips: '输入您的密码'},
+                            {name: '日期', type: 'date', tips: '当前日期'},
+                        ]} />
+                    </Dialog>
+                </div>
             </MuiThemeProvider>
         );
     }

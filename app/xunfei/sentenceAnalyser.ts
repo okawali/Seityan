@@ -4,8 +4,8 @@ import {yyyKey} from '../utils/conf'
 export default class SentenceAnalyser {
     private static base_url = "http://ltpapi.voicecloud.cn/analysis/";
     public static async wordCut(str: string) {
-        return asios.post(this.base_url, {
-            body: {
+        return asios.get(this.base_url, {
+            params: {
                 text: str,
                 pattern: 'ws',
                 api_key: yyyKey,
@@ -15,8 +15,8 @@ export default class SentenceAnalyser {
     }
 
     public static async deepAnalyse(str: string) {
-        return asios.post(this.base_url, {
-            body: {
+        return asios.get(this.base_url, {
+            params: {
                 text: str,
                 pattern: 'all',
                 api_key: yyyKey,
