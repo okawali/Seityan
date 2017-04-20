@@ -4,12 +4,12 @@ import {MuiThemeProvider, getMuiTheme} from 'material-ui/styles';
 import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import {RaisedButton, FlatButton, Dialog} from "material-ui"
 import * as injectTapEventPlugin from "react-tap-event-plugin"
-import Autoform, {AutoformProps} from './dialogs/autoform'
+import Autoform, {Form} from './dialogs/autoform'
 import { ipcRenderer } from "electron";
 
 injectTapEventPlugin();
 
-class App extends React.Component<{}, {open:boolean, options: AutoformProps | undefined}> {
+class App extends React.Component<{}, {open:boolean, options: Form[]}> {
     constructor(props?: {}, context?: any) {
         super(props, context);
         this.handleClose = this.handleClose.bind(this)
@@ -18,7 +18,7 @@ class App extends React.Component<{}, {open:boolean, options: AutoformProps | un
     private id;
     state = {
         open: false,
-        options: undefined
+        options: []
     };
 
     componentDidMount() {
@@ -34,7 +34,7 @@ class App extends React.Component<{}, {open:boolean, options: AutoformProps | un
         ipcRenderer.send("onDialogClose", this.id, [], 'error');
     };
 
-    onShowDialog(options: AutoformProps, id: string) {
+    onShowDialog(options: Form[], id: string) {
         this.id = id;
         this.setState({options: options, open: true});
     }
@@ -65,11 +65,7 @@ class App extends React.Component<{}, {open:boolean, options: AutoformProps | un
                         open={this.state.open}
                         overlayStyle={{background: null}}
                     >
-                        <Autoform config={[
-                            {name: '用户名', type: 'string', tips: '输入您的用户名'},
-                            {name: '密码', type: 'password', tips: '输入您的密码'},
-                            {name: '日期', type: 'date', tips: '当前日期'},
-                        ]} />
+                        <Autoform config={this.state.options} />
                     </Dialog>
                 </div>
             </MuiThemeProvider>
