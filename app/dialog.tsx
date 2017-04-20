@@ -4,27 +4,40 @@ import {MuiThemeProvider, getMuiTheme} from 'material-ui/styles';
 import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import {RaisedButton, FlatButton, Dialog} from "material-ui"
 import * as injectTapEventPlugin from "react-tap-event-plugin"
-import Autoform from './dialogs/autoform'
+import Autoform, {AutoformProps} from './dialogs/autoform'
+import { ipcRenderer } from "electron";
 
 injectTapEventPlugin();
 
-class App extends React.Component<{}, {}> {
+class App extends React.Component<{}, {open:boolean, options: AutoformProps | undefined}> {
     constructor(props?: {}, context?: any) {
         super(props, context);
         this.handleClose = this.handleClose.bind(this)
         this.handleOpen = this.handleOpen.bind(this)
     }
+    private id;
     state = {
         open: false,
+        options: undefined
     };
 
-    handleOpen = () => {
+    componentDidMount() {
+        ipcRenderer.on("showDialog", this.onShowDialog.bind(this))
+    }
+
+    handleOpen() {
         this.setState({open: true});
     };
 
-    handleClose = () => {
+    handleClose() {
         this.setState({open: false});
+        ipcRenderer.send("onDialogClose", this.id, [], 'error');
     };
+
+    onShowDialog(options: AutoformProps, id: string) {
+        this.id = id;
+        this.setState({options: options});
+    }
 
     render() {
         const actions = [
