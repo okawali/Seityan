@@ -23,6 +23,7 @@ class App extends React.Component<{}, {open:boolean, options: Form[]}> {
 
     componentDidMount() {
         ipcRenderer.on("showDialog", this.onShowDialog.bind(this))
+        ipcRenderer.send('dialogFinishedLoading');
     }
 
     handleOpen() {
@@ -34,7 +35,7 @@ class App extends React.Component<{}, {open:boolean, options: Form[]}> {
         ipcRenderer.send("onDialogClose", this.id, [], 'error');
     };
 
-    onShowDialog(options: Form[], id: string) {
+    onShowDialog(event: any, options: Form[], id: string) {
         this.id = id;
         this.setState({options: options, open: true});
     }

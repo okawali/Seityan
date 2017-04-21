@@ -13,27 +13,33 @@ export interface AutoformProps {
 
 export default class Autoform extends React.Component<AutoformProps, any> {
 
-    renderForm(form: Form, key: number) {
-        if (form.type == 'string') 
+    renderForm(form: Form) {
+        if (form.type == 'String') 
             return <TextField
                 hintText={form.tips}
                 floatingLabelText={form.name}
-            />
-        if (form.type == 'password') 
+            />  
+        if (form.type == 'Password') 
             return <TextField
                 hintText={form.tips}
                 floatingLabelText={form.name}
                 type="password"
                 />
-        if (form.type == 'date') 
+        if (form.type == 'Date') 
             return <DatePicker hintText={form.tips} container="inline" mode="landscape" />
-        return <div key={key} />
+        if (form.type == 'File')
+            return <TextField type="file" name={form.name} hintText={form.tips} />
+        if (form.type == 'Path')
+            return <TextField />
+
+        return <div/>
     }
 
     render() {
         var result:any[] = []
+        console.log(this.props.config)
         this.props.config.forEach((element, index) => {
-            result.push(<p>{this.renderForm(element, index)}</p>);
+            result.push(<div key={index}>{this.renderForm(element)}</div>);
         });
 
         return <div>
