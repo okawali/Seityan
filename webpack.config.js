@@ -56,7 +56,8 @@ module.exports = [{
                 exclude: [
                     /node_modules/,
                     /app\//,
-                    /models\//
+                    /models\//,
+                    /test\//
                 ],
                 use: [
                     {

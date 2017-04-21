@@ -33,7 +33,7 @@ export default class Autoform extends React.Component<AutoformProps, any> {
     render() {
         var result:any[] = []
         this.props.config.forEach((element, index) => {
-            result.push(<p>{this.renderForm(element, index)}</p>);
+            result.push(<div>{this.renderForm(element, index)}</div>);
         });
 
         return <div>
