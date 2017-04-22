@@ -1,6 +1,6 @@
 import * as React from "react";
-import {TextField, DatePicker} from "material-ui"
-
+import {TextField, DatePicker, RaisedButton} from "material-ui"
+import FileSelector from './fileSelector'
 export interface Form {
     name: string
     type: string
@@ -26,9 +26,10 @@ export default class Autoform extends React.Component<AutoformProps, any> {
                 type="password"
                 />
         if (form.type == 'Date') 
-            return <DatePicker hintText={form.tips} container="inline" mode="landscape" />
+            return <DatePicker floatingLabelText={form.name} hintText={form.tips} container="inline" mode="landscape" />
         if (form.type == 'File')
-            return <TextField type="file" name={form.name} hintText={form.tips} />
+            return <FileSelector floatingLabelText={form.name} hintText={form.tips}/>
+                
         if (form.type == 'Path')
             return <TextField />
 
