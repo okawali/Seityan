@@ -32,7 +32,8 @@ class App extends React.Component<{}, {open:boolean, options: Form[]}> {
 
     handleClose() {
         this.setState({open: false});
-        ipcRenderer.send("onDialogClose", this.id, []);
+        let ans = (this.refs.form as Autoform).getValue();
+        ipcRenderer.send("onDialogClose", this.id, ans);
     };
 
     onShowDialog(event: Electron.IpcRendererEventListener, options: Form[], id: string) {
@@ -45,30 +46,26 @@ class App extends React.Component<{}, {open:boolean, options: Form[]}> {
         <FlatButton
             label="Cancel"
             primary={true}
-            onTouchTap={this.handleClose}
+            onTouchTap={() => this.setState({open: false})}
         />,
         <FlatButton
             label="Submit"
             primary={true}
-            disabled={true}
             onTouchTap={this.handleClose}
         />,
         ];
 
         return (
             <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
-                <div>
-                    <RaisedButton label="click me" onTouchTap={this.handleOpen} />
-                    <Dialog
-                        title="Dialog With Actions"
-                        actions={actions}
-                        modal={true}
-                        open={this.state.open}
-                        overlayStyle={{background: null}}
-                    >
-                        <Autoform config={this.state.options} />
-                    </Dialog>
-                </div>
+                <Dialog
+                    title="Dialog With Actions"
+                    actions={actions}
+                    modal={true}
+                    open={this.state.open}
+                    overlayStyle={{background: null}}
+                >
+                    <Autoform ref="form" config={this.state.options}/>
+                </Dialog>
             </MuiThemeProvider>
         );
     }

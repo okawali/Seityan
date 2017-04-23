@@ -1,4 +1,5 @@
 import * as React from "react";
+require("./fixDatePicker");
 import {TextField, DatePicker, RaisedButton} from "material-ui"
 import FileSelector from './fileSelector'
 export interface Form {
@@ -15,25 +16,35 @@ export default class Autoform extends React.Component<AutoformProps, any> {
 
     renderForm(form: Form) {
         if (form.type == 'String') 
-            return <TextField
+            return <TextField ref={form.name}
                 hintText={form.tips}
                 floatingLabelText={form.name}
             />  
         if (form.type == 'Password') 
-            return <TextField
+            return <TextField ref={form.name}
                 hintText={form.tips}
                 floatingLabelText={form.name}
                 type="password"
                 />
         if (form.type == 'Date') 
-            return <DatePicker floatingLabelText={form.name} hintText={form.tips} container="inline" mode="landscape" />
+            return <DatePicker ref={form.name} floatingLabelText={form.name} hintText={form.tips} container="inline" mode="landscape" />
         if (form.type == 'File')
-            return <FileSelector floatingLabelText={form.name} hintText={form.tips}/>
+            return <FileSelector ref={form.name} floatingLabelText={form.name} hintText={form.tips}/>
                 
         if (form.type == 'Path')
             return <TextField />
 
         return <div/>
+    }
+
+    getValue() {
+        var result:any[] = []
+        this.props.config.forEach((element, index) => {
+            let ref:any = this.refs[element.name];
+            console.log(ref.getValue());
+            result.push(ref.getValue());
+        });
+        return result
     }
 
     render() {

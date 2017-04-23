@@ -79,9 +79,12 @@ async function createModelAsync(modelDescription: ModelDescription) {
     xf.tts("试问，汝是吾的Master吗？").then(() => {
         console.log("play end")
         dialog.show([
-            { type: "password", tips: "??", name: "asdad" },
-            { type: "date", tips: "??", name: "asdad" },
-            { type: "string", tips: "??", name: "asdad" }]);
+            { type: "Password", tips: "??", name: "password" },
+            { type: "Date", tips: "??", name: "birthday" },
+            { type: "String", tips: "??", name: "name" }])
+            .then((data) => {
+                console.log(data);
+            })
     });
 }
 
