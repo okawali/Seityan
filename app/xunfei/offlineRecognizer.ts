@@ -3,15 +3,30 @@ declare class CallbackManager {
     public get(id:number): any;
 }
 
+declare class AudioRecorder {
+    constructor(source, cfg);
+    start(data);
+    stop();
+    public consumers: any[]
+}
+
 export default class OfflineRecognizer {
     private recognizer
-    private recorder
+    private recorder: AudioRecorder
     private callbackManager: CallbackManager
     private audioContext: AudioContext
     private isRecorderReady = false;
     private isRecognizerReady = false;
 
-    constructor() {
+    public static async create() {
+        return new Promise<OfflineRecognizer>((resolve, reject) => {
+            let inst = new OfflineRecognizer(() => {
+                resolve(inst);
+            });
+        })
+    }
+
+    constructor(callback) {
         this.callbackManager = new CallbackManager();
         let callbackManager = this.callbackManager; 
         let wordListChinese = this.wordListChinese;
@@ -32,12 +47,12 @@ export default class OfflineRecognizer {
                 if (e.data.hasOwnProperty('hyp')) {
                   var newHyp = e.data.hyp;
                   var newHypChinese = e.data.hyp.split(' ').map(function(x) {return wordListChinese[x];}).join(' ');
-                  if (e.data.hasOwnProperty('final') &&  e.data.final) {
+                  if (e.data.hasOwnProperty('final') && e.data.final) {
                       newHyp = "Final: " + newHyp;
                       newHypChinese = "Final: " + newHypChinese;
                   }
                   console.log(newHypChinese);
-                //   updateHyp(newHyp + '<br><br>' + newHypChinese);
+                    // updateHyp(newHyp + '<br><br>' + newHypChinese);
                 }
                 // This is the case when we have an error
                 if (e.data.hasOwnProperty('status') && (e.data.status == "error")) {
@@ -55,7 +70,18 @@ export default class OfflineRecognizer {
         } catch (e) {
           console.log("Error initializing Web Audio browser");
         }
+        if (navigator.getUserMedia) navigator.getUserMedia({audio: true}, this.startUserMedia, function(e) {
+            console.log("No live audio input in this browser");
+        });
 
+    }
+
+    public startRecording() {
+        this.recorder && this.recorder.start(0);
+    }
+
+    public stopRecording() {
+        this.recorder && this.recorder.stop();
     }
 
     initRecognizer() {
@@ -65,6 +91,24 @@ export default class OfflineRecognizer {
             () => {
                 if (this.recorder) this.recorder.consumers = [this.recognizer];
                 this.feedWords(this.wordList);});
+    };
+
+    // Callback function once the user authorises access to the microphone
+    // in it, we instanciate the recorder
+    startUserMedia(stream) { 
+        var input = this.audioContext.createMediaStreamSource(stream);
+       
+        // Notice that for this Chinese acoustic model, audio must be at 8kHz, so we should
+        // request it from the recorder
+        var audioRecorderConfig = {
+               errorCallback: (x) => console.log("Error from recorder: " + x),
+               outputSampleRate: 8000
+        };
+        this.recorder = new AudioRecorder(input, audioRecorderConfig);
+        // If a recognizer is ready, we pass it to the recorder
+        if (this.recognizer) this.recorder.consumers = [this.recognizer];
+        this.isRecorderReady = true;
+        console.log("Audio recorder ready");
     };
 
     feedWords(words) {
