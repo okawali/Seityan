@@ -32,10 +32,10 @@ class App extends React.Component<{}, {open:boolean, options: Form[]}> {
 
     handleClose() {
         this.setState({open: false});
-        ipcRenderer.send("onDialogClose", this.id, [], 'error');
+        ipcRenderer.send("onDialogClose", this.id, []);
     };
 
-    onShowDialog(event: any, options: Form[], id: string) {
+    onShowDialog(event: Electron.IpcRendererEventListener, options: Form[], id: string) {
         this.id = id;
         this.setState({options: options, open: true});
     }

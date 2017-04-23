@@ -5,6 +5,7 @@ import * as os from 'os';
 import { AppTray } from "./electronMain/uiElements/appTray";
 
 let win: Electron.BrowserWindow | null;
+let dialogWin: Electron.BrowserWindow | null;
 let tray: AppTray;
 
 function createWindow() {
@@ -18,8 +19,21 @@ function createWindow() {
         icon: os.platform() == 'linux' ? path.join(__dirname, '/assets/image/linux.png') : undefined
     })
 
+    dialogWin = new BrowserWindow({
+        width: 300, height: 400,
+        autoHideMenuBar: true, frame: false,
+        resizable: true, skipTaskbar: true,
+        alwaysOnTop: true, show: false
+    });
+
     win.loadURL(url.format({
         pathname: path.join(__dirname, "index.html"),
+        protocol: 'file:',
+        slashes: true,
+    }))
+
+    dialogWin.loadURL(url.format({
+        pathname: path.join(__dirname, "dialog.html"),
         protocol: 'file:',
         slashes: true,
     }))
@@ -67,10 +81,12 @@ function createWindow() {
     })
 
     ipcMain.on("showDialog", (event, options: any, id: string) => {
-        //TODO: call dialog process;
+        dialogWin!.show();
+        dialogWin!.webContents.send("showDialog", options, id);
     })
 
     ipcMain.on("onDialogClose", (event, id: string, value?: any, error?: any) => {
+        dialogWin!.hide();
         win!.webContents.send("onDialogClose", id, value, error);
     })
 
