@@ -11,7 +11,7 @@ declare class AudioRecorder {
 }
 
 export default class OfflineRecognizer {
-    private recognizer
+    private recognizer: Worker
     private recorder: AudioRecorder
     private callbackManager: CallbackManager
     private audioContext: AudioContext
@@ -70,7 +70,7 @@ export default class OfflineRecognizer {
         } catch (e) {
           console.log("Error initializing Web Audio browser");
         }
-        if (navigator.getUserMedia) navigator.getUserMedia({audio: true}, this.startUserMedia, function(e) {
+        if (navigator.getUserMedia) navigator.getUserMedia({audio: true}, this.startUserMedia.bind(this), function(e) {
             console.log("No live audio input in this browser");
         });
 
@@ -140,8 +140,8 @@ export default class OfflineRecognizer {
     // is ready so that onmessage can be properly set
     spawnWorker(workerURL: string, onReady: (worker: Worker) => void) {
         this.recognizer = new Worker(workerURL);
-        this.recognizer.onmessage = function(event) {
-        onReady(this.recognizer);
+        this.recognizer.onmessage = (event) => {
+            onReady(this.recognizer);
         };
         // Notice that we pass the name of the pocketsphinx.js file to load
         // as we need the file packaged with the Chinese acoustic model

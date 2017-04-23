@@ -132,5 +132,6 @@ animate();
 
 var offlineRecognizer = OfflineRecognizer.create()
 offlineRecognizer.then((e) => {
+    console.log("初始化完成")
     e.startRecording();
 })
