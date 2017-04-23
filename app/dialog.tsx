@@ -23,6 +23,7 @@ class App extends React.Component<{}, {open:boolean, options: Form[]}> {
 
     componentDidMount() {
         ipcRenderer.on("showDialog", this.onShowDialog.bind(this))
+        ipcRenderer.send('dialogFinishedLoading');
     }
 
     handleOpen() {

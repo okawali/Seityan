@@ -1,6 +1,6 @@
 import * as React from "react";
-import {TextField, DatePicker} from "material-ui"
-
+import {TextField, DatePicker, RaisedButton} from "material-ui"
+import FileSelector from './fileSelector'
 export interface Form {
     name: string
     type: string
@@ -13,27 +13,34 @@ export interface AutoformProps {
 
 export default class Autoform extends React.Component<AutoformProps, any> {
 
-    renderForm(form: Form, key: number) {
-        if (form.type == 'string') 
+    renderForm(form: Form) {
+        if (form.type == 'String') 
             return <TextField
                 hintText={form.tips}
                 floatingLabelText={form.name}
-            />
-        if (form.type == 'password') 
+            />  
+        if (form.type == 'Password') 
             return <TextField
                 hintText={form.tips}
                 floatingLabelText={form.name}
                 type="password"
                 />
-        if (form.type == 'date') 
-            return <DatePicker hintText={form.tips} container="inline" mode="landscape" />
-        return <div key={key} />
+        if (form.type == 'Date') 
+            return <DatePicker floatingLabelText={form.name} hintText={form.tips} container="inline" mode="landscape" />
+        if (form.type == 'File')
+            return <FileSelector floatingLabelText={form.name} hintText={form.tips}/>
+                
+        if (form.type == 'Path')
+            return <TextField />
+
+        return <div/>
     }
 
     render() {
         var result:any[] = []
+        console.log(this.props.config)
         this.props.config.forEach((element, index) => {
-            result.push(<div>{this.renderForm(element, index)}</div>);
+            result.push(<div key={index}>{this.renderForm(element)}</div>);
         });
 
         return <div>

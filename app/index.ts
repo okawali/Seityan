@@ -10,6 +10,7 @@ import XfBase from "./xunfei/xfBase";
 import { ipcRenderer, webFrame } from "electron";
 import { randomTips } from "./utils/randomTips";
 import MainRobot from './robot/mainRobot'
+import OfflineRecognizer from './xunfei/offlineRecognizer'
 import * as dialog from "./utils/dialog";
 
 webFrame.setVisualZoomLevelLimits(1, 1);
@@ -136,3 +137,9 @@ function animate() {
 }
 
 animate();
+
+var offlineRecognizer = OfflineRecognizer.create()
+offlineRecognizer.then((e) => {
+    console.log("初始化完成")
+    e.startRecording();
+})
