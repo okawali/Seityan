@@ -20,10 +20,11 @@ function createWindow() {
     })
 
     dialogWin = new BrowserWindow({
-        width: 300, height: 400,
+        width: 600, height: 500,
         autoHideMenuBar: true, frame: false,
         resizable: true, skipTaskbar: true,
-        alwaysOnTop: true, show: false
+        alwaysOnTop: true, show: false,
+        transparent: true
     });
 
     win.loadURL(url.format({
