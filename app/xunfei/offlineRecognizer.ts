@@ -15,9 +15,9 @@ export default class OfflineRecognizer {
         this.callbackManager = new CallbackManager();
         let callbackManager = this.callbackManager; 
         let wordListChinese = this.wordListChinese;
-        this.spawnWorker("lib/pocketsphinx/recognizer.js", function(worker) {
+        this.spawnWorker("lib/pocketsphinx/recognizer.js", (worker) => {
             // This is the onmessage function, once the worker is fully loaded
-            worker.onmessage = function(e) {
+            worker.onmessage = (e) => {
                 // This is the case when we have a callback id to be called
                 if (e.data.hasOwnProperty('id')) {
                   var clb = callbackManager.get(e.data['id']);
@@ -36,15 +36,17 @@ export default class OfflineRecognizer {
                       newHyp = "Final: " + newHyp;
                       newHypChinese = "Final: " + newHypChinese;
                   }
-                  updateHyp(newHyp + '<br><br>' + newHypChinese);
+                  console.log(newHypChinese);
+                //   updateHyp(newHyp + '<br><br>' + newHypChinese);
                 }
                 // This is the case when we have an error
                 if (e.data.hasOwnProperty('status') && (e.data.status == "error")) {
-                  updateStatus("Error in " + e.data.command + " with code " + e.data.code);
+                    console.log("Error in " + e.data.command + " with code " + e.data.code);
+                //   updateStatus("Error in " + e.data.command + " with code " + e.data.code);
                 }
             };
             // Once the worker is fully loaded, we can call the initialize function
-            initRecognizer();
+            this.initRecognizer();
         });
 
         // The following is to initialize Web Audio
@@ -77,7 +79,7 @@ export default class OfflineRecognizer {
 	        this.postRecognizerJob({command: 'addGrammar', data: g[index].g},
                              (id) => {this.feedGrammar(this.grammars, index + 1, {id:id});});
         } else {
-          this.recognizerReady();
+            this.isRecognizerReady = true;
         }
     };
 
