@@ -30,11 +30,15 @@ class App extends React.Component<{}, {open:boolean, options: Form[]}> {
         this.setState({open: true});
     };
 
-    handleClose() {
+    handleClose(cancel = false) {
         this.setState({open: false});
-        let ans = (this.refs.form as Autoform).getValue();
+        let ans: any[] = [] 
+        if (!cancel)
+            ans = (this.refs.form as Autoform).getValue();
         ipcRenderer.send("onDialogClose", this.id, ans);
     };
+
+
 
     onShowDialog(event: Electron.IpcRendererEventListener, options: Form[], id: string) {
         this.id = id;
@@ -46,12 +50,12 @@ class App extends React.Component<{}, {open:boolean, options: Form[]}> {
         <FlatButton
             label="Cancel"
             primary={true}
-            onTouchTap={() => this.setState({open: false})}
+            onTouchTap={() => this.handleClose(true)}
         />,
         <FlatButton
             label="Submit"
             primary={true}
-            onTouchTap={this.handleClose}
+            onTouchTap={() => this.handleClose()}
         />,
         ];
 
