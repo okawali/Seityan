@@ -1,5 +1,5 @@
 import * as React from "react";
-require("./fixDatePicker");
+import "./fixDatePicker";
 import {TextField, DatePicker, RaisedButton} from "material-ui"
 import FileSelector from './fileSelector'
 export interface Form {
