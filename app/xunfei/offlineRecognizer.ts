@@ -17,6 +17,7 @@ export default class OfflineRecognizer {
     private audioContext: AudioContext
     private isRecorderReady = false;
     private isRecognizerReady = false;
+    private bothReadyCallback;
 
     public static async create() {
         return new Promise<OfflineRecognizer>((resolve, reject) => {
@@ -27,6 +28,8 @@ export default class OfflineRecognizer {
     }
 
     constructor(callback) {
+        this.bothReadyCallback = callback;
+        this.feedGrammar = this.feedGrammar.bind(this);
         this.callbackManager = new CallbackManager();
         let callbackManager = this.callbackManager; 
         let wordListChinese = this.wordListChinese;
@@ -62,7 +65,6 @@ export default class OfflineRecognizer {
             };
             // Once the worker is fully loaded, we can call the initialize function
             this.initRecognizer();
-            callback();
         });
 
         // The following is to initialize Web Audio
@@ -110,6 +112,7 @@ export default class OfflineRecognizer {
         // If a recognizer is ready, we pass it to the recorder
         if (this.recognizer) this.recorder.consumers = [this.recognizer];
         this.isRecorderReady = true;
+        if (this.isRecognizerReady) this.bothReadyCallback();
         console.log("Audio recorder ready");
     };
 
@@ -118,12 +121,16 @@ export default class OfflineRecognizer {
             () => this.feedGrammar(this.grammars, 0));
     };
 
-    feedGrammar(g, index, id: any = undefined) {
-        this.postRecognizerJob({command: 'addGrammar', data: g[index].g},
-            (id) => {
-                this.isRecognizerReady = true;
-                console.log("Recognizer ready");
-            });
+    feedGrammar(g, index, id?) {
+        if (id && (this.grammarIds.length > 0)) this.grammarIds[0].id = id.id;
+        if (index < g.length) {
+            this.grammarIds.unshift({title: g[index].title})
+            this.postRecognizerJob({command: 'addGrammar', data: g[index].g},
+                (id) => {this.feedGrammar(this.grammars, index + 1, {id:id});});
+        } else {
+            this.isRecognizerReady = true;
+            if (this.isRecorderReady) this.bothReadyCallback();
+        }
     };
 
     // A convenience function to post a message to the recognizer and associate
@@ -154,5 +161,5 @@ export default class OfflineRecognizer {
     private wordListChinese = {"ni_hao": "你好", "ni_hao_ma": "你好吗", "zai_jian": "再见", "huan_ying": "欢迎", "xie_xie": "谢谢", "ming_tian_jian": "明天见"};
     private grammarChineseGreetings = {numStates: 1, start: 0, end: 0, transitions: [{from: 0, to: 0, word: "ni_hao"},{from: 0, to: 0, word: "ni_hao_ma"},{from: 0, to: 0, word: "zai_jian"},{from: 0, to: 0, word: "huan_ying"},{from: 0, to: 0, word: "xie_xie"},{from: 0, to: 0, word: "ming_tian_jian"}]};
     private grammars = [{title: "Chinese Greetings", g: this.grammarChineseGreetings}];
-
+    private grammarIds: any[] = [];
 }
