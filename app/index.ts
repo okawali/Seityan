@@ -12,6 +12,7 @@ import { randomTips } from "./utils/randomTips";
 import MainRobot from './robot/mainRobot'
 import OfflineRecognizer from './xunfei/offlineRecognizer'
 import * as dialog from "./utils/dialog";
+import {Plugins} from './utils/plugins';
 
 webFrame.setVisualZoomLevelLimits(1, 1);
 webFrame.setLayoutZoomLevelLimits(1, 1);
