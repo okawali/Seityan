@@ -12,7 +12,7 @@ import { randomTips } from "./utils/randomTips";
 import MainRobot from './robot/mainRobot'
 import OfflineRecognizer from './xunfei/offlineRecognizer'
 import * as dialog from "./utils/dialog";
-import {Plugins} from './utils/plugins';
+import {PluginsLoader} from './utils/pluginsLoader';
 const tr = require("robot-api");
 tr.test_robot_api('robot');
 
