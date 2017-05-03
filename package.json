@@ -1,6 +1,6 @@
 {
   "name": "live2d-electron",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "live2d-electron",
   "main": "dist/main.js",
   "scripts": {
@@ -28,6 +28,7 @@
     "@types/react": "^15.0.22",
     "@types/react-dom": "^15.5.0",
     "@types/react-tap-event-plugin": "0.0.30",
+    "@types/webpack-env": "^1.13.0",
     "chai": "^3.5.0",
     "electron": "^1.6.5",
     "electron-packager": "^8.6.0",
@@ -40,6 +41,7 @@
   },
   "dependencies": {
     "axios": "^0.16.1",
+    "electron-dl": "^1.9.0",
     "material-ui": "^0.17.4",
     "pixi-live2d": "git://github.com/sunxfancy/pixi-live2d",
     "pixi.js": "^4.4.4",

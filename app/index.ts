@@ -16,6 +16,8 @@ import {PluginsLoader} from './utils/pluginsLoader';
 const tr = require("robot-api");
 tr.test_robot_api('robot');
 
+var loader = new PluginsLoader();
+loader.load();
 
 webFrame.setVisualZoomLevelLimits(1, 1);
 webFrame.setLayoutZoomLevelLimits(1, 1);
