@@ -25,7 +25,7 @@ export class Plugins {
 
     async load() {
         return new Promise((resolve, reject) => {
-            this.path = [path.join(__dirname, '..', '..', 'packages'),
+            this.path = [path.join(__dirname, '..', 'packages'),
                          path.join(app.getPath('userData'), 'Plugins')];
             
             console.log(this.path)
@@ -35,7 +35,7 @@ export class Plugins {
                         files.forEach(file => {
                             let subdir = path.join(i, file)
                             if (fs.statSync(subdir).isDirectory()) 
-                                this.scan_package(subdir)
+                                this.scanPackage(subdir)
                                     .then(v => {
                                         let plugin = this.loadPlugin(subdir)
                                         plugin.__package = v
@@ -58,7 +58,7 @@ export class Plugins {
         })
     }
 
-    async scan_package(p: string): Promise<any> {
+    async scanPackage(p: string): Promise<any> {
         return new Promise((resolve, reject) => {
             fs.readFile(path.join(p, 'package.json'), 'utf8', (err, data) => {
                 if (err) 
