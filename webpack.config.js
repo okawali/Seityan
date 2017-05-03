@@ -12,8 +12,12 @@ module.exports = [{
         filename: "[name].js"
     },
     resolve: {
-        extensions: ['.ts', '.tsx', '.js']
+        extensions: ['.ts', '.tsx', '.js'],
+        alias: {
+            "robot-api": path.resolve(__dirname, 'app/api'),
+        }
     },
+    
     module: {
         rules: [
             {

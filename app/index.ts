@@ -7,12 +7,15 @@ import models from "./utils/models";
 import { ModelLoader, ModelDescription } from "./utils/modelLoader";
 import { WindowDragger } from "./uiElements/windowDragger";
 import XfBase from "./xunfei/xfBase";
-import { ipcRenderer, webFrame } from "electron";
+import { ipcRenderer, webFrame, remote } from "electron";
 import { randomTips } from "./utils/randomTips";
 import MainRobot from './robot/mainRobot'
 import OfflineRecognizer from './xunfei/offlineRecognizer'
 import * as dialog from "./utils/dialog";
 import {Plugins} from './utils/plugins';
+const tr = require("robot-api");
+tr.test_robot_api('robot');
+
 
 webFrame.setVisualZoomLevelLimits(1, 1);
 webFrame.setLayoutZoomLevelLimits(1, 1);
