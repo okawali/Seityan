@@ -9,15 +9,10 @@ module.exports = [{
     },
     output: {
         path: path.resolve(__dirname, "dist"),
-        filename: "[name].js",
-        library: "robot-api",
-        libraryTarget: "commonjs2"
+        filename: "[name].js"
     },
     resolve: {
-        extensions: ['.ts', '.tsx', '.js'],
-        alias: {
-            "robot-api": path.resolve(__dirname, 'app/api'),
-        }
+        extensions: ['.ts', '.tsx', '.js']
     },
     
     module: {
