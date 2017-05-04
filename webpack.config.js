@@ -9,7 +9,9 @@ module.exports = [{
     },
     output: {
         path: path.resolve(__dirname, "dist"),
-        filename: "[name].js"
+        filename: "[name].js",
+        library: "robot-api",
+        libraryTarget: "commonjs2"
     },
     resolve: {
         extensions: ['.ts', '.tsx', '.js'],

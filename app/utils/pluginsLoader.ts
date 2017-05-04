@@ -1,10 +1,9 @@
 import {remote} from 'electron';
-const app = remote.app;
 const fs = remote.require('fs');
 import * as path from 'path';
 import axios from 'axios';
 import {Plugin} from 'robot-api';
-
+const {download} = remote.require('electron-dl');
 
 export interface indexItem {
     id: number
@@ -22,7 +21,7 @@ export class PluginsLoader {
 
 
     constructor() {
-        this.path = [path.join(app.getPath('userData'), 'Plugins')];
+        this.path = [path.join(remote.app.getPath('userData'), 'Plugins')];
     }
 
     async load() {
@@ -76,7 +75,7 @@ export class PluginsLoader {
     async install(name: string) {
         if (this.index[name]) {
             let url = this.index[name].downloadUrl;
-            let download_path = path.join(this.path[0], name+'.zip');
+            console.log(this.path[0]);
             // axios({
             //     method:'get',
             //     url: url,
@@ -84,6 +83,10 @@ export class PluginsLoader {
             // }).then(function(response) {
             //     fs.writeFile(download_path,response.data);
             // });
+            download(remote.BrowserWindow.getFocusedWindow(), url, 
+                    {directory: this.path[0], filename: name+'.zip'})
+                .then(dl => console.log(dl.getSavePath()))
+                .catch(console.error);
         }
     }
 

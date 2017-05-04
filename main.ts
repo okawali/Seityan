@@ -3,10 +3,14 @@ import * as path from "path";
 import * as url from "url";
 import * as os from 'os';
 import { AppTray } from "./electronMain/uiElements/appTray";
+import * as electronDL from 'electron-dl';
 
 let win: Electron.BrowserWindow | null;
 let dialogWin: Electron.BrowserWindow | null;
 let tray: AppTray;
+
+// register electron-dl for all windows
+electronDL();
 
 function createWindow() {
     win = new BrowserWindow({
