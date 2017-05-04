@@ -41,6 +41,7 @@
   },
   "dependencies": {
     "axios": "^0.16.1",
+    "decompress-zip": "git://github.com/sunxfancy/decompress-zip",
     "electron-dl": "^1.9.0",
     "material-ui": "^0.17.4",
     "pixi-live2d": "git://github.com/sunxfancy/pixi-live2d",

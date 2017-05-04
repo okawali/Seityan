@@ -1,8 +1,9 @@
 import {remote} from 'electron';
-const fs = remote.require('fs');
+import * as fs from "fs";
 import * as path from 'path';
 import axios from 'axios';
 import {Plugin} from 'robot-api';
+import DecompressZip from 'decompress-zip';
 const {download} = remote.require('electron-dl');
 
 export interface indexItem {
@@ -14,11 +15,10 @@ export interface indexItem {
 
 export class PluginsLoader {
     static index_url = "https://www.norgerman.com/plugins"
-    private index: {[key: string]: indexItem} = {} // 上面这个json获取下来存这里
+    private index: {[key: string]: indexItem|undefined} = {} // 上面这个json获取下来存这里
 
-    private plugins: {[key: string]: Plugin} = {}// 已加载的插件
+    private plugins: {[key: string]: Plugin|undefined} = {}// 已加载的插件
     private path: string[] // 搜索路径
-
 
     constructor() {
         this.path = [path.join(remote.app.getPath('userData'), 'Plugins')];
@@ -35,11 +35,7 @@ export class PluginsLoader {
                         let subdir = path.join(i, file)
                         if (fs.statSync(subdir).isDirectory()) {
                             let v = await this.scanPackage(subdir)
-                            let plugin = await this.loadPlugin(subdir)
-                            plugin.__package = v
-                            if (plugin.name == null) plugin.name = v.name
-                            if (plugin.version == null) plugin.version = v.version
-                            this.plugins[plugin.name] = plugin
+                            let plugin = await this.loadPlugin(subdir, v)
                             console.log(plugin)
                         }
                     });
@@ -66,27 +62,56 @@ export class PluginsLoader {
         })
     }
 
-    async loadPlugin(p: string): Promise<Plugin> {
+    async loadPlugin(p: string, v: any): Promise<Plugin> {
         let plugin = __non_webpack_require__(p)
-        console.log(plugin)
+        console.log("plugin loaded: ", plugin)
+        plugin.__package = v
+        if (plugin.name == null) plugin.name = v.name
+        if (plugin.version == null) plugin.version = v.version
+        this.plugins[plugin.name] = plugin
         return plugin
     }
 
     async install(name: string) {
         if (this.index[name]) {
-            let url = this.index[name].downloadUrl;
+            let url = (this.index[name] as indexItem).downloadUrl;
             console.log(this.path[0]);
-            // axios({
-            //     method:'get',
-            //     url: url,
-            //     responseType:'arraybuffer'
-            // }).then(function(response) {
-            //     fs.writeFile(download_path,response.data);
-            // });
-            download(remote.BrowserWindow.getFocusedWindow(), url, 
+            let dl = await download(remote.BrowserWindow.getFocusedWindow(), url, 
                     {directory: this.path[0], filename: name+'.zip'})
-                .then(dl => console.log(dl.getSavePath()))
-                .catch(console.error);
+            let dlpath = path.join(this.path[0], name);
+            await this.uncompress(dlpath+'.zip', dlpath);
+            fs.unlinkSync(dlpath+'.zip');
+            let v = await this.scanPackage(dlpath)
+            let plugin = await this.loadPlugin(dlpath, v)
+        }
+    }
+
+    async uncompress(ZIP_FILE_PATH, DESTINATION_PATH){
+        return new Promise<any>((resolve, reject) => {
+            var unzipper = new DecompressZip(ZIP_FILE_PATH);
+
+            // Add the event listener
+            unzipper.on('error', reject);
+            unzipper.on('extract', resolve);
+
+            unzipper.extract({
+                path: DESTINATION_PATH,
+                strip: 1
+            });
+        })
+    }
+
+    async uninstall(name: string) {
+        if (this.index[name]) {
+            for (var i in this.path) {
+                var path = path.join(i, name);
+                if (fs.existsSync(path)) {
+                    fs.rmdirSync(path);
+                    if (this.plugins[name])
+                        this.plugins[name] = undefined;
+                    return;
+                }
+            }
         }
     }
 
@@ -98,7 +123,7 @@ export class PluginsLoader {
                     this.index[element.name] = element
                 });
                 console.log(this.index);
-
+                
                 this.install("robot-plugin-test");
             }
         });
@@ -106,7 +131,7 @@ export class PluginsLoader {
 
     async update(name: string) {
         if (this.index[name] && this.plugins[name] && 
-            this.versionCompare(this.index[name].version, this.plugins[name].version) === 1) {
+            this.versionCompare((this.index[name] as indexItem).version, (this.plugins[name] as Plugin).version) === 1) {
             this.install(name);
         }
     }

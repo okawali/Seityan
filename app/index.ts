@@ -7,7 +7,7 @@ import models from "./utils/models";
 import { ModelLoader, ModelDescription } from "./utils/modelLoader";
 import { WindowDragger } from "./uiElements/windowDragger";
 import XfBase from "./xunfei/xfBase";
-import { ipcRenderer, webFrame, remote } from "electron";
+import { ipcRenderer, webFrame } from "electron";
 import { randomTips } from "./utils/randomTips";
 import MainRobot from './robot/mainRobot'
 import OfflineRecognizer from './xunfei/offlineRecognizer'
