@@ -1,0 +1,4 @@
+[submodule "doc/html"]
+	path = doc/html
+	url = https://github.com/Norgerman/live2d-electron.git
+	branch = gh-pages
