@@ -2,6 +2,8 @@ import * as React from "react";
 import "./fixDatePicker";
 import {TextField, DatePicker, RaisedButton} from "material-ui"
 import FileSelector from './fileSelector'
+import Settings from './settings'
+
 export interface Form {
     name: string
     type: string
@@ -33,6 +35,9 @@ export default class Autoform extends React.Component<AutoformProps, any> {
                 
         if (form.type == 'Path')
             return <TextField />
+
+        if (form.type == 'Settings') 
+            return <Settings />
 
         return <div/>
     }
