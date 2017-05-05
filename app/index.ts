@@ -82,16 +82,7 @@ async function createModelAsync(modelDescription: ModelDescription) {
     if (!xf) xf = new XfBase();
     mainRobot = new MainRobot(xf);
     xf.audioplay = live2dSprite!.playSound.bind(live2dSprite!);
-    xf.tts("试问，汝是吾的Master吗？").then(() => {
-        console.log("play end")
-        dialog.show([
-            { type: "Password", tips: "??", name: "password" },
-            { type: "Date", tips: "??", name: "birthday" },
-            { type: "String", tips: "??", name: "name" }])
-            .then((data) => {
-                console.log(data);
-            })
-    });
+    xf.tts("试问，汝是吾的Master吗？");
 }
 
 renderer.view.addEventListener('mousewheel', event => {
