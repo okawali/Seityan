@@ -9,7 +9,12 @@ import { ipcRenderer } from "electron";
 
 injectTapEventPlugin();
 
-class App extends React.Component<{}, {open:boolean, options: Form[]}> {
+interface DialogConfig {
+    title?: string
+    form?: Form[]
+}
+
+class App extends React.Component<{}, {open:boolean, options: DialogConfig}> {
     constructor(props?: {}, context?: any) {
         super(props, context);
         this.handleClose = this.handleClose.bind(this)
@@ -18,7 +23,7 @@ class App extends React.Component<{}, {open:boolean, options: Form[]}> {
     private id;
     state = {
         open: false,
-        options: []
+        options: {} as DialogConfig
     };
 
     componentDidMount() {
@@ -38,9 +43,7 @@ class App extends React.Component<{}, {open:boolean, options: Form[]}> {
         ipcRenderer.send("onDialogClose", this.id, ans);
     };
 
-
-
-    onShowDialog(event: Electron.IpcRendererEventListener, options: Form[], id: string) {
+    onShowDialog(event: Electron.IpcRendererEventListener, options: DialogConfig, id: string) {
         this.id = id;
         this.setState({options: options, open: true});
     }
@@ -62,13 +65,13 @@ class App extends React.Component<{}, {open:boolean, options: Form[]}> {
         return (
             <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
                 <Dialog
-                    title="Dialog With Actions"
+                    title={this.state.options.title ? this.state.options.title : ""}
                     actions={actions}
                     modal={true}
                     open={this.state.open}
                     overlayStyle={{background: null}}
                 >
-                    <Autoform ref="form" config={this.state.options}/>
+                    <Autoform ref="form" config={this.state.options.form!}/>
                 </Dialog>
             </MuiThemeProvider>
         );

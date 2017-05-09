@@ -81,6 +81,13 @@ function createWindow() {
         })
     });
 
+    tray.on("openSettings", () => {
+        dialogWin!.show();
+        dialogWin!.webContents.send("showDialog", { title: "Settings", form: [
+            {name: "settings", type: "Settings", tips: "settings"}
+        ]}, "settings");
+    });
+
     ipcMain.on("resize", (event, arg) => {
         win!.setSize(Math.ceil(arg.width), Math.ceil(arg.height));
     })
