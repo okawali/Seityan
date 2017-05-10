@@ -17,6 +17,7 @@ export default class OfflineRecognizer {
     private audioContext: AudioContext
     private isRecorderReady = false;
     private isRecognizerReady = false;
+    private bothReadyCallback;
 
     public static async create() {
         return new Promise<OfflineRecognizer>((resolve, reject) => {
@@ -27,6 +28,8 @@ export default class OfflineRecognizer {
     }
 
     constructor(callback) {
+        this.bothReadyCallback = callback;
+        this.feedGrammar = this.feedGrammar.bind(this);
         this.callbackManager = new CallbackManager();
         let callbackManager = this.callbackManager; 
         let wordListChinese = this.wordListChinese;
@@ -56,7 +59,7 @@ export default class OfflineRecognizer {
                 }
                 // This is the case when we have an error
                 if (e.data.hasOwnProperty('status') && (e.data.status == "error")) {
-                    console.log("Error in " + e.data.command + " with code " + e.data.code);
+                    console.log("Error in " + e.data.command + " with code ", e.data);
                 //   updateStatus("Error in " + e.data.command + " with code " + e.data.code);
                 }
             };
@@ -90,7 +93,8 @@ export default class OfflineRecognizer {
         this.postRecognizerJob({command: 'initialize', data:[["-samprate", "8000"]]},
             () => {
                 if (this.recorder) this.recorder.consumers = [this.recognizer];
-                this.feedWords(this.wordList);});
+                this.feedWords(this.wordList);
+            });
     };
 
     // Callback function once the user authorises access to the microphone
@@ -108,6 +112,7 @@ export default class OfflineRecognizer {
         // If a recognizer is ready, we pass it to the recorder
         if (this.recognizer) this.recorder.consumers = [this.recognizer];
         this.isRecorderReady = true;
+        if (this.isRecognizerReady) this.bothReadyCallback();
         console.log("Audio recorder ready");
     };
 
@@ -116,22 +121,23 @@ export default class OfflineRecognizer {
             () => this.feedGrammar(this.grammars, 0));
     };
 
-    feedGrammar(g, index, id: any = undefined) {
+    feedGrammar(g, index, id?) {
         if (id && (this.grammarIds.length > 0)) this.grammarIds[0].id = id.id;
         if (index < g.length) {
             this.grammarIds.unshift({title: g[index].title})
-	        this.postRecognizerJob({command: 'addGrammar', data: g[index].g},
-                             (id) => {this.feedGrammar(this.grammars, index + 1, {id:id});});
+            this.postRecognizerJob({command: 'addGrammar', data: g[index].g},
+                (id) => {this.feedGrammar(this.grammars, index + 1, {id:id});});
         } else {
             this.isRecognizerReady = true;
+            if (this.isRecorderReady) this.bothReadyCallback();
         }
     };
 
     // A convenience function to post a message to the recognizer and associate
     // a callback to its response
-    postRecognizerJob(message, callback) {
+    postRecognizerJob(message, callback?) {
         var msg = message || {};
-        if (this.callbackManager) msg.callbackId = this.callbackManager.add(callback);
+        if (this.callbackManager && callback) msg.callbackId = this.callbackManager.add(callback);
         if (this.recognizer) this.recognizer.postMessage(msg);
     };
 
@@ -156,5 +162,4 @@ export default class OfflineRecognizer {
     private grammarChineseGreetings = {numStates: 1, start: 0, end: 0, transitions: [{from: 0, to: 0, word: "ni_hao"},{from: 0, to: 0, word: "ni_hao_ma"},{from: 0, to: 0, word: "zai_jian"},{from: 0, to: 0, word: "huan_ying"},{from: 0, to: 0, word: "xie_xie"},{from: 0, to: 0, word: "ming_tian_jian"}]};
     private grammars = [{title: "Chinese Greetings", g: this.grammarChineseGreetings}];
     private grammarIds: any[] = [];
-
 }

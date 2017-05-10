@@ -7,11 +7,14 @@ import models from "./utils/models";
 import { ModelLoader, ModelDescription } from "./utils/modelLoader";
 import { WindowDragger } from "./uiElements/windowDragger";
 import XfBase from "./xunfei/xfBase";
-import { ipcRenderer, webFrame } from "electron";
+import { ipcRenderer, webFrame, remote } from "electron";
 import { randomTips } from "./utils/randomTips";
 import MainRobot from './robot/mainRobot'
 import OfflineRecognizer from './xunfei/offlineRecognizer'
 import * as dialog from "./utils/dialog";
+
+var loader = remote.getGlobal('pluginLoader');
+console.log(loader);
 
 webFrame.setVisualZoomLevelLimits(1, 1);
 webFrame.setLayoutZoomLevelLimits(1, 1);
@@ -76,13 +79,7 @@ async function createModelAsync(modelDescription: ModelDescription) {
     if (!xf) xf = new XfBase();
     mainRobot = new MainRobot(xf);
     xf.audioplay = live2dSprite!.playSound.bind(live2dSprite!);
-    xf.tts("试问，汝是吾的Master吗？").then(() => {
-        console.log("play end")
-        dialog.show([
-            { type: "password", tips: "??", name: "asdad" },
-            { type: "date", tips: "??", name: "asdad" },
-            { type: "string", tips: "??", name: "asdad" }]);
-    });
+    xf.tts("试问，汝是吾的Master吗？");
 }
 
 renderer.view.addEventListener('mousewheel', event => {

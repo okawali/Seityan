@@ -1,6 +1,6 @@
 {
   "name": "live2d-electron",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "live2d-electron",
   "main": "dist/main.js",
   "scripts": {
@@ -8,11 +8,13 @@
     "watch": "webpack --watch",
     "build": "webpack",
     "test": "mocha -r ts-node/register test/main-test.ts app/**/test.ts",
+    "test-api": "mocha -r ts-node/register app/**/apitest.ts",
     "package": "npm run package-win32-x64 && npm run package-linux-x64 && npm run package-osx-x64",
     "package-win32-x64": "electron-packager ./dist electron-live2d --overwrite --asar=true --platform=win32 --arch=x64 --out=release-builds --icon=dist/assets/image/win.ico",
     "package-linux-x64": "electron-packager ./dist electron-live2d --overwrite --asar=true --platform=linux --arch=x64 --out=release-builds",
     "package-osx-x64": "electron-packager ./dist electron-live2d --overwrite --asar=true --platform=darwin --arch=x64 --out=release-builds --icon=dist/assets/image/mac.icns",
-    "dialog-test": "electron test/dialog-lancher.js"
+    "dialog-test": "electron test/dialog-lancher.js",
+    "build-doc": "typedoc --out ./doc/html --exclude '**/utils/conf.ts' --excludeExternals ./app"
   },
   "author": "",
   "license": "MIT",
@@ -26,11 +28,24 @@
     "@types/react": "^15.0.24",
     "@types/react-dom": "^15.5.0",
     "@types/react-tap-event-plugin": "0.0.30",
+    "@types/webpack-env": "^1.13.0",
     "chai": "^3.5.0",
     "electron": "^1.6.6",
     "electron-packager": "^8.7.0",
     "mocha": "^3.3.0",
     "ts-loader": "^2.0.3",
+<<<<<<< HEAD
+    "ts-node": "^3.0.2",
+    "typedoc": "^0.6.0",
+    "typescript": "^2.2.2",
+    "webpack": "^2.4.1"
+  },
+  "dependencies": {
+    "axios": "^0.16.1",
+    "decompress-zip": "git://github.com/sunxfancy/decompress-zip",
+    "electron-dl": "^1.9.0",
+    "material-ui": "^0.17.4",
+=======
     "ts-node": "^3.0.4",
     "typescript": "^2.3.2",
     "webpack": "^2.5.1"
@@ -38,6 +53,7 @@
   "dependencies": {
     "axios": "^0.16.1",
     "material-ui": "^0.18.0",
+>>>>>>> master
     "pixi-live2d": "git://github.com/sunxfancy/pixi-live2d",
     "pixi.js": "^4.5.1",
     "react": "^15.5.4",

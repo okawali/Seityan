@@ -49,6 +49,10 @@ export class AppTray {
                 checked: true,
                 click: this.onAlwaysOnTopChanged.bind(this)
             },
+            {
+                label: "settings",
+                click: this.onOpenSettings.bind(this)
+            },
             { role: "quit" }
         ]);
         this._tray.setContextMenu(this._contextMenu);
@@ -99,6 +103,12 @@ export class AppTray {
         browserWindow: Electron.BrowserWindow,
         event: Electron.Event) {
         this._eventEmitter.emit("loadExternalModel");
+    }
+
+    private onOpenSettings(enuItem: Electron.MenuItem,
+        browserWindow: Electron.BrowserWindow,
+        event: Electron.Event) {
+        this._eventEmitter.emit("openSettings");
     }
 
     private onTrayClick(modifiers: Electron.Modifiers, bounds: Electron.Rectangle): void {

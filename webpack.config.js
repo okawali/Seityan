@@ -14,6 +14,7 @@ module.exports = [{
     resolve: {
         extensions: ['.ts', '.tsx', '.js']
     },
+    
     module: {
         rules: [
             {
@@ -55,7 +56,6 @@ module.exports = [{
                 test: /\.ts$/,
                 exclude: [
                     /node_modules/,
-                    /app\//,
                     /models\//,
                     /test\//
                 ],

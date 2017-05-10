@@ -17,12 +17,16 @@ export default class FileSelector extends React.Component<any, any> {
       };
 
     onFileSelected(event: TouchTapEvent) {
-        remote.dialog.showOpenDialog({title: '播放本地视频', properties: ['openFile']}, (files) => {
+        remote.dialog.showOpenDialog({title: '选择本地文件', properties: ['openFile']}, (files) => {
             for (let f of files) {
                 this.setState({path: f});
                 return;
             }
         })
+    }
+
+    getValue() {
+        return this.state.path;
     }
 
     render() {

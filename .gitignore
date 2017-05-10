@@ -2,6 +2,7 @@ node_modules
 *.js
 .vscode
 !webpack.config.js
+!test/dialog-lancher.js
 !dist/lib/*.js
 !dist/lib/**/*.js
 npm-debug*

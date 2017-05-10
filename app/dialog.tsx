@@ -9,7 +9,12 @@ import { ipcRenderer } from "electron";
 
 injectTapEventPlugin();
 
-class App extends React.Component<{}, {open:boolean, options: Form[]}> {
+interface DialogConfig {
+    title?: string
+    form?: Form[]
+}
+
+class App extends React.Component<{}, {open:boolean, options: DialogConfig}> {
     constructor(props?: {}, context?: any) {
         super(props, context);
         this.handleClose = this.handleClose.bind(this)
@@ -18,7 +23,7 @@ class App extends React.Component<{}, {open:boolean, options: Form[]}> {
     private id;
     state = {
         open: false,
-        options: []
+        options: {} as DialogConfig
     };
 
     componentDidMount() {
@@ -30,12 +35,15 @@ class App extends React.Component<{}, {open:boolean, options: Form[]}> {
         this.setState({open: true});
     };
 
-    handleClose() {
+    handleClose(cancel = false) {
         this.setState({open: false});
-        ipcRenderer.send("onDialogClose", this.id, []);
+        let ans: any[] = [] 
+        if (!cancel)
+            ans = (this.refs.form as Autoform).getValue();
+        ipcRenderer.send("onDialogClose", this.id, ans);
     };
 
-    onShowDialog(event: Electron.IpcRendererEventListener, options: Form[], id: string) {
+    onShowDialog(event: Electron.IpcRendererEventListener, options: DialogConfig, id: string) {
         this.id = id;
         this.setState({options: options, open: true});
     }
@@ -45,30 +53,26 @@ class App extends React.Component<{}, {open:boolean, options: Form[]}> {
         <FlatButton
             label="Cancel"
             primary={true}
-            onTouchTap={this.handleClose}
+            onTouchTap={() => this.handleClose(true)}
         />,
         <FlatButton
             label="Submit"
             primary={true}
-            disabled={true}
-            onTouchTap={this.handleClose}
+            onTouchTap={() => this.handleClose()}
         />,
         ];
 
         return (
             <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
-                <div>
-                    <RaisedButton label="click me" onTouchTap={this.handleOpen} />
-                    <Dialog
-                        title="Dialog With Actions"
-                        actions={actions}
-                        modal={true}
-                        open={this.state.open}
-                        overlayStyle={{background: null}}
-                    >
-                        <Autoform config={this.state.options} />
-                    </Dialog>
-                </div>
+                <Dialog
+                    title={this.state.options.title ? this.state.options.title : ""}
+                    actions={actions}
+                    modal={true}
+                    open={this.state.open}
+                    overlayStyle={{background: null}}
+                >
+                    <Autoform ref="form" config={this.state.options.form!}/>
+                </Dialog>
             </MuiThemeProvider>
         );
     }
