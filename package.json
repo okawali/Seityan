@@ -34,26 +34,16 @@
     "electron-packager": "^8.7.0",
     "mocha": "^3.3.0",
     "ts-loader": "^2.0.3",
-<<<<<<< HEAD
-    "ts-node": "^3.0.2",
-    "typedoc": "^0.6.0",
-    "typescript": "^2.2.2",
-    "webpack": "^2.4.1"
-  },
-  "dependencies": {
-    "axios": "^0.16.1",
-    "decompress-zip": "git://github.com/sunxfancy/decompress-zip",
-    "electron-dl": "^1.9.0",
-    "material-ui": "^0.17.4",
-=======
     "ts-node": "^3.0.4",
+    "typedoc": "^0.6.0",
     "typescript": "^2.3.2",
     "webpack": "^2.5.1"
   },
   "dependencies": {
     "axios": "^0.16.1",
+    "decompress-zip": "git://github.com/sunxfancy/decompress-zip",
+    "electron-dl": "^1.9.0",
     "material-ui": "^0.18.0",
->>>>>>> master
     "pixi-live2d": "git://github.com/sunxfancy/pixi-live2d",
     "pixi.js": "^4.5.1",
     "react": "^15.5.4",
