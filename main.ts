@@ -4,6 +4,8 @@ import * as url from "url";
 import * as os from 'os';
 import { AppTray } from "./electronMain/uiElements/appTray";
 import * as electronDL from 'electron-dl';
+import { PluginsLoader } from './electronMain/pluginsLoader'
+import * as RobotAPI from "./app/api"; 
 
 let win: Electron.BrowserWindow | null;
 let dialogWin: Electron.BrowserWindow | null;
@@ -11,6 +13,11 @@ let tray: AppTray;
 
 // register electron-dl for all windows
 electronDL();
+
+var loader = new PluginsLoader();
+global['pluginLoader'] = loader;
+global['RobotAPI'] = RobotAPI;
+loader.load();
 
 function createWindow() {
     win = new BrowserWindow({
@@ -42,6 +49,8 @@ function createWindow() {
         protocol: 'file:',
         slashes: true,
     }))
+    
+    
 
     win.on('closed', () => {
         win = null

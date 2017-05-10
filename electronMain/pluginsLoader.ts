@@ -1,10 +1,10 @@
-import {remote} from 'electron';
+import {app, BrowserWindow} from 'electron'
 import * as fs from "fs";
 import * as path from 'path';
 import axios from 'axios';
-import {Plugin} from 'robot-api';
-import DecompressZip from 'decompress-zip';
-const {download} = remote.require('electron-dl');
+import {Plugin} from '../app/api';
+import * as DecompressZip from 'decompress-zip';
+const {download} = require('electron-dl');
 
 export interface indexItem {
     id: number
@@ -21,7 +21,7 @@ export class PluginsLoader {
     private path: string[] // 搜索路径
 
     constructor() {
-        this.path = [path.join(remote.app.getPath('userData'), 'Plugins')];
+        this.path = [path.join(app.getPath('userData'), 'Plugins')];
     }
 
     async load() {
@@ -63,8 +63,8 @@ export class PluginsLoader {
     }
 
     async loadPlugin(p: string, v: any): Promise<Plugin> {
+        console.log("plugin loaded: ", p)
         let plugin = __non_webpack_require__(p)
-        console.log("plugin loaded: ", plugin)
         plugin.__package = v
         if (plugin.name == null) plugin.name = v.name
         if (plugin.version == null) plugin.version = v.version
@@ -76,7 +76,7 @@ export class PluginsLoader {
         if (this.index[name]) {
             let url = (this.index[name] as indexItem).downloadUrl;
             console.log(this.path[0]);
-            let dl = await download(remote.BrowserWindow.getFocusedWindow(), url, 
+            let dl = await download(BrowserWindow.getFocusedWindow(), url, 
                     {directory: this.path[0], filename: name+'.zip'})
             let dlpath = path.join(this.path[0], name);
             await this.uncompress(dlpath+'.zip', dlpath);

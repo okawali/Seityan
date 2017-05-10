@@ -56,7 +56,6 @@ module.exports = [{
                 test: /\.ts$/,
                 exclude: [
                     /node_modules/,
-                    /app\//,
                     /models\//,
                     /test\//
                 ],
