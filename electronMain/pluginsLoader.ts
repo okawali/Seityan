@@ -24,6 +24,14 @@ export class PluginsLoader {
         this.path = [path.join(app.getPath('userData'), 'Plugins')];
     }
 
+    public listAll() {
+        return this.index;
+    }
+
+    public listInstalled() {
+        return this.plugins;
+    }
+
     async load() {
         if (!fs.existsSync(this.path[0])) {
             fs.mkdirSync(this.path[0]);
@@ -32,11 +40,11 @@ export class PluginsLoader {
             fs.readdir(i, async (err, files) => {
                 if (!err)
                     files.forEach(async file => {
-                        let subdir = path.join(i, file)
+                        let subdir = path.join(i, file);
                         if (fs.statSync(subdir).isDirectory()) {
-                            let v = await this.scanPackage(subdir)
-                            let plugin = await this.loadPlugin(subdir, v)
-                            console.log(plugin)
+                            let v = await this.scanPackage(subdir);
+                            let plugin = await this.loadPlugin(subdir, v);
+                            console.log(plugin);
                         }
                     });
                 else {
@@ -54,35 +62,40 @@ export class PluginsLoader {
             fs.readFile(path.join(p, 'package.json'), 'utf8', (err, data) => {
                 if (err) 
                     if (err.code === "ENOENT") return;
-                    else reject(err)
-                let d = JSON.parse(data)
-                d.pluginPath = p
-                resolve(d)
+                    else reject(err);
+                let d = JSON.parse(data);
+                d.pluginPath = p;
+                resolve(d);
             })
         })
     }
 
     async loadPlugin(p: string, v: any): Promise<Plugin> {
         console.log("plugin loaded: ", p)
-        let plugin = __non_webpack_require__(p)
-        plugin.__package = v
-        if (plugin.name == null) plugin.name = v.name
-        if (plugin.version == null) plugin.version = v.version
-        this.plugins[plugin.name] = plugin
-        return plugin
+        let pluginClass = __non_webpack_require__(p)
+        // TODO: add store object for saving data
+        let store = {}
+        let plugin = new pluginClass(store);
+        console.log(plugin.name);
+
+        plugin.__package = v;
+        if (plugin.name == null) plugin.name = v.name;
+        if (plugin.version == null) plugin.version = v.version;
+        console.log('pluign name: ', plugin.name, v.name);
+        this.plugins[plugin.name] = plugin;
+        return plugin;
     }
 
     async install(name: string) {
         if (this.index[name]) {
             let url = (this.index[name] as indexItem).downloadUrl;
-            console.log(this.path[0]);
             let dl = await download(BrowserWindow.getFocusedWindow(), url, 
-                    {directory: this.path[0], filename: name+'.zip'})
+                    {directory: this.path[0], filename: name+'.zip'});
             let dlpath = path.join(this.path[0], name);
             await this.uncompress(dlpath+'.zip', dlpath);
             fs.unlinkSync(dlpath+'.zip');
-            let v = await this.scanPackage(dlpath)
-            let plugin = await this.loadPlugin(dlpath, v)
+            let v = await this.scanPackage(dlpath);
+            let plugin = await this.loadPlugin(dlpath, v);
         }
     }
 
@@ -118,13 +131,9 @@ export class PluginsLoader {
     async updateIndex() {
         return axios.get(PluginsLoader.index_url).then((resp) => {
             if (resp.status == 200) {
-                // this.index = resp.data;
                 resp.data.forEach((element:indexItem) => {
                     this.index[element.name] = element
                 });
-                console.log(this.index);
-                
-                this.install("robot-plugin-test");
             }
         });
     }
