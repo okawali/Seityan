@@ -1,27 +1,34 @@
-import {app, BrowserWindow} from 'electron'
+import { app, BrowserWindow } from 'electron'
 import * as fs from "fs";
 import * as path from 'path';
 import axios from 'axios';
-import {Plugin} from '../app/api';
+import { Plugin } from '../app/api';
 import * as DecompressZip from 'decompress-zip';
-const {download} = require('electron-dl');
+import { rimrafAsync } from "./utils/rimraf";
 
-export interface indexItem {
+const { download } = require('electron-dl');
+
+export interface IndexItem {
     id: number
     name: string
     version: string
     downloadUrl: string
-} 
+}
+
+interface CompareOptions {
+    lexicographical: boolean
+    zeroExtend: boolean
+}
 
 export class PluginsLoader {
-    static index_url = "https://www.norgerman.com/plugins"
-    private index: {[key: string]: indexItem|undefined} = {} // 上面这个json获取下来存这里
+    static indexUrl = "https://www.norgerman.com/plugins"
+    private index: { [key: string]: IndexItem | undefined } = {} // 上面这个json获取下来存这里
 
-    private plugins: {[key: string]: Plugin|undefined} = {}// 已加载的插件
-    private path: string[] // 搜索路径
+    private plugins: { [key: string]: Plugin | undefined } = {}// 已加载的插件
+    private searchPath: string[] // 搜索路径
 
     constructor() {
-        this.path = [path.join(app.getPath('userData'), 'Plugins')];
+        this.searchPath = [path.join(app.getPath('userData'), 'LAssisantPlugins')];
     }
 
     public listAll() {
@@ -33,10 +40,10 @@ export class PluginsLoader {
     }
 
     async load() {
-        if (!fs.existsSync(this.path[0])) {
-            fs.mkdirSync(this.path[0]);
+        if (!fs.existsSync(this.searchPath[0])) {
+            fs.mkdirSync(this.searchPath[0]);
         }
-        for (let i of this.path) {
+        for (let i of this.searchPath) {
             fs.readdir(i, async (err, files) => {
                 if (!err)
                     files.forEach(async file => {
@@ -60,7 +67,7 @@ export class PluginsLoader {
     async scanPackage(p: string): Promise<any> {
         return new Promise((resolve, reject) => {
             fs.readFile(path.join(p, 'package.json'), 'utf8', (err, data) => {
-                if (err) 
+                if (err)
                     if (err.code === "ENOENT") return;
                     else reject(err);
                 let d = JSON.parse(data);
@@ -88,27 +95,27 @@ export class PluginsLoader {
 
     async install(name: string) {
         if (this.index[name]) {
-            let url = (this.index[name] as indexItem).downloadUrl;
-            let dl = await download(BrowserWindow.getFocusedWindow(), url, 
-                    {directory: this.path[0], filename: name+'.zip'});
-            let dlpath = path.join(this.path[0], name);
-            await this.uncompress(dlpath+'.zip', dlpath);
-            fs.unlinkSync(dlpath+'.zip');
+            let url = (this.index[name] as IndexItem).downloadUrl;
+            let dl = await download(BrowserWindow.getFocusedWindow(), url,
+                { directory: this.searchPath[0], filename: name + '.zip' });
+            let dlpath = path.join(this.searchPath[0], name);
+            await this.uncompress(dlpath + '.zip', dlpath);
+            fs.unlinkSync(dlpath + '.zip');
             let v = await this.scanPackage(dlpath);
             let plugin = await this.loadPlugin(dlpath, v);
         }
     }
 
-    async uncompress(ZIP_FILE_PATH, DESTINATION_PATH){
+    async uncompress(zipFile: string, destination: string) {
         return new Promise<any>((resolve, reject) => {
-            var unzipper = new DecompressZip(ZIP_FILE_PATH);
+            var unzipper = new DecompressZip(zipFile);
 
             // Add the event listener
             unzipper.on('error', reject);
             unzipper.on('extract', resolve);
 
             unzipper.extract({
-                path: DESTINATION_PATH,
+                path: destination,
                 strip: 1
             });
         })
@@ -116,12 +123,12 @@ export class PluginsLoader {
 
     async uninstall(name: string) {
         if (this.index[name]) {
-            for (var i in this.path) {
-                var path = path.join(i, name);
-                if (fs.existsSync(path)) {
-                    fs.rmdirSync(path);
+            for (let i of this.searchPath) {
+                let currentPath = path.join(i, name);
+                if (fs.existsSync(currentPath)) {
+                    await rimrafAsync(currentPath);
                     if (this.plugins[name])
-                        this.plugins[name] = undefined;
+                        delete this.plugins[name];
                     return;
                 }
             }
@@ -129,9 +136,9 @@ export class PluginsLoader {
     }
 
     async updateIndex() {
-        return axios.get(PluginsLoader.index_url).then((resp) => {
+        return axios.get(PluginsLoader.indexUrl).then((resp) => {
             if (resp.status == 200) {
-                resp.data.forEach((element:indexItem) => {
+                resp.data.forEach((element: IndexItem) => {
                     this.index[element.name] = element
                 });
             }
@@ -139,8 +146,8 @@ export class PluginsLoader {
     }
 
     async update(name: string) {
-        if (this.index[name] && this.plugins[name] && 
-            this.versionCompare((this.index[name] as indexItem).version, (this.plugins[name] as Plugin).version) === 1) {
+        if (this.index[name] && this.plugins[name] &&
+            this.versionCompare((this.index[name] as IndexItem).version, (this.plugins[name] as Plugin).version) === 1) {
             this.install(name);
         }
     }
@@ -150,11 +157,11 @@ export class PluginsLoader {
     }
 
 
-    private versionCompare(v1, v2, options?) {
+    private versionCompare(v1: string, v2: string, options?: CompareOptions) {
         var lexicographical = options && options.lexicographical,
             zeroExtend = options && options.zeroExtend,
-            v1parts = v1.split('.'),
-            v2parts = v2.split('.');
+            v1parts: string[] | number[] = v1.split('.'),
+            v2parts: string[] | number[] = v2.split('.');
 
         function isValidPart(x) {
             return (lexicographical ? /^\d+[A-Za-z]*$/ : /^\d+$/).test(x);
