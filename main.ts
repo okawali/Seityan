@@ -2,10 +2,10 @@ import { app, BrowserWindow, ipcMain, dialog, globalShortcut } from "electron";
 import * as path from "path";
 import * as url from "url";
 import * as os from 'os';
-import { AppTray } from "./electronMain/uiElements/appTray";
+import { AppTray } from "./main/uiElements/appTray";
 import * as electronDL from 'electron-dl';
-import { PluginsLoader } from './electronMain/pluginsLoader'
-import * as RobotAPI from "./app/api"; 
+import { PluginLoader } from './main/pluginLoader'
+import * as RobotAPI from "./app/api";
 
 let win: Electron.BrowserWindow | null;
 let dialogWin: Electron.BrowserWindow | null;
@@ -14,7 +14,7 @@ let tray: AppTray;
 // register electron-dl for all windows
 electronDL();
 
-var loader = new PluginsLoader();
+var loader = new PluginLoader();
 global['pluginLoader'] = loader;
 global['RobotAPI'] = RobotAPI;
 loader.load();
@@ -49,8 +49,6 @@ function createWindow() {
         protocol: 'file:',
         slashes: true,
     }))
-    
-    
 
     win.on('closed', () => {
         win = null
@@ -92,9 +90,11 @@ function createWindow() {
 
     tray.on("openSettings", () => {
         dialogWin!.show();
-        dialogWin!.webContents.send("showDialog", { title: "Settings", form: [
-            {name: "settings", type: "Settings", tips: "settings"}
-        ]}, "settings");
+        dialogWin!.webContents.send("showDialog", {
+            title: "Settings", form: [
+                { name: "settings", type: "Settings", tips: "settings" }
+            ]
+        }, "settings");
     });
 
     ipcMain.on("resize", (event, arg) => {
@@ -110,6 +110,34 @@ function createWindow() {
         dialogWin!.hide();
         win!.webContents.send("onDialogClose", id, value, error);
     })
+
+    ipcMain.on("installPlugin", (event, id: string, params: any[]) => {
+        loader.install(params[0])
+            .then(_ => {
+                event.sender.send("onLoaderResult", id);
+            })
+            .catch(error => {
+                event.sender.send("onLoaderResult", id, null, error);
+            })
+    });
+
+    ipcMain.on("unInstallPlugin", (event, id: string, params: any[]) => {
+        loader.uninstall(params[0])
+            .then(_ => {
+                event.sender.send("onLoaderResult", id);
+            })
+            .catch(error => {
+                event.sender.send("onLoaderResult", id, null, error);
+            })
+    });
+
+    ipcMain.on("listAllPlugins", (event, id: string, params: any[]) => {
+        event.sender.send("onLoaderResult", id, loader.listAll());
+    });
+
+    ipcMain.on("listInstalledPlugins", (event, id: string, params: any[]) => {
+        event.sender.send("onLoaderResult", id, loader.listInstalled());
+    });
 
     globalShortcut.register('Alt+Q', () => {
         win!.webContents.send("start-listening");

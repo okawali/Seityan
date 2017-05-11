@@ -6,7 +6,7 @@
  * @export
  * @class Plugin
  */
-export abstract class Plugin {
+export abstract class Plugin implements PluginItem {
     constructor(store?: object) {
         this.store = store;
     }
@@ -36,11 +36,6 @@ export abstract class Plugin {
      */
     store: object | undefined
 
-    public getName() {return this.name}
-
-    public getVersion() {return this.version}
-
-    public getStore() {return this.store}
 
     /**
      * On Activate, it called when the plugin is loading
