@@ -31,7 +31,7 @@ It uses zhima(知麻) robot to translate the chinese sentences to the intent cod
 
 > Important!! You will need to ask us the `conf.ts` for building this project, 
 > because it contains the secret keys of third-party services. Send us emails to 
-> [sunxfancy](mailto:sunxfancy@gmail.com) or [norgerman](mailto:xyn0410@gmail.com) or create a new issue.
+> [sunxfancy](mailto:sunxfancy@gmail.com), [norgerman](mailto:xyn0410@gmail.com) or create a new issue.
 
 Clone this git repository with the following shell code:
 
