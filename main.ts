@@ -50,9 +50,6 @@ function createWindow() {
         slashes: true,
     }))
 
-    dialogWin.webContents.openDevTools();
-
-
     win.on('closed', () => {
         win = null
     })
