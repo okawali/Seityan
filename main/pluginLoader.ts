@@ -2,29 +2,21 @@ import { app, BrowserWindow } from 'electron'
 import * as fs from "fs";
 import * as path from 'path';
 import axios from 'axios';
-import { Plugin } from '../app/api';
 import * as DecompressZip from 'decompress-zip';
 import { rimrafAsync } from "./utils/rimraf";
 
 const { download } = require('electron-dl');
-
-export interface IndexItem {
-    id: number
-    name: string
-    version: string
-    downloadUrl: string
-}
 
 interface CompareOptions {
     lexicographical: boolean
     zeroExtend: boolean
 }
 
-export class PluginsLoader {
+export class PluginLoader {
     static indexUrl = "https://www.norgerman.com/plugins"
-    private index: { [key: string]: IndexItem | undefined } = {} // 上面这个json获取下来存这里
+    private index: { [key: string]: PluginIndexItem | undefined } = {} // 上面这个json获取下来存这里
 
-    private plugins: { [key: string]: Plugin | undefined } = {}// 已加载的插件
+    private plugins: { [key: string]: PluginItem | undefined } = {}// 已加载的插件
     private searchPath: string[] // 搜索路径
 
     constructor() {
@@ -95,7 +87,7 @@ export class PluginsLoader {
 
     async install(name: string) {
         if (this.index[name]) {
-            let url = (this.index[name] as IndexItem).downloadUrl;
+            let url = (this.index[name] as PluginIndexItem).downloadUrl;
             let dl = await download(BrowserWindow.getFocusedWindow(), url,
                 { directory: this.searchPath[0], filename: name + '.zip' });
             let dlpath = path.join(this.searchPath[0], name);
@@ -136,9 +128,9 @@ export class PluginsLoader {
     }
 
     async updateIndex() {
-        return axios.get(PluginsLoader.indexUrl).then((resp) => {
+        return axios.get(PluginLoader.indexUrl).then((resp) => {
             if (resp.status == 200) {
-                resp.data.forEach((element: IndexItem) => {
+                resp.data.forEach((element: PluginIndexItem) => {
                     this.index[element.name] = element
                 });
             }
@@ -147,7 +139,7 @@ export class PluginsLoader {
 
     async update(name: string) {
         if (this.index[name] && this.plugins[name] &&
-            this.versionCompare((this.index[name] as IndexItem).version, (this.plugins[name] as Plugin).version) === 1) {
+            this.versionCompare((this.index[name] as PluginIndexItem).version, (this.plugins[name] as PluginItem).version) === 1) {
             this.install(name);
         }
     }
@@ -203,5 +195,4 @@ export class PluginsLoader {
 
         return 0;
     }
-
 }

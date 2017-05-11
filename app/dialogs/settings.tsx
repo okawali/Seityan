@@ -2,7 +2,7 @@ import * as React from "react";
 import { TextField, RaisedButton, TouchTapEvent, FlatButton } from "material-ui"
 import axios from 'axios';
 import { remote } from 'electron';
-import { PluginsLoader } from '../../electronMain/pluginsLoader'
+import * as loader from "../utils/pluginLoader"
 
 export default class Settings extends React.Component<any, any> {
     constructor(props) {
@@ -15,10 +15,9 @@ export default class Settings extends React.Component<any, any> {
         this.update();
     }
 
-    update() {
-        let loader: PluginsLoader = remote.getGlobal('pluginLoader');
-        let index = loader.listAll();
-        let installed = loader.listInstalled();
+    async update() {
+        let index = await loader.listAll();
+        let installed = await loader.listInstalled();
         let list: any[] = []
         for (let i in index) {
             if (index[i]) {
@@ -31,14 +30,12 @@ export default class Settings extends React.Component<any, any> {
     }
 
     onInstallClick(name: string) {
-        let loader: PluginsLoader = remote.getGlobal('pluginLoader');
         loader.install(name).then(() => {
             this.update();
         });
     }
 
     onUnInstallClick(name: string) {
-        let loader: PluginsLoader = remote.getGlobal('pluginLoader');
         loader.uninstall(name).then(() => {
             this.update();
         });

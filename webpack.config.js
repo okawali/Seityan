@@ -28,9 +28,6 @@ module.exports = [{
                 use: [
                     {
                         loader: "ts-loader",
-                        options: {
-                            configFileName: "tsconfig.json"
-                        }
                     }
                 ]
             }
@@ -62,9 +59,6 @@ module.exports = [{
                 use: [
                     {
                         loader: "ts-loader",
-                        options: {
-                            configFileName: "tsconfig.main.json"
-                        }
                     }
                 ]
             }

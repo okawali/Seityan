@@ -3,6 +3,7 @@
         "removeComments": true,
         "outDir": "./dist/",
         "target": "es6",
+        "module": "commonjs",
         "moduleResolution": "node",
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
@@ -14,10 +15,13 @@
             "es2016"
         ],
         "paths": {
-            "robot-api": ["./app/api"]
-        }
-    },
-    "include": [
-        "app"
-    ]
+            "robot-api": [
+                "./app/api"
+            ]
+        },
+        "typeRoots": [
+            "node_modules/@types",
+            "typings"
+        ]
+    }
 }
