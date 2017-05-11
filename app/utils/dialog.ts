@@ -1,10 +1,10 @@
 import { ipcRenderer } from "electron";
 import * as uuid from "uuid/v4";
-import { Form } from "../dialogs/autoform";
-
+import { DialogConfig } from "../dialog";
+export * from '../dialog';
 var actionMapper: Map<string, (value?: any, error?: any) => void> = new Map<string, (value?: any, error?: any) => void>();
 
-export function show<T>(options: Form[]): Promise<T> {
+export function show<T>(options: DialogConfig): Promise<T> {
     return new Promise<T>((resolve, reject) => {
         showDialog<T>(options, uuid(), (value, error) => {
             if (error) {
@@ -16,7 +16,7 @@ export function show<T>(options: Form[]): Promise<T> {
     });
 }
 
-function showDialog<T>(options: Form[], id: string, callback: (value?: T, error?: any) => void): void {
+function showDialog<T>(options: DialogConfig, id: string, callback: (value?: T, error?: any) => void): void {
     actionMapper.set(id, callback);
 
     ipcRenderer.send("showDialog", options, id);

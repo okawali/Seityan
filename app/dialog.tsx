@@ -9,7 +9,7 @@ import { ipcRenderer } from "electron";
 
 injectTapEventPlugin();
 
-interface DialogConfig {
+export interface DialogConfig {
     title?: string
     form?: Form[]
 }

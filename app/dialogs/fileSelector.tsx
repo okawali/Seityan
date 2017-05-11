@@ -14,7 +14,7 @@ export default class FileSelector extends React.Component<any, any> {
         this.setState({
           value: event.target.value,
         });
-      };
+    };
 
     onFileSelected(event: TouchTapEvent) {
         remote.dialog.showOpenDialog({title: '选择本地文件', properties: ['openFile']}, (files) => {

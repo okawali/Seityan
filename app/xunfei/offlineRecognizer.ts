@@ -157,8 +157,8 @@ export default class OfflineRecognizer {
     // This is the list of words that need to be added to the recognizer
     // This follows the CMU dictionary format and the phone set of the Chinese model
     // These words were taken from model/lm/zh_CN/mandarin_notone.dic
-    private wordList = [["ni_hao","n i h ao"], ["ni_hao_ma", "n i h ao m a"], ["zai_jian", "z ai j ian"], ["huan_ying", "h uan y ing"], ["xie_xie", "x ie x ie"], ["ming_tian_jian", "m ing t ian j ian"]];
-    private wordListChinese = {"ni_hao": "你好", "ni_hao_ma": "你好吗", "zai_jian": "再见", "huan_ying": "欢迎", "xie_xie": "谢谢", "ming_tian_jian": "明天见"};
+    private wordList = [["xi_li_jiang","x i l i j i ang"], ["xiao_qian","x i ao q i an"], ["ni_hao","n i h ao"], ["ni_hao_ma", "n i h ao m a"], ["zai_jian", "z ai j ian"], ["huan_ying", "h uan y ing"], ["xie_xie", "x ie x ie"], ["ming_tian_jian", "m ing t ian j ian"]];
+    private wordListChinese = {"xi_li_jiang": "西莉酱", "xiao_qian": "小倩", "ni_hao": "你好", "ni_hao_ma": "你好吗", "zai_jian": "再见", "huan_ying": "欢迎", "xie_xie": "谢谢", "ming_tian_jian": "明天见"};
     private grammarChineseGreetings = {numStates: 1, start: 0, end: 0, transitions: [{from: 0, to: 0, word: "ni_hao"},{from: 0, to: 0, word: "ni_hao_ma"},{from: 0, to: 0, word: "zai_jian"},{from: 0, to: 0, word: "huan_ying"},{from: 0, to: 0, word: "xie_xie"},{from: 0, to: 0, word: "ming_tian_jian"}]};
     private grammars = [{title: "Chinese Greetings", g: this.grammarChineseGreetings}];
     private grammarIds: any[] = [];
