@@ -20,7 +20,7 @@ export class PluginLoader {
     private searchPath: string[] // 搜索路径
 
     constructor() {
-        this.searchPath = [path.join(app.getPath('userData'), 'seityan', 'Plugins')];
+        this.searchPath = [path.join(app.getPath('userData'), 'SeityanPlugins')];
     }
 
     public listAll() {
