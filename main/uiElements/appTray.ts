@@ -56,7 +56,7 @@ export class AppTray {
             { role: "quit" }
         ]);
         this._tray.setContextMenu(this._contextMenu);
-        this._tray.setToolTip("heiheihei");
+        this._tray.setToolTip("Seityan");
         this._eventEmitter = new EventEmitter();
         this._tray.on("click", this.onTrayClick.bind(this));
         this._prevSelectedModel = "blanc";

@@ -1,10 +1,10 @@
 #!/bin/bash
 if [[ "$TRAVIS_OS_NAME" == "osx" ]];
 then
-    DIR_NAME="electron-live2d-darwin-x64"
+    DIR_NAME="seityan-darwin-x64"
     npm run package-osx-x64
 else
-    DIR_NAME="electron-live2d-linux-x64"
+    DIR_NAME="seityan-linux-x64"
     npm run package-linux-x64
 fi
 

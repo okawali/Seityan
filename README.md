@@ -1,11 +1,11 @@
-[![Build Status](https://travis-ci.org/Norgerman/live2d-electron.svg?branch=master)](https://travis-ci.org/Norgerman/live2d-electron)
-[![Build Status](https://ci.appveyor.com/api/projects/status/github/Norgerman/live2d-electron?svg=true)](https://ci.appveyor.com/project/Norgerman/live2d-electron)
+[![Build Status](https://travis-ci.org/Norgerman/Seityan.svg?branch=master)](https://travis-ci.org/Norgerman/Seityan)
+[![Build Status](https://ci.appveyor.com/api/projects/status/github/Norgerman/Seityan?svg=true)](https://ci.appveyor.com/project/Norgerman/Seityan)
 
 
 ![./doc/img/show.gif](./doc/img/show.gif)
 
 
-# live2d-election
+# Seityan
 
 Live2D is a set of software and tools that turn 2D artwork into animations applicable to a variety of mediums and platforms, from games to animated movies.
 
@@ -36,13 +36,13 @@ It uses zhima(知麻) robot to translate the chinese sentences to the intent cod
 Clone this git repository with the following shell code:
 
 ```sh
-git clone https://github.com/Norgerman/live2d-electron
+git clone https://github.com/Norgerman/Seityan
 ```
 
 Install all the dependences with `npm i`:
 
 ```sh
-cd ./live2d-electron
+cd ./Seityan
 npm i
 ```
 

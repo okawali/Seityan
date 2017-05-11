@@ -1,7 +1,7 @@
 {
-  "name": "live2d-electron",
+  "name": "seityan",
   "version": "1.0.2",
-  "description": "live2d-electron",
+  "description": "Seityan - a desktop assistant",
   "main": "dist/main.js",
   "scripts": {
     "start": "cd dist && electron .",
@@ -10,15 +10,15 @@
     "test": "mocha -r ts-node/register test/main-test.ts app/**/test.ts",
     "test-api": "mocha -r ts-node/register app/**/apitest.ts",
     "package": "npm run package-win32-x64 && npm run package-linux-x64 && npm run package-osx-x64",
-    "package-win32-x64": "electron-packager ./dist electron-live2d --overwrite --asar=true --platform=win32 --arch=x64 --out=release-builds --icon=dist/assets/image/win.ico",
-    "package-linux-x64": "electron-packager ./dist electron-live2d --overwrite --asar=true --platform=linux --arch=x64 --out=release-builds",
-    "package-osx-x64": "electron-packager ./dist electron-live2d --overwrite --asar=true --platform=darwin --arch=x64 --out=release-builds --icon=dist/assets/image/mac.icns",
+    "package-win32-x64": "electron-packager ./dist seityan --overwrite --asar=true --platform=win32 --arch=x64 --out=release-builds --icon=dist/assets/image/win.ico",
+    "package-linux-x64": "electron-packager ./dist seityan --overwrite --asar=true --platform=linux --arch=x64 --out=release-builds",
+    "package-osx-x64": "electron-packager ./dist seityan --overwrite --asar=true --platform=darwin --arch=x64 --out=release-builds --icon=dist/assets/image/mac.icns",
     "dialog-test": "electron test/dialog-lancher.js",
     "build-doc": "typedoc --out ./doc/html --exclude '**/utils/conf.ts' --excludeExternals ./app"
   },
   "author": "",
   "license": "MIT",
-  "repository": "https://github.com/Norgerman/live2d-electron",
+  "repository": "https://github.com/Norgerman/Seityan",
   "devDependencies": {
     "@types/chai": "^3.5.2",
     "@types/electron": "^1.4.35",
