@@ -11,13 +11,14 @@ declare class AudioRecorder {
 }
 
 export default class OfflineRecognizer {
-    private recognizer: Worker
-    private recorder: AudioRecorder
-    private callbackManager: CallbackManager
-    private audioContext: AudioContext
-    private isRecorderReady = false;
-    private isRecognizerReady = false;
-    private bothReadyCallback;
+    recognizer: Worker
+    recorder: AudioRecorder
+    callbackManager: CallbackManager
+    audioContext: AudioContext
+    isRecorderReady = false;
+    isRecognizerReady = false;
+    nameCallback;
+    bothReadyCallback;
 
     public static async create() {
         return new Promise<OfflineRecognizer>((resolve, reject) => {
@@ -38,6 +39,7 @@ export default class OfflineRecognizer {
             worker.onmessage = (e) => {
                 // This is the case when we have a callback id to be called
                 if (e.data.hasOwnProperty('id')) {
+                  console.log('id:', e.data['id']);
                   var clb = callbackManager.get(e.data['id']);
                   var data = {};
                   if ( e.data.hasOwnProperty('data')) data = e.data.data;
@@ -48,13 +50,28 @@ export default class OfflineRecognizer {
                 // encoded in UTF8, so we map them to ASCII strings. Here we
                 // display both ASCII and Chinese strings
                 if (e.data.hasOwnProperty('hyp')) {
-                  var newHyp = e.data.hyp;
-                  var newHypChinese = e.data.hyp.split(' ').map(function(x) {return wordListChinese[x];}).join(' ');
+                  var newHyp = e.data.hyp.split(' ');
+                  var newHypChinese = newHyp.map(function(x) {return wordListChinese[x];});
+                  
+                  if (newHyp[newHyp.length-1] == 'xi_li_jiang' || newHyp[newHyp.length-1] == 'xiao_qian' )
+                    if (this.nameCallback) { // 触发呼叫名字
+                        this.stopRecording();
+                        this.nameCallback(newHypChinese[newHypChinese.length-1]).then(() => {
+                            this.startRecording();
+                        }) 
+                    }
+
+                  if (newHyp.length >= 5) {
+                    this.stopRecording();
+                    this.startRecording();
+                  }
+                  
                   if (e.data.hasOwnProperty('final') && e.data.final) {
                       newHyp = "Final: " + newHyp;
                       newHypChinese = "Final: " + newHypChinese;
                   }
-                  console.log(newHypChinese);
+                //   console.log(newHypChinese); 
+                  
                     // updateHyp(newHyp + '<br><br>' + newHypChinese);
                 }
                 // This is the case when we have an error
@@ -159,7 +176,7 @@ export default class OfflineRecognizer {
     // These words were taken from model/lm/zh_CN/mandarin_notone.dic
     private wordList = [["xi_li_jiang","x i l i j i ang"], ["xiao_qian","x i ao q i an"], ["ni_hao","n i h ao"], ["ni_hao_ma", "n i h ao m a"], ["zai_jian", "z ai j ian"], ["huan_ying", "h uan y ing"], ["xie_xie", "x ie x ie"], ["ming_tian_jian", "m ing t ian j ian"]];
     private wordListChinese = {"xi_li_jiang": "西莉酱", "xiao_qian": "小倩", "ni_hao": "你好", "ni_hao_ma": "你好吗", "zai_jian": "再见", "huan_ying": "欢迎", "xie_xie": "谢谢", "ming_tian_jian": "明天见"};
-    private grammarChineseGreetings = {numStates: 1, start: 0, end: 0, transitions: [{from: 0, to: 0, word: "ni_hao"},{from: 0, to: 0, word: "ni_hao_ma"},{from: 0, to: 0, word: "zai_jian"},{from: 0, to: 0, word: "huan_ying"},{from: 0, to: 0, word: "xie_xie"},{from: 0, to: 0, word: "ming_tian_jian"}]};
+    private grammarChineseGreetings = {numStates: 1, start: 0, end: 0, transitions: [{from: 0, to: 0, word: "xi_li_jiang"},{from: 0, to: 0, word: "xiao_qian"},{from: 0, to: 0, word: "ni_hao"},{from: 0, to: 0, word: "ni_hao_ma"},{from: 0, to: 0, word: "zai_jian"},{from: 0, to: 0, word: "huan_ying"},{from: 0, to: 0, word: "xie_xie"},{from: 0, to: 0, word: "ming_tian_jian"}]};
     private grammars = [{title: "Chinese Greetings", g: this.grammarChineseGreetings}];
     private grammarIds: any[] = [];
 }
