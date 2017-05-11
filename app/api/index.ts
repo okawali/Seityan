@@ -1,10 +1,6 @@
-export function test_robot_api(str: string) {
-    console.log(`${str} api called`);
-}
-
 export * from './plugin'
 
-export class Api {
+export class Version {
     static apiVersion = '1.0'
 
     public static getApiVersion() {

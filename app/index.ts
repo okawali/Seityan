@@ -123,7 +123,7 @@ async function startListening() {
     if (xf.isListening()) xf.iatEnd();
     await xf.tts(randomTips());
     let text = await xf.iatBegin()
-    mainRobot.input(text);
+    return mainRobot.input(text);
 }
 
 createModelAsync(defaultModel).catch(console.error);
@@ -139,4 +139,7 @@ var offlineRecognizer = OfflineRecognizer.create()
 offlineRecognizer.then((e) => {
     console.log("初始化完成")
     e.startRecording();
+    e.nameCallback = async (name) => {
+        return startListening();
+    } 
 })
