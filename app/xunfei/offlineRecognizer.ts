@@ -58,7 +58,10 @@ export default class OfflineRecognizer {
                         this.stopRecording();
                         this.nameCallback(newHypChinese[newHypChinese.length-1]).then(() => {
                             this.startRecording();
-                        }) 
+                        }).catch(e => {
+                            console.log(e);
+                            this.startRecording();
+                        });
                     }
 
                   if (newHyp.length >= 5) {

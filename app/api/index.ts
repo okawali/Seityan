@@ -1,4 +1,4 @@
-export * from './plugin'
+export * from './plugin';
 
 export class Version {
     static apiVersion = '1.0'
