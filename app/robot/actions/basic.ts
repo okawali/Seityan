@@ -23,6 +23,7 @@ export class MailActions {
 
     @robotAction('设定自己的账户', '邮箱', '密码')
     public setupMail(username: Email, password: Password) {
-        
+        this.username = username;
+        this.password = password.data;
     }
 }

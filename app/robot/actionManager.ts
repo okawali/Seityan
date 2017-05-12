@@ -87,4 +87,7 @@ export class Path {
 
 export class Password {
     data: string;
+    constructor(str: string) {
+        this.data = str;
+    } 
 }
