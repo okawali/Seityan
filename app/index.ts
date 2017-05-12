@@ -121,9 +121,14 @@ ipcRenderer.on("start-listening", startListening);
 async function startListening() {
     if (!xf) return;
     if (xf.isListening()) xf.iatEnd();
-    await xf.tts(randomTips());
-    let text = await xf.iatBegin()
-    return mainRobot.input(text);
+    try {
+        await xf.tts(randomTips());
+        let text = await xf.iatBegin();
+        return mainRobot.input(text);
+    } catch(e) {
+        console.log('IAT error:', e);
+        return;
+    }
 }
 
 createModelAsync(defaultModel).catch(console.error);
