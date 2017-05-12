@@ -17,6 +17,7 @@ export default class ZMRobt {
 
     constructor(xf: XfBase) {
         this.xf = xf;
+        this.runner.zmRobot = this;
         for (let i in plugins) {
             var plugin = plugins[i];
             if (!(plugin instanceof ZMPlugin)) console.log("error! plugin is null, it can not translate to ZMPlugin");
@@ -71,7 +72,7 @@ export default class ZMRobt {
             if (p) return p.response(data, query); // 如果插件有这个功能，就交给插件
             let v = ActionManager.inst.getAction(data.intents[0].intent)
             if (v) { 
-                this.runner.run(data.intents[0].intent, data.entities); 
+                await this.runner.run(data.intents[0].intent, data.entities); 
                 return "任务完成"; 
             } else return "好的，我明白了，但我目前还没有这个功能。"; // 理解了，但是还没有这个插件
         } else

@@ -1,6 +1,6 @@
 import "reflect-metadata";
 
-const symbolRobotAction = Symbol("robotAction");
+export const symbolRobotAction = Symbol("robotAction");
 
 export function robotAction(name: string, ...args: string[]) {
     return (target: any, propertyKey: string, descriptor: TypedPropertyDescriptor<Function>) => {
@@ -19,6 +19,8 @@ export interface FunctionDefinion {
     chineseArgs: string[] 
     argTypes: any
 } 
+
+
 
 export default class ActionManager {
     private static _instance = new ActionManager();
@@ -58,4 +60,31 @@ export default class ActionManager {
     public getThisObj(name: string) {
         return this.class_map.get(name);
     }
+}
+
+export class Email {
+    addr: string;
+    server: string;
+    constructor(str: string) {
+        let data = str.split('@');
+        this.addr = data[0];
+        this.server = data[1];
+    } 
+    toString() {
+        return this.addr + '@' + this.server;
+    }
+}
+
+export class Path {
+    path: string;
+    type: string; // dir, file, link
+    exist: boolean;
+    constructor(str: string) {
+        this.path = str;
+    } 
+    
+}
+
+export class Password {
+    data: string;
 }
