@@ -10,15 +10,21 @@ declare class AudioRecorder {
     public consumers: any[]
 }
 
+declare class VAD {
+    constructor(options);
+}
+
 export default class OfflineRecognizer {
     recognizer: Worker
     recorder: AudioRecorder
+    vad: VAD
     callbackManager: CallbackManager
     audioContext: AudioContext
     isRecorderReady = false;
     isRecognizerReady = false;
     nameCallback;
     bothReadyCallback;
+    vadRecording = false;
 
     public static async create() {
         return new Promise<OfflineRecognizer>((resolve, reject) => {
@@ -57,18 +63,13 @@ export default class OfflineRecognizer {
                     if (this.nameCallback) { // 触发呼叫名字
                         this.stopRecording();
                         this.nameCallback(newHypChinese[newHypChinese.length-1]).then(() => {
-                            this.startRecording();
+                            this.startVADRecording();
                         }).catch(e => {
                             console.log(e);
-                            this.startRecording();
+                            this.startVADRecording();
                         });
                     }
 
-                  if (newHyp.length >= 5) {
-                    this.stopRecording();
-                    this.startRecording();
-                  }
-                  
                   if (e.data.hasOwnProperty('final') && e.data.final) {
                       newHyp = "Final: " + newHyp;
                       newHypChinese = "Final: " + newHypChinese;
@@ -107,6 +108,14 @@ export default class OfflineRecognizer {
         this.recorder && this.recorder.stop();
     }
 
+    public startVADRecording() {
+        this.vadRecording = true;
+    }
+
+    public stopVADRecording() {
+        this.vadRecording = false;
+    }
+
     initRecognizer() {
         // You can pass parameters to the recognizer, such as : {command: 'initialize', data: [["-hmm", "my_model"], ["-fwdflat", "no"]]}
         // Pay attention here to state the sample rate as the default value is 16kHz and this Chinese acoustic model uses 8kHz
@@ -131,6 +140,18 @@ export default class OfflineRecognizer {
         this.recorder = new AudioRecorder(input, audioRecorderConfig);
         // If a recognizer is ready, we pass it to the recorder
         if (this.recognizer) this.recorder.consumers = [this.recognizer];
+        this.recorder.stop();
+        
+        // Setup options
+        var options = {
+            source: input,
+            voice_stop: () => {console.log('voice_stop'); this.stopRecording(); }, 
+            voice_start: () => {console.log('voice_start'); if (this.startVADRecording) this.startRecording(); }
+        }; 
+        
+        // Create VAD
+        this.vad = new VAD(options);
+
         this.isRecorderReady = true;
         if (this.isRecognizerReady) this.bothReadyCallback();
         console.log("Audio recorder ready");
