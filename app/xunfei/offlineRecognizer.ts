@@ -12,6 +12,7 @@ declare class AudioRecorder {
 
 declare class VAD {
     constructor(options);
+    analyser: AnalyserNode
 }
 
 export default class OfflineRecognizer {
@@ -131,27 +132,29 @@ export default class OfflineRecognizer {
     startUserMedia(stream) { 
         var input = this.audioContext.createMediaStreamSource(stream);
        
-        // Notice that for this Chinese acoustic model, audio must be at 8kHz, so we should
-        // request it from the recorder
-        var audioRecorderConfig = {
-               errorCallback: (x) => console.log("Error from recorder: " + x),
-               outputSampleRate: 8000
-        };
-        this.recorder = new AudioRecorder(input, audioRecorderConfig);
-        // If a recognizer is ready, we pass it to the recorder
-        if (this.recognizer) this.recorder.consumers = [this.recognizer];
-        this.recorder.stop();
-        
         // Setup options
         var options = {
             source: input,
+            destination: input,
             voice_stop: () => {console.log('voice_stop'); this.stopRecording(); }, 
             voice_start: () => {console.log('voice_start'); if (this.startVADRecording) this.startRecording(); }
         }; 
         
         // Create VAD
         this.vad = new VAD(options);
+        
 
+        // Notice that for this Chinese acoustic model, audio must be at 8kHz, so we should
+        // request it from the recorder
+        var audioRecorderConfig = {
+               errorCallback: (x) => console.log("Error from recorder: " + x),
+               outputSampleRate: 8000
+        };
+        this.recorder = new AudioRecorder(this.vad.analyser, audioRecorderConfig); // 把VAD的分析器节点接到Recorder的输入上，延后本批次声音数据的处理
+        // If a recognizer is ready, we pass it to the recorder
+        if (this.recognizer) this.recorder.consumers = [this.recognizer];
+        this.recorder.stop();
+        
         this.isRecorderReady = true;
         if (this.isRecognizerReady) this.bothReadyCallback();
         console.log("Audio recorder ready");
