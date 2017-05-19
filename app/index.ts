@@ -44,41 +44,45 @@ async function createModelAsync(modelDescription: ModelDescription) {
         modelBasePath: modelDescription.basePath,
     });
 
-    live2dSprite!.on("removed", obj => {
-        var Live2DSprite = live2dSprite;
-        live2dSprite!.removeAllListeners("click");
-        live2dSprite!.removeAllListeners("mousemove");
-        live2dSprite!.removeAllListeners("add");
-        live2dSprite!.removeAllListeners("removed");
-        live2dSprite!.destroy();
+    live2dSprite.on("removed", obj => {
+        if (live2dSprite) {
+            live2dSprite.removeAllListeners("click");
+            live2dSprite.removeAllListeners("mousemove");
+            live2dSprite.removeAllListeners("add");
+            live2dSprite.removeAllListeners("removed");
+            live2dSprite.destroy();
+        }
     })
 
-    live2dSprite!.on("added", obj => {
-        var Live2DSprite = live2dSprite;
+    live2dSprite.on("added", obj => {
+        if (live2dSprite == null) {
+            return;
+        }
+        var sprite: PIXI.Live2DSprite = live2dSprite;
 
         resizable = true;
-        live2dSprite!.on('click', (event: PIXI.interaction.InteractionEvent) => {
+        sprite.on('click', (event: PIXI.interaction.InteractionEvent) => {
             const point: PIXI.Point = event.data.global;
-            if (live2dSprite!.hitTest('body', point.x, point.y)) {
-                live2dSprite!.startRandomMotionOnce('tap_body');
-            } else if (live2dSprite!.hitTest("head", point.x, point.y)) {
-                live2dSprite!.startRandomMotionOnce('flick_head');
+            if (sprite.hitTest('body', point.x, point.y)) {
+                sprite.startRandomMotionOnce('tap_body');
+            } else if (sprite.hitTest("head", point.x, point.y)) {
+                sprite.startRandomMotionOnce('flick_head');
             }
         });
 
-        live2dSprite!.on('mousemove', (event: PIXI.interaction.InteractionEvent) => {
+        sprite.on('mousemove', (event: PIXI.interaction.InteractionEvent) => {
             const point: PIXI.Point = event.data.global;
-            live2dSprite!.setViewPoint(point.x, point.y);
+            sprite.setViewPoint(point.x, point.y);
         });
     });
 
-    stage.addChild(live2dSprite!);
+    stage.addChild(live2dSprite);
 
-    live2dSprite!.startRandomMotion('idle');
+    live2dSprite.startRandomMotion('idle');
 
     if (!xf) xf = new XfBase();
     mainRobot = new MainRobot(xf);
-    xf.audioplay = live2dSprite!.playSound.bind(live2dSprite!);
+    xf.audioplay = live2dSprite.playSound.bind(live2dSprite!);
     xf.tts("试问，汝是吾的Master吗？");
 }
 
@@ -94,7 +98,7 @@ renderer.view.addEventListener('mousewheel', event => {
     if (scale != 1 && resizable) {
         var newSize = { width: currentSize.width * scale, height: currentSize.height * scale }
         renderer.resize(newSize.width, newSize.height);
-        live2dSprite!.resize(newSize.width, newSize.height);
+        live2dSprite && live2dSprite.resize(newSize.width, newSize.height);
         ipcRenderer.send("resize", newSize);
     }
 });
@@ -125,7 +129,7 @@ async function startListening() {
         await xf.tts(randomTips());
         let text = await xf.iatBegin();
         return mainRobot.input(text);
-    } catch(e) {
+    } catch (e) {
         console.log('IAT error:', e);
         return;
     }
@@ -146,5 +150,5 @@ offlineRecognizer.then((e) => {
     e.startRecording();
     e.nameCallback = async (name) => {
         return startListening();
-    } 
+    }
 })

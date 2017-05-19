@@ -55,19 +55,19 @@ function createWindow() {
     })
 
     tray.on("minimize", () => {
-        win!.minimize();
+        win && win.minimize();
     });
 
     tray.on("restore", () => {
-        win!.restore();
+        win && win.restore();
     });
 
     tray.on("setAlwaysTop", (value: boolean) => {
-        win!.setAlwaysOnTop(value);
+        win && win.setAlwaysOnTop(value);
     });
 
     tray.on("loadInternalModel", (arg: { name: string, buildIn: boolean }) => {
-        win!.webContents.send("loadModel", arg.name, arg.buildIn);
+        win && win.webContents.send("loadModel", arg.name, arg.buildIn);
     })
 
     tray.on("loadExternalModel", _ => {
@@ -81,7 +81,7 @@ function createWindow() {
             if (files && files.length > 0) {
                 var name = files[0].replace(/\\/g, "/");
                 tray.setPrevSelectModelAsExternal();
-                win!.webContents.send("loadModel", name, false);
+                win && win.webContents.send("loadModel", name, false);
             } else {
                 tray.restorePrevSelectedModel();
             }
@@ -89,26 +89,30 @@ function createWindow() {
     });
 
     tray.on("openSettings", () => {
-        dialogWin!.show();
-        dialogWin!.webContents.send("showDialog", {
-            title: "Settings", form: [
-                { name: "settings", type: "Settings", tips: "settings" }
-            ]
-        }, "settings");
+        if (dialogWin) {
+            dialogWin.show();
+            dialogWin.webContents.send("showDialog", {
+                title: "Settings", form: [
+                    { name: "settings", type: "Settings", tips: "settings" }
+                ]
+            }, "settings");
+        }
     });
 
     ipcMain.on("resize", (event, arg) => {
-        win!.setSize(Math.ceil(arg.width), Math.ceil(arg.height));
+        win && win.setSize(Math.ceil(arg.width), Math.ceil(arg.height));
     })
 
     ipcMain.on("showDialog", (event, options: any, id: string) => {
-        dialogWin!.show();
-        dialogWin!.webContents.send("showDialog", options, id);
+        if (dialogWin) {
+            dialogWin.show();
+            dialogWin.webContents.send("showDialog", options, id);
+        }
     })
 
     ipcMain.on("onDialogClose", (event, id: string, value?: any, error?: any) => {
-        dialogWin!.hide();
-        win!.webContents.send("onDialogClose", id, value, error);
+        dialogWin && dialogWin.hide();
+        win && win.webContents.send("onDialogClose", id, value, error);
     })
 
     ipcMain.on("installPlugin", (event, id: string, params: any[]) => {
@@ -140,7 +144,7 @@ function createWindow() {
     });
 
     globalShortcut.register('Alt+Q', () => {
-        win!.webContents.send("start-listening");
+        win && win.webContents.send("start-listening");
     })
 
 
