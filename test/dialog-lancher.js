@@ -22,12 +22,12 @@ function createWindow() {
         win = null
     })
     ipcMain.on("dialogFinishedLoading", function() {
-        win.webContents.send("showDialog", [
+        win.webContents.send("showDialog", {title: 'test', form:[
             {name: '姓名', type: 'String', tips: '输入您的姓名'},
             {name: '密码', type: 'Password', tips: '输入您的密码'},
             {name: '出生日期', type: 'Date', tips: '输入您的生日'},
             {name: '待上传', type: 'File', tips:'待上传的文件'}
-        ], '10086');
+        ]}, '10086');
     })
    
 }

@@ -11,7 +11,7 @@ class GoogleSearch extends ZMPlugin {
         if (mode) {
             if (data.resultCode == "0000" && data.intents.length != 0 && data.intents[0].intent != "google") {
                 this.zmRobot.resetContext();
-                shell.openExternal("https://www.google.com.hk/s?wd="+encodeURIComponent(query));
+                shell.openExternal("https://www.google.com.hk/search?q="+encodeURIComponent(query));
                 return "为您找到这些信息";
             }
         }
@@ -22,7 +22,7 @@ class GoogleSearch extends ZMPlugin {
         }
 
         // 正确匹配
-        shell.openExternal("https://www.google.com.hk/s?wd="+encodeURIComponent(data.entities[0].entity));
+        shell.openExternal("https://www.google.com.hk/search?q="+encodeURIComponent(data.entities[0].entity));
         
         return "为您找到这些信息";
     }

@@ -14,6 +14,7 @@
     "package-linux-x64": "electron-packager ./dist seityan --overwrite --asar=true --platform=linux --arch=x64 --out=release-builds",
     "package-osx-x64": "electron-packager ./dist seityan --overwrite --asar=true --platform=darwin --arch=x64 --out=release-builds --icon=dist/assets/image/mac.icns",
     "dialog-test": "electron test/dialog-lancher.js",
+    "weather-test": "electron test/weather-lancher.js",
     "build-doc": "typedoc --out ./doc/html --exclude '**/utils/conf.ts' --excludeExternals ./app"
   },
   "author": "",

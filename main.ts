@@ -36,7 +36,7 @@ function createWindow() {
     })
 
     dialogWin = new BrowserWindow({
-        width: 600, height: 500,
+        width: 600, height: 700,
         autoHideMenuBar: true, frame: false,
         resizable: true, skipTaskbar: true,
         alwaysOnTop: true, show: false,
