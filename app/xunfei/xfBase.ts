@@ -11,10 +11,11 @@ declare class IFlyIatSession {
 }
 
 import {xunfeiAppId, xunfeiAppKey} from '../utils/conf';
-
+import OfflineRecognizer from './offlineRecognizer';
 export default class XfBase {
     public callback: (value) => void
     public audioplay?: (url: string, host?: string) => Promise<void>;
+    public offlineRecognizer: OfflineRecognizer;
 
     constructor(audioplay?: (url: string, host?: string) => Promise<void>) {
         this.audioplay = audioplay;
@@ -51,6 +52,7 @@ export default class XfBase {
             this.mic_reject = reject
             this.iatSession.start(ssb_param);
             this.mic_open = true;
+            if (this.offlineRecognizer) this.offlineRecognizer.stopVADRecording();
             // volumeEvent.start();
             console.log('开始录音...');
         });
@@ -59,6 +61,7 @@ export default class XfBase {
     public iatEnd() {
         this.iatSession.stop();
         this.mic_open = false;
+        if (this.offlineRecognizer) this.offlineRecognizer.startVADRecording();
         console.log('结束录音');
     }
 
@@ -169,6 +172,7 @@ export default class XfBase {
         this.mic_open = false;
         console.log('Result: '+this.iat_result);
         this.iatSession.stop();
+        if (this.offlineRecognizer) this.offlineRecognizer.startVADRecording();
         if (this.callback) this.callback(this.iat_result);
         if (error==0) this.mic_resolve(this.iat_result);
         else this.mic_reject(error);

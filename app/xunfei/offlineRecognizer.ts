@@ -62,13 +62,7 @@ export default class OfflineRecognizer {
                   
                   if (newHyp[newHyp.length-1] == 'xi_li_jiang' || newHyp[newHyp.length-1] == 'xiao_qian' )
                     if (this.nameCallback) { // 触发呼叫名字
-                        this.stopRecording();
-                        this.nameCallback(newHypChinese[newHypChinese.length-1]).then(() => {
-                            this.startVADRecording();
-                        }).catch(e => {
-                            console.log(e);
-                            this.startVADRecording();
-                        });
+                        this.nameCallback(newHypChinese[newHypChinese.length-1]);
                     }
 
                   if (e.data.hasOwnProperty('final') && e.data.final) {
@@ -137,7 +131,7 @@ export default class OfflineRecognizer {
             source: input,
             destination: input,
             voice_stop: () => {console.log('voice_stop'); this.stopRecording(); }, 
-            voice_start: () => {console.log('voice_start'); if (this.startVADRecording) this.startRecording(); }
+            voice_start: () => {console.log('voice_start'); if (this.vadRecording) this.startRecording(); }
         }; 
         
         // Create VAD
