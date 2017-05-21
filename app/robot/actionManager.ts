@@ -20,6 +20,8 @@ export interface FunctionDefinion {
     argTypes: any
 } 
 
+
+
 export default class ActionManager {
     private static _instance = new ActionManager();
     public static get inst() {
@@ -60,26 +62,32 @@ export default class ActionManager {
     }
 }
 
-class CopyActions {
-    @robotAction('复制', '复制来源', '复制目标')
-    public copy(from: string, to: string) {
-        
-    }
-
-    @robotAction('移动', '移动来源', '移动目标')
-    public move(from: string, to: string) {
-
+export class Email {
+    addr: string;
+    server: string;
+    constructor(str: string) {
+        let data = str.split('@');
+        this.addr = data[0];
+        this.server = data[1];
+    } 
+    toString() {
+        return this.addr + '@' + this.server;
     }
 }
 
-class MailActions {
-    @robotAction('发邮件', '内容')
-    public sendMail(to: string, content: string) {
+export class Path {
+    path: string;
+    type: string; // dir, file, link
+    exist: boolean;
+    constructor(str: string) {
+        this.path = str;
+    } 
+    
+}
 
-    }
-
-    @robotAction('设定自己的账户', '邮箱', '密码')
-    public setupMail(username: string, password: string) {
-        
-    }
+export class Password {
+    data: string;
+    constructor(str: string) {
+        this.data = str;
+    } 
 }

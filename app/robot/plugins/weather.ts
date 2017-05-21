@@ -2,6 +2,7 @@ import ZMRobot from '../zmRobot'
 import {ZMPlugin, ZMReturn} from '../zmPlugin'
 import {weatherAppId, weatherAppKey} from '../../utils/conf'
 import axios from 'axios'
+import {show} from '../../utils/dialog'
 
 class Weather extends ZMPlugin {
     intent = "ask_weather"
@@ -9,6 +10,8 @@ class Weather extends ZMPlugin {
     public async response(data: ZMReturn, query: string): Promise<string> {
         WeatherAPI.getDaily().then((value)=> {
             console.log(value.data);
+            var daily = value.data.results[0];
+            show({title: 'Weather', weather: {date: 0, data: daily}});
         })
         return "为您提供以下天气信息";
     }
