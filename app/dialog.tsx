@@ -5,16 +5,23 @@ import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import {RaisedButton, FlatButton, Dialog} from "material-ui"
 import * as injectTapEventPlugin from "react-tap-event-plugin"
 import Autoform, {Form} from './dialogs/autoform'
+import Weather from './dialogs/weather'
 import { ipcRenderer } from "electron";
 
 injectTapEventPlugin();
 
+export interface WeatherConfig {
+    date: number  // 0 is today, 1 tomorrow, 2 the day after tomorrow
+    data: any 
+}
+
 export interface DialogConfig {
     title?: string
     form?: Form[]
+    weather?: WeatherConfig
 }
 
-class App extends React.Component<{}, {open:boolean, options: DialogConfig}> {
+class App extends React.Component<{}, {open:boolean, options: DialogConfig, type: string}> {
     constructor(props?: {}, context?: any) {
         super(props, context);
         this.handleClose = this.handleClose.bind(this)
@@ -23,6 +30,7 @@ class App extends React.Component<{}, {open:boolean, options: DialogConfig}> {
     private id;
     state = {
         open: false,
+        type: "form",
         options: {} as DialogConfig
     };
 
@@ -45,22 +53,35 @@ class App extends React.Component<{}, {open:boolean, options: DialogConfig}> {
 
     onShowDialog(event: Electron.IpcRendererEventListener, options: DialogConfig, id: string) {
         this.id = id;
-        this.setState({options: options, open: true});
+        var type = "";
+        if (options.form) type = "form";
+        if (options.weather) type = "weather" 
+        this.setState({options: options, open: true, type: type});
     }
 
     render() {
-        const actions = [
-        <FlatButton
-            label="Cancel"
-            primary={true}
-            onTouchTap={() => this.handleClose(true)}
-        />,
-        <FlatButton
-            label="Submit"
-            primary={true}
-            onTouchTap={() => this.handleClose()}
-        />,
-        ];
+        let actions:any[] = [];
+        if (this.state.type == 'form') {
+            actions.push(
+                <FlatButton
+                    label="Cancel"
+                    primary={true}
+                    onTouchTap={() => this.handleClose(true)}
+                />,
+                <FlatButton
+                    label="Submit"
+                    primary={true}
+                    onTouchTap={() => this.handleClose()}
+                />);
+        } else  if (this.state.type == 'weather') {
+            actions.push(
+                <FlatButton
+                    label="OK"
+                    primary={true}
+                    onTouchTap={() => this.handleClose(true)}
+                />);
+        }
+
 
         return (
             <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
@@ -71,7 +92,8 @@ class App extends React.Component<{}, {open:boolean, options: DialogConfig}> {
                     open={this.state.open}
                     overlayStyle={{background: null}}
                 >
-                    <Autoform ref="form" config={this.state.options.form!}/>
+                    {this.state.type == 'form' ? <Autoform ref="form" config={this.state.options.form!}/> : null}
+                    {this.state.type == 'weather' ? <Weather config={this.state.options.weather!}/> : null}
                 </Dialog>
             </MuiThemeProvider>
         );
