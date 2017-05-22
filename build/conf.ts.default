@@ -6,3 +6,4 @@ export var yyyKey = "5";
 export var zhimaAppId = "6";
 export var weatherAppId = "7";
 export var weatherAppKey = "8";
+export var turlingKey = "9";
