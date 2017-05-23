@@ -6,7 +6,7 @@
  * @export
  * @class Plugin
  */
-export abstract class Plugin implements PluginItem {
+export abstract class Plugin implements Seityan.Plugin.PluginItem {
     constructor(store?: object) {
         this.store = store;
     }

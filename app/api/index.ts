@@ -8,7 +8,7 @@ export class Version {
     }
 
     public static getVersion() {
-        var pjson = require('../../package.json');
-        return pjson.version;
+        var packageJson = require('../../package.json');
+        return packageJson.version;
     }
 }

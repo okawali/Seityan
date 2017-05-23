@@ -5,7 +5,7 @@ export default class MainRobot {
     public xf: XfBase
     private zmRobot: ZMRobot
 
-    constructor(xf:XfBase) {
+    constructor(xf: XfBase) {
         this.xf = xf;
         this.zmRobot = new ZMRobot(xf);
         this.output = this.output.bind(this);

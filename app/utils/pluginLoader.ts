@@ -12,17 +12,17 @@ export function uninstall(name: string): Promise<void> {
     return pluginAction<void>("unInstallPlugin", name);
 }
 
-export function listAll(): Promise<{ [name: string]: PluginIndexItem | undefined }> {
-    return pluginAction<{ [name: string]: PluginIndexItem | undefined }>("listAllPlugins");
+export function listAll(): Promise<{ [name: string]: Seityan.Plugin.PluginIndexItem | undefined }> {
+    return pluginAction<{ [name: string]: Seityan.Plugin.PluginIndexItem | undefined }>("listAllPlugins");
 }
 
-export function listInstalled(): Promise<{ [key: string]: PluginItem | undefined }> {
-    return pluginAction<{ [key: string]: PluginItem | undefined }>("listInstalledPlugins");
+export function listInstalled(): Promise<{ [key: string]: Seityan.Plugin.PluginItem | undefined }> {
+    return pluginAction<{ [key: string]: Seityan.Plugin.PluginItem | undefined }>("listInstalledPlugins");
 }
 
 function pluginAction<T>(action: string, ...params): Promise<T> {
     return new Promise<T>((resolve, reject) => {
-        sendAction<T>(action, uuid(), params , (value, error) => {
+        sendAction<T>(action, uuid(), params, (value, error) => {
             if (error) {
                 reject(error);
             } else {

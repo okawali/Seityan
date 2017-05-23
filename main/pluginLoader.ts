@@ -14,9 +14,9 @@ interface CompareOptions {
 
 export class PluginLoader {
     static indexUrl = "https://www.norgerman.com/plugins"
-    private index: { [key: string]: PluginIndexItem | undefined } = {} // 上面这个json获取下来存这里
+    private index: { [key: string]: Seityan.Plugin.PluginIndexItem | undefined } = {} // 上面这个json获取下来存这里
 
-    private plugins: { [key: string]: PluginItem | undefined } = {}// 已加载的插件
+    private plugins: { [key: string]: Seityan.Plugin.PluginItem | undefined } = {}// 已加载的插件
     private searchPath: string[] // 搜索路径
 
     constructor() {
@@ -87,7 +87,7 @@ export class PluginLoader {
 
     async install(name: string) {
         if (this.index[name]) {
-            let url = (this.index[name] as PluginIndexItem).downloadUrl;
+            let url = (this.index[name] as Seityan.Plugin.PluginIndexItem).downloadUrl;
             let dl = await download(BrowserWindow.getFocusedWindow(), url,
                 { directory: this.searchPath[0], filename: name + '.zip' });
             let dlpath = path.join(this.searchPath[0], name);
@@ -130,7 +130,7 @@ export class PluginLoader {
     async updateIndex() {
         return axios.get(PluginLoader.indexUrl).then((resp) => {
             if (resp.status == 200) {
-                resp.data.forEach((element: PluginIndexItem) => {
+                resp.data.forEach((element: Seityan.Plugin.PluginIndexItem) => {
                     this.index[element.name] = element
                 });
             }
@@ -139,7 +139,7 @@ export class PluginLoader {
 
     async update(name: string) {
         if (this.index[name] && this.plugins[name] &&
-            this.versionCompare((this.index[name] as PluginIndexItem).version, (this.plugins[name] as PluginItem).version) === 1) {
+            this.versionCompare((this.index[name] as Seityan.Plugin.PluginIndexItem).version, (this.plugins[name] as Seityan.Plugin.PluginItem).version) === 1) {
             this.install(name);
         }
     }

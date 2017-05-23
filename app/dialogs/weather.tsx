@@ -35,13 +35,12 @@ export default class Weather extends React.Component<WeatherProps, any> {
     }
 
     renderOneDay(data, index: number) : JSX.Element {
-        let img_url =  "assets/weather-icons/" + data.code_day + ".png";
+        let imageUrl =  "assets/weather-icons/" + data.code_day + ".png";
         return <div key={index} style={{width: "33.333%", height: 200, textAlign: 'center', display:'inline-block'}}>
-            <img src={img_url} alt={data.text_day} style={{width: 50}}/>
+            <img src={imageUrl} alt={data.text_day} style={{width: 50}}/>
             <div>{data.text_day}</div>
             <div style={{fontWeight: "lighter"}}>{data.low}°/{data.high}°</div>
             <div>{data.wind_direction}风 {data.wind_scale}级</div>
         </div>
     }
-
 }

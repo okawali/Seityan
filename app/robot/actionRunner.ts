@@ -12,7 +12,7 @@ export default class ActionRunner {
         var args: any[] = []
         var argCount = 0;
         
-        let action = ActionManager.inst.getAction(name);
+        let action = ActionManager.instance.getAction(name);
         if (action == undefined) return "Oh, my god! 这个动作咱现在还不会执行啊。"; 
 
         // 整理并按顺序填写实体信息
@@ -50,7 +50,7 @@ export default class ActionRunner {
         }
 
         let func = action.func;
-        let that = ActionManager.inst.getThisObj(action.className);
+        let that = ActionManager.instance.getThisObj(action.className);
         return func.call(that, ...args);
     }
 }
