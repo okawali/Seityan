@@ -16,6 +16,7 @@ import * as dialog from "./utils/dialog";
 var loader = remote.getGlobal('pluginLoader');
 console.log(loader);
 
+
 webFrame.setVisualZoomLevelLimits(1, 1);
 webFrame.setLayoutZoomLevelLimits(1, 1);
 
@@ -26,7 +27,7 @@ const dragger = new WindowDragger(element);
 element!.appendChild(renderer.view);
 const stage = new PIXI.Container();
 const defaultModel = models[0];
-var xf: XfBase | null;
+var xf: XfBase = new XfBase();;
 var mainRobot: MainRobot;
 var live2dSprite: PIXI.Live2DSprite | null = null;
 
@@ -80,7 +81,6 @@ async function createModelAsync(modelDescription: ModelDescription) {
 
     live2dSprite.startRandomMotion('idle');
 
-    if (!xf) xf = new XfBase();
     mainRobot = new MainRobot(xf);
     xf.audioplay = live2dSprite.playSound.bind(live2dSprite!);
     xf.tts("试问，汝是吾的Master吗？");
@@ -147,6 +147,7 @@ animate();
 var offlineRecognizer = OfflineRecognizer.create()
 offlineRecognizer.then((e) => {
     console.log("初始化完成")
+    xf.offlineRecognizer = e;
     e.startRecording();
     e.nameCallback = async (name) => {
         return startListening();

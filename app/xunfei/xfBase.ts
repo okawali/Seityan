@@ -1,8 +1,9 @@
-import {xunfeiAppId, xunfeiAppKey} from '../utils/conf';
-
+import { xunfeiAppId, xunfeiAppKey } from '../utils/conf';
+import OfflineRecognizer from './offlineRecognizer';
 export default class XfBase {
     public callback: (value) => void
     public audioplay?: (url: string, host?: string) => Promise<void>;
+    public offlineRecognizer: OfflineRecognizer;
 
     private _audioPlayUrl = "http://h5.xf-yun.com/audioStream/";
 
@@ -13,12 +14,12 @@ export default class XfBase {
      * reconnectionDelay   重连支持的延迟时间   
      */
     private session = new IFlyTtsSession({
-                                        'url'                : 'ws://h5.xf-yun.com/tts.do',
-                                        'reconnection'       : true,
-                                        'reconnectionDelay'  : 30000
-                                    });
+        'url': 'ws://h5.xf-yun.com/tts.do',
+        'reconnection': true,
+        'reconnectionDelay': 30000
+    });
     /* 音频播放对象 */
-    private _audioElement:HTMLAudioElement;
+    private _audioElement: HTMLAudioElement;
     /* 音频播放状态 0:未播放且等待音频数据状态，1:正播放且等待音频数据状态，2：未播放且不等待音频数据*/
     private _audioState = 0;
     private _iatResult = "";
@@ -26,7 +27,7 @@ export default class XfBase {
     private _micResolve: (value?: string | PromiseLike<string>) => void
     private _micReject: (reason?: any) => void
     private _iatSession;
-    
+
 
     constructor(audioplay?: (url: string, host?: string) => Promise<void>) {
         this.audioplay = audioplay;
@@ -35,7 +36,7 @@ export default class XfBase {
         this.onResult = this.onResult.bind(this);
         this.onVolume = this.onVolume.bind(this);
         this._iatSession = new IFlyIatSession({
-            "callback":{
+            "callback": {
                 "onResult": this.onResult,
                 "onVolume": this.onVolume,
                 "onError": this.onError,
@@ -63,6 +64,7 @@ export default class XfBase {
             this._micReject = reject
             this._iatSession.start(ssb_param);
             this._micOpen = true;
+            this.offlineRecognizer && this.offlineRecognizer.stopVADRecording();
             // volumeEvent.start();
             console.log('开始录音...');
         });
@@ -71,6 +73,7 @@ export default class XfBase {
     public iatEnd() {
         this._iatSession.stop();
         this._micOpen = false;
+        this.offlineRecognizer && this.offlineRecognizer.startVADRecording();
         console.log('结束录音');
     }
 
@@ -81,21 +84,19 @@ export default class XfBase {
      * @vcn 播音员
      * @spd 速度，1-9，不过怎么感觉没啥用呢
      */
-    private async play(content: string, vcn: string, spd: string){
+    private async play(content: string, vcn: string, spd: string) {
         return new Promise<void>((resolve, reject) => {
             // this.reset();
-            
-            var ssb_param = {"appid": xunfeiAppId, "appkey": xunfeiAppKey, "synid":"12345", "params" : `ent=aisound,aue=lame,vcn=${vcn},spd=${spd}`};
+
+            var ssb_param = { "appid": xunfeiAppId, "appkey": xunfeiAppKey, "synid": "12345", "params": `ent=aisound,aue=lame,vcn=${vcn},spd=${spd}` };
             var audioPalyUrl = this._audioPlayUrl;
             var iaudio = this._audioElement;
             var audioplay = this.audioplay;
             var session = this.session;
             session.stop();
-            session.start(ssb_param, content, function (err, obj)
-            {
+            session.start(ssb_param, content, function (err, obj) {
                 var audio_url = obj.audio_url;
-                if( audio_url != null && audio_url != undefined )
-                {
+                if (audio_url != null && audio_url != undefined) {
                     if (audioplay) {
                         session.stop();
                         resolve(audioplay(audio_url, audioPalyUrl));
@@ -128,12 +129,10 @@ export default class XfBase {
      * 重置音频缓存队列和播放对象
      * 若音频正在播放，则暂停当前播放对象，创建并使用新的播放对象.
      */
-    private reset()
-    {
-        var audio_array = [];	 
+    private reset() {
+        var audio_array = [];
         this._audioState = 0;
-        if(this._audioElement != null)
-        {
+        if (this._audioElement != null) {
             this._audioElement.pause();
         }
         this._audioElement = new Audio();
@@ -144,7 +143,7 @@ export default class XfBase {
     /************** iat  ******************/
 
     private onResult(err, result) {
-        var error: number|string = 0;
+        var error: number | string = 0;
         /* 若回调的err为空或错误码为0，则会话成功，可提取识别结果进行显示*/
         if (err == null || err == undefined || err == 0) {
             if (result == '' || result == null)
@@ -156,15 +155,20 @@ export default class XfBase {
             error = 'error code : ' + err + ", error description : " + result;
         }
         this._micOpen = false;
-        console.log('Result: '+this._iatResult);
+        console.log('Result: ' + this._iatResult);
         this._iatSession.stop();
-        if (this.callback) this.callback(this._iatResult);
-        if (error==0) this._micResolve(this._iatResult);
-        else this._micReject(error);
+        this.offlineRecognizer && this.offlineRecognizer.startVADRecording();
+        this.callback && this.callback(this._iatResult);
+        if (error == 0) {
+            this._micResolve(this._iatResult);
+        }
+        else {
+            this._micReject(error);
+        }
         // volumeEvent.stop();
     }
     private onProcess(status) {
-        switch (status){
+        switch (status) {
             case 'onStart':
                 // tip.innerHTML = "服务初始化...";
                 break;
@@ -182,7 +186,7 @@ export default class XfBase {
                 // tip.innerHTML = "倾听中...(声音过小)";
                 break;
             default:
-                // tip.innerHTML = status;
+            // tip.innerHTML = status;
         }
     }
 

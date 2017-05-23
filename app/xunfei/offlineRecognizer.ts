@@ -8,7 +8,7 @@ export default class OfflineRecognizer {
     isRecognizerReady = false;
     nameCallback;
     bothReadyCallback;
-    vadRecording = false;
+    vadRecording = true;
 
     // This is the list of words that need to be added to the recognizer
     // This follows the CMU dictionary format and the phone set of the Chinese model
@@ -52,21 +52,10 @@ export default class OfflineRecognizer {
                     var newHyp = e.data.hyp.split(' ');
                     var newHypChinese = newHyp.map(function (x) { return wordListChinese[x]; });
 
-                    if (newHyp[newHyp.length - 1] == 'xi_li_jiang' || newHyp[newHyp.length - 1] == 'xiao_qian')
+                    if (newHypChinese[newHyp.length - 1] == '西莉酱' || newHypChinese[newHyp.length - 1] == '小倩')
                         if (this.nameCallback) { // 触发呼叫名字
-                            this.stopRecording();
-                            this.nameCallback(newHypChinese[newHypChinese.length - 1]).then(() => {
-                                this.startVADRecording();
-                            }).catch(e => {
-                                console.log(e);
-                                this.startVADRecording();
-                            });
+                            this.nameCallback(newHypChinese[newHypChinese.length - 1]);
                         }
-
-                    if (e.data.hasOwnProperty('final') && e.data.final) {
-                        newHyp = "Final: " + newHyp;
-                        newHypChinese = "Final: " + newHypChinese;
-                    }
                     //   console.log(newHypChinese); 
 
                     // updateHyp(newHyp + '<br><br>' + newHypChinese);
@@ -129,9 +118,8 @@ export default class OfflineRecognizer {
             source: input,
             destination: input,
             voice_stop: () => { console.log('voice_stop'); this.stopRecording(); },
-            voice_start: () => { console.log('voice_start'); if (this.startVADRecording) this.startRecording(); }
+            voice_start: () => { console.log('voice_start'); if (this.vadRecording) this.startRecording(); }
         };
-
         // Create VAD
         this.vad = new VAD(options);
 

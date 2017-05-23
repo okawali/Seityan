@@ -6,7 +6,7 @@ import {RaisedButton, FlatButton, Dialog} from "material-ui"
 import * as injectTapEventPlugin from "react-tap-event-plugin"
 import Autoform, {Form} from './dialogs/autoform'
 import Weather from './dialogs/weather'
-import { ipcRenderer } from "electron";
+import { ipcRenderer } from "electron"
 
 injectTapEventPlugin();
 

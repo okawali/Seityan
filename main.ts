@@ -151,8 +151,6 @@ function createWindow() {
     globalShortcut.register('Alt+Q', () => {
         win && win.webContents.send("start-listening");
     })
-
-
 }
 
 function onAppReady() {
