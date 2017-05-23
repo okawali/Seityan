@@ -7,7 +7,7 @@ export default class MainRobot {
     private zmRobot: ZMRobot
     private turlingRobot: TurlingRobot
 
-    constructor(xf:XfBase) {
+    constructor(xf: XfBase) {
         this.xf = xf;
         this.zmRobot = new ZMRobot(xf);
         this.turlingRobot = new TurlingRobot(xf);

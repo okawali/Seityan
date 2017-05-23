@@ -1,9 +1,9 @@
-import {robotAction, Email, Path, Password} from '../actionManager'
+import { robotAction, Email, Path, Password } from '../actionManager'
 
 export class CopyActions {
     @robotAction('复制', '复制来源', '复制目标')
     public copy(from: string, to: string) {
-        
+
     }
 
     @robotAction('移动', '移动来源', '移动目标')

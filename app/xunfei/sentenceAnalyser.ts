@@ -2,9 +2,9 @@ import asios from 'axios';
 import {yyyKey} from '../utils/conf'
 
 export default class SentenceAnalyser {
-    private static base_url = "http://ltpapi.voicecloud.cn/analysis/";
+    private static readonly BASE_URL = "http://ltpapi.voicecloud.cn/analysis/";
     public static async wordCut(str: string) {
-        return asios.get(this.base_url, {
+        return asios.get(this.BASE_URL, {
             params: {
                 text: str,
                 pattern: 'ws',
@@ -15,7 +15,7 @@ export default class SentenceAnalyser {
     }
 
     public static async deepAnalyse(str: string) {
-        return asios.get(this.base_url, {
+        return asios.get(this.BASE_URL, {
             params: {
                 text: str,
                 pattern: 'all',

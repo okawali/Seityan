@@ -5,9 +5,9 @@ export const symbolRobotAction = Symbol("robotAction");
 export function robotAction(name: string, ...args: string[]) {
     return (target: any, propertyKey: string, descriptor: TypedPropertyDescriptor<Function>) => {
         if (descriptor.value) {
-            ActionManager.inst.registerClass(target.constructor);
+            ActionManager.instance.registerClass(target.constructor);
             let types = Reflect.getMetadata("design:paramtypes", target, propertyKey);
-            ActionManager.inst.register(descriptor.value, target.constructor.name, name, args, types);
+            ActionManager.instance.register(descriptor.value, target.constructor.name, name, args, types);
         }
     };
 }
@@ -16,34 +16,34 @@ export interface FunctionDefinion {
     className: string
     func: Function
     chineseName: string
-    chineseArgs: string[] 
+    chineseArgs: string[]
     argTypes: any
-} 
+}
 
 
 
 export default class ActionManager {
-    private static _instance = new ActionManager();
-    public static get inst() {
-        return this._instance;
+    private static readonly INSTANCE = new ActionManager();
+    public static get instance() {
+        return this.INSTANCE;
     }
 
     constructor() {
-        
+
     }
-    
-    private class_map = new Map<string, object>();
-    private function_map = new Map<string, FunctionDefinion>();
+
+    private _classMap = new Map<string, object>();
+    private _functionMap = new Map<string, FunctionDefinion>();
 
     public registerClass(cons: FunctionConstructor) {
-        if (this.class_map.has(cons.name)) return;
-        this.class_map.set(cons.name, new cons());
+        if (this._classMap.has(cons.name)) return;
+        this._classMap.set(cons.name, new cons());
         console.log("class registered", cons.name);
         console.log(cons);
     }
 
     public register(func: Function, classname: string, name: string, args: string[], types: any) {
-        this.function_map.set(name, {
+        this._functionMap.set(name, {
             className: classname,
             func: func,
             chineseName: name,
@@ -54,11 +54,11 @@ export default class ActionManager {
     }
 
     public getAction(name: string) {
-        return this.function_map.get(name);
+        return this._functionMap.get(name);
     }
 
     public getThisObj(name: string) {
-        return this.class_map.get(name);
+        return this._classMap.get(name);
     }
 }
 
@@ -69,7 +69,7 @@ export class Email {
         let data = str.split('@');
         this.addr = data[0];
         this.server = data[1];
-    } 
+    }
     toString() {
         return this.addr + '@' + this.server;
     }
@@ -81,13 +81,13 @@ export class Path {
     exist: boolean;
     constructor(str: string) {
         this.path = str;
-    } 
-    
+    }
+
 }
 
 export class Password {
     data: string;
     constructor(str: string) {
         this.data = str;
-    } 
+    }
 }

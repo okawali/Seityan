@@ -1,14 +1,14 @@
 {
   "name": "seityan",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Seityan - a desktop assistant",
   "main": "dist/main.js",
   "scripts": {
     "start": "cd dist && electron .",
     "watch": "webpack --watch",
     "build": "webpack",
-    "test": "mocha -r ts-node/register test/main-test.ts app/**/test.ts",
-    "test-api": "mocha -r ts-node/register app/**/apitest.ts",
+    "test": "mocha -r ts-node/register test/main-test.ts test/test.ts",
+    "test-api": "mocha -r ts-node/register test/apitest.ts",
     "package": "npm run package-win32-x64 && npm run package-linux-x64 && npm run package-osx-x64",
     "package-win32-x64": "electron-packager ./dist seityan --overwrite --asar=true --platform=win32 --arch=x64 --out=release-builds --icon=dist/assets/image/win.ico",
     "package-linux-x64": "electron-packager ./dist seityan --overwrite --asar=true --platform=linux --arch=x64 --out=release-builds",

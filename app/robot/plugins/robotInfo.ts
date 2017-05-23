@@ -1,6 +1,6 @@
 import ZMRobot from '../zmRobot'
-import {ZMPlugin, ZMReturn} from '../zmPlugin'
-import {shell} from 'electron'
+import { ZMPlugin, ZMReturn } from '../zmPlugin'
+import { shell } from 'electron'
 
 
 class RobotInfo extends ZMPlugin {

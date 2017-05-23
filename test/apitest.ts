@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import SentenceAnalyser from './sentenceAnalyser'
+import SentenceAnalyser from '../app/xunfei/sentenceAnalyser'
 
 describe('LTP test', function() {
     this.timeout(10000);
