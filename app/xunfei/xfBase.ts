@@ -28,7 +28,6 @@ export default class XfBase {
     private _micReject: (reason?: any) => void
     private _iatSession;
 
-
     constructor(audioplay?: (url: string, host?: string) => Promise<void>) {
         this.audioplay = audioplay;
         this.onError = this.onError.bind(this);
@@ -60,6 +59,7 @@ export default class XfBase {
             };
             this._iatResult = '';
             /* 调用开始录音接口，通过function(volume)和function(err, obj)回调音量和识别结果 */
+
             this._micResolve = resolve
             this._micReject = reject
             this._iatSession.start(ssb_param);

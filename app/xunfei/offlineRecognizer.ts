@@ -49,6 +49,7 @@ export default class OfflineRecognizer {
                 // encoded in UTF8, so we map them to ASCII strings. Here we
                 // display both ASCII and Chinese strings
                 if (e.data.hasOwnProperty('hyp')) {
+
                     var newHyp = e.data.hyp.split(' ');
                     var newHypChinese = newHyp.map(function (x) { return wordListChinese[x]; });
 
@@ -57,7 +58,6 @@ export default class OfflineRecognizer {
                             this.nameCallback(newHypChinese[newHypChinese.length - 1]);
                         }
                     //   console.log(newHypChinese); 
-
                     // updateHyp(newHyp + '<br><br>' + newHypChinese);
                 }
                 // This is the case when we have an error
