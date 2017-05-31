@@ -12,12 +12,17 @@ export default class MainRobot {
         this.zmRobot = new ZMRobot(xf);
         this.turlingRobot = new TurlingRobot(xf);
         this.output = this.output.bind(this);
-        this.zmRobot.callback = this.output; // 知麻机器人，将其输出接到主机器人的output上
-        // this.xf.callback = this.xfInput.bind(this); // 暂时不全把讯飞的输出发给主机器人，改为在main函数中手动调用input
+        this.zmRobot.callback = this.output;
+        this.turlingRobot.callback = this.output;
     }
 
     public async input(str: string) {
-        return this.zmRobot.input(str); // 调用知麻机器人
+        var task1 = this.zmRobot.input(str); // 调用知麻机器人
+        var task2 = this.turlingRobot.input(str);
+        var values: string[] = await Promise.all([task1, task2]);
+        if (values[0] == "等等，我不太清楚啊！") 
+            this.output(values[1]);
+        else this.output(values[0]);
     }
 
     public async output(str: string) {
@@ -25,7 +30,7 @@ export default class MainRobot {
         return this.xf.tts(str);
     }
 
-    private xfInput(str) {
+    private xfInput(str: string) {
         this.input(str);
     }
 }
