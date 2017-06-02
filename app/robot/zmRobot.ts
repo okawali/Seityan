@@ -49,14 +49,12 @@ export default class ZMRobt {
         if (this._context['name']) {
             var plugin = plugins.get(this._context['name']);
             if (plugin) {
-                let ret = await this.output(await plugin.response(data, str));
-                return
+                return plugin.response(data, str);
             } else console.log("error: plugin can not be found");
         } else {
-            let ret = await this.response(data, str);
-            return this.output(ret);
+            return this.response(data, str);
         }
-        return
+        return "";
     }
 
     public async getFromCloud(str: string): Promise<ZMReturn> {

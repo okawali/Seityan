@@ -13,15 +13,14 @@ export default class TurlingRobot {
     }
 
     public async input(str: string) {
-        axios.post(this.api_url, { data: {
+        let value = await axios.post(this.api_url, { 
             key: turlingKey,
-            info: str
-            // TODO: add userid
-        }}).then(value => {
-            if (value.status == 200) 
-                this.output(value.data.text);
-        })
-        return 
+            info: str,
+        });
+
+        if (value.status == 200) 
+            return value.data.text as string;
+        return "";
     }
 
     public async ask(str: string) {
