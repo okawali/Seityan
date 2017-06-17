@@ -49,8 +49,6 @@ async function createModelAsync(modelDescription: ModelDescription) {
         if (live2dSprite) {
             live2dSprite.removeAllListeners("click");
             live2dSprite.removeAllListeners("mousemove");
-            live2dSprite.removeAllListeners("add");
-            live2dSprite.removeAllListeners("removed");
             live2dSprite.destroy();
         }
     })
@@ -105,7 +103,7 @@ renderer.view.addEventListener('mousewheel', event => {
 
 ipcRenderer.on("loadModel", loadModel)
 
-function loadModel(event: Electron.IpcRendererEvent, name: string, buildIn: boolean): void {
+function loadModel(event: any, name: string, buildIn: boolean): void {
     console.log(name, buildIn);
     let model: ModelDescription | null = null;
     if (buildIn) {

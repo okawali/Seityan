@@ -51,7 +51,7 @@ class App extends React.Component<{}, {open:boolean, options: DialogConfig, type
         ipcRenderer.send("onDialogClose", this.id, ans);
     };
 
-    onShowDialog(event: Electron.IpcRendererEventListener, options: DialogConfig, id: string) {
+    onShowDialog(event: any, options: DialogConfig, id: string) {
         this.id = id;
         var type = "";
         if (options.form) type = "form";
