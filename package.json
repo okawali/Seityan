@@ -22,7 +22,6 @@
   "repository": "https://github.com/Norgerman/Seityan",
   "devDependencies": {
     "@types/chai": "^3.5.2",
-    "@types/electron": "^1.4.35",
     "@types/material-ui": "^0.17.6",
     "@types/mocha": "^2.2.41",
     "@types/pixi.js": "^4.4.4",
