@@ -64,7 +64,7 @@ export class AppTray {
         this._modelLoadStack[0] = "blanc";
     }
 
-    on(event: string | symbol, listener: Function): AppTray {
+    on(event: string | symbol, listener): AppTray {
         this._eventEmitter.on(event, listener);
         return this;
     }
