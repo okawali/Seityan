@@ -10,4 +10,3 @@ release-builds/
 app/utils/conf.ts
 .DS_Store
 .vs
-package-lock.json
