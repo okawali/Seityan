@@ -39,7 +39,7 @@ async function createModelAsync(modelDescription: ModelDescription) {
         stage.removeChild(live2dSprite);
     }
 
-    live2dSprite = new PIXI.Live2DSprite(model!, {
+    live2dSprite = new PIXI.Live2DSprite(model, {
         lipSyncWithSound: true,
         debugLog: true,
         modelBasePath: modelDescription.basePath,
@@ -114,7 +114,7 @@ function loadModel(event: any, name: string, buildIn: boolean): void {
     } else {
         model = ModelLoader.parseModelPath(name);
     }
-    createModelAsync(model!);
+    model && createModelAsync(model);
 }
 
 
