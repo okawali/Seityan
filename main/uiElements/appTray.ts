@@ -3,11 +3,13 @@ import * as path from "path";
 import { EventEmitter } from "events";
 
 export class AppTray {
+    private static readonly MAX_STACK_SIZE = 10;
     private _tray: Electron.Tray;
     private _contextMenu: Electron.Menu;
     private _eventEmitter: EventEmitter;
     private _minimized: boolean;
-    private _prevSelectedModel: string;
+    private _currentModel: number = 0;
+    private _modelLoadStack: string[] = [];
 
     constructor() {
         var onLoadInternalModelBoundary = this.onLoadInternalModel.bind(this);
@@ -59,7 +61,7 @@ export class AppTray {
         this._tray.setToolTip("Seityan");
         this._eventEmitter = new EventEmitter();
         this._tray.on("click", this.onTrayClick.bind(this));
-        this._prevSelectedModel = "blanc";
+        this._modelLoadStack[0] = "blanc";
     }
 
     on(event: string | symbol, listener: Function): AppTray {
@@ -69,21 +71,25 @@ export class AppTray {
 
 
     restorePrevSelectedModel() {
+        var modelIndex = this._currentModel - 1;
+        var model = "";
+        if (modelIndex < 0) {
+            modelIndex += 10;
+        }
+        this._currentModel = modelIndex;
+        model = this._modelLoadStack[modelIndex]
+
         for (let menu of this._contextMenu.items) {
             if (menu.label == "models") {
                 let submenu = menu.submenu as Electron.Menu;
                 for (let item of submenu.items) {
-                    if (item.label == this._prevSelectedModel) {
+                    if (item.label == model) {
                         item.checked = true;
                         break;
                     }
                 }
             }
         }
-    }
-
-    setPrevSelectModelAsExternal() {
-        this._prevSelectedModel = "open model";
     }
 
     private onAlwaysOnTopChanged(menuItem: Electron.MenuItem,
@@ -95,13 +101,14 @@ export class AppTray {
     private onLoadInternalModel(menuItem: Electron.MenuItem,
         browserWindow: Electron.BrowserWindow,
         event: Electron.Event) {
-        this._prevSelectedModel = menuItem.label;
-        this._eventEmitter.emit("loadInternalModel", { name: menuItem.label, buildIn: true });
+        this.addToModelStack(menuItem.label);
+        this._eventEmitter.emit("loadInternalModel", { name: menuItem.label });
     }
 
     private onLoadExternalModel(menuItem: Electron.MenuItem,
         browserWindow: Electron.BrowserWindow,
         event: Electron.Event) {
+         this.addToModelStack("open model");
         this._eventEmitter.emit("loadExternalModel");
     }
 
@@ -118,5 +125,13 @@ export class AppTray {
             this._eventEmitter.emit("minimize");
         }
         this._minimized = !this._minimized;
+    }
+
+    private addToModelStack(name: string) {
+        this._currentModel++;
+        if (this._currentModel >= 10) {
+            this._currentModel %= 10;
+        }
+        this._modelLoadStack[this._currentModel] = name;
     }
 }

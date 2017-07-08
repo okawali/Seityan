@@ -34,54 +34,58 @@ var live2dSprite: PIXI.Live2DSprite | null = null;
 var resizable = false;
 
 async function createModelAsync(modelDescription: ModelDescription) {
-    var model = await ModelLoader.loadModel(modelDescription);
-    if (live2dSprite !== null) {
-        stage.removeChild(live2dSprite);
-    }
-
-    live2dSprite = new PIXI.Live2DSprite(model, {
-        lipSyncWithSound: true,
-        debugLog: true,
-        modelBasePath: modelDescription.basePath,
-    });
-
-    live2dSprite.on("removed", obj => {
-        if (live2dSprite) {
-            live2dSprite.removeAllListeners("click");
-            live2dSprite.removeAllListeners("mousemove");
-            live2dSprite.destroy();
+    try {
+        var model = await ModelLoader.loadModel(modelDescription);
+        if (live2dSprite !== null) {
+            stage.removeChild(live2dSprite);
         }
-    })
 
-    live2dSprite.on("added", obj => {
-        if (live2dSprite == null) {
-            return;
-        }
-        var sprite: PIXI.Live2DSprite = live2dSprite;
+        live2dSprite = new PIXI.Live2DSprite(model, {
+            lipSyncWithSound: true,
+            debugLog: true,
+            modelBasePath: modelDescription.basePath,
+        });
 
-        resizable = true;
-        sprite.on('click', (event: PIXI.interaction.InteractionEvent) => {
-            const point: PIXI.Point = event.data.global;
-            if (sprite.hitTest('body', point.x, point.y)) {
-                sprite.startRandomMotionOnce('tap_body');
-            } else if (sprite.hitTest("head", point.x, point.y)) {
-                sprite.startRandomMotionOnce('flick_head');
+        live2dSprite.on("removed", obj => {
+            if (live2dSprite) {
+                live2dSprite.removeAllListeners("click");
+                live2dSprite.removeAllListeners("mousemove");
+                live2dSprite.destroy();
             }
+        })
+
+        live2dSprite.on("added", obj => {
+            if (live2dSprite == null) {
+                return;
+            }
+            var sprite: PIXI.Live2DSprite = live2dSprite;
+
+            resizable = true;
+            sprite.on('click', (event: PIXI.interaction.InteractionEvent) => {
+                const point: PIXI.Point = event.data.global;
+                if (sprite.hitTest('body', point.x, point.y)) {
+                    sprite.startRandomMotionOnce('tap_body');
+                } else if (sprite.hitTest("head", point.x, point.y)) {
+                    sprite.startRandomMotionOnce('flick_head');
+                }
+            });
+
+            sprite.on('mousemove', (event: PIXI.interaction.InteractionEvent) => {
+                const point: PIXI.Point = event.data.global;
+                sprite.setViewPoint(point.x, point.y);
+            });
         });
 
-        sprite.on('mousemove', (event: PIXI.interaction.InteractionEvent) => {
-            const point: PIXI.Point = event.data.global;
-            sprite.setViewPoint(point.x, point.y);
-        });
-    });
+        stage.addChild(live2dSprite);
 
-    stage.addChild(live2dSprite);
+        live2dSprite.startRandomMotion('idle');
 
-    live2dSprite.startRandomMotion('idle');
-
-    mainRobot = new MainRobot(xf);
-    xf.audioplay = live2dSprite.playSound.bind(live2dSprite!);
-    xf.tts("试问，汝是吾的Master吗？");
+        mainRobot = new MainRobot(xf);
+        xf.audioplay = live2dSprite.playSound.bind(live2dSprite!);
+        xf.tts("试问，汝是吾的Master吗？");
+    } catch (err) {
+        ipcRenderer.send("loadModelFailed");
+    }
 }
 
 renderer.view.addEventListener('mousewheel', event => {

@@ -71,8 +71,8 @@ function createWindow() {
         win && win.setAlwaysOnTop(value);
     });
 
-    tray.on("loadInternalModel", (arg: { name: string, buildIn: boolean }) => {
-        win && win.webContents.send("loadModel", arg.name, arg.buildIn);
+    tray.on("loadInternalModel", (arg: { name: string }) => {
+        win && win.webContents.send("loadModel", arg.name, true);
     })
 
     tray.on("loadExternalModel", _ => {
@@ -85,7 +85,6 @@ function createWindow() {
         }, files => {
             if (files && files.length > 0) {
                 var name = files[0].replace(/\\/g, "/");
-                tray.setPrevSelectModelAsExternal();
                 win && win.webContents.send("loadModel", name, false);
             } else {
                 tray.restorePrevSelectedModel();
@@ -146,6 +145,10 @@ function createWindow() {
 
     ipcMain.on("listInstalledPlugins", (event, id: string, params: any[]) => {
         event.sender.send("onLoaderResult", id, loader.listInstalled());
+    });
+
+    ipcMain.on("loadModelFailed", _ => {
+        tray.restorePrevSelectedModel();
     });
 
     globalShortcut.register('Alt+Q', () => {

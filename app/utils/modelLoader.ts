@@ -11,7 +11,11 @@ export class ModelLoader {
     static async loadModel(model: ModelDescription): Promise<object> {
         var modelPath = path.join(model.basePath, model.modelFile);
         var response = await axios.get(modelPath);
-        return response.data;
+        var data = response.data;
+        if (typeof(data) === "string") {
+            data = JSON.parse(data);
+        }
+        return data;
     }
 
     static parseModelPath(path: string): ModelDescription {
