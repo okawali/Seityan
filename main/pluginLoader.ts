@@ -47,7 +47,7 @@ export class PluginLoader {
                         }
                     });
                 else {
-                    fs.mkdir(i);
+                    fs.mkdirSync(i);
                 }
             })
         }
