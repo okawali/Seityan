@@ -1,5 +1,5 @@
 environment:
-  nodejs_version: "7"
+  nodejs_version: ""
   SECRET_FILE_KEY:
     secure: ub9fEdhDlxLy5jk3Et5H7w==
 
