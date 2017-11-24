@@ -22,7 +22,7 @@ export interface DialogConfig {
 }
 
 class App extends React.Component<{}, {open:boolean, options: DialogConfig, type: string}> {
-    constructor(props?: {}, context?: any) {
+    constructor(props: {}, context?: any) {
         super(props, context);
         this.handleClose = this.handleClose.bind(this)
         this.handleOpen = this.handleOpen.bind(this)
