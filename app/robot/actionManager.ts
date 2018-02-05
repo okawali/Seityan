@@ -3,7 +3,7 @@ import "reflect-metadata";
 export const symbolRobotAction = Symbol("robotAction");
 
 export function robotAction(name: string, ...args: string[]) {
-    return (target: any, propertyKey: string, descriptor: TypedPropertyDescriptor<Function>) => {
+    return (target: any, propertyKey: string, descriptor: any) => {
         if (descriptor.value) {
             ActionManager.instance.registerClass(target.constructor);
             let types = Reflect.getMetadata("design:paramtypes", target, propertyKey);
@@ -77,8 +77,8 @@ export class Email {
 
 export class Path {
     path: string;
-    type: string; // dir, file, link
-    exist: boolean;
+    type!: string; // dir, file, link
+    exist: boolean = false;
     constructor(str: string) {
         this.path = str;
     }

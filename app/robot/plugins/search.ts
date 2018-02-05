@@ -5,7 +5,7 @@ import { shell } from 'electron'
 
 class GoogleSearch extends ZMPlugin {
     intent = "google"
-    public zmRobot: ZMRobot
+    public zmRobot!: ZMRobot
     public async response(data: ZMReturn, query: string): Promise<string> {
         if (data.entities.length == 0 || data.entities[0].type != 'searchable') {
             // 没有检测到要搜索的对象
@@ -22,7 +22,7 @@ class GoogleSearch extends ZMPlugin {
 
 class BaiduSearch extends ZMPlugin {
     intent = "baidu"
-    public zmRobot: ZMRobot
+    public zmRobot!: ZMRobot
 
     public async response(data: ZMReturn, query: string): Promise<string> {
         if (data.entities.length == 0 || data.entities[0].type != 'searchable') {

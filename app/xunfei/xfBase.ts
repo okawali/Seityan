@@ -1,9 +1,9 @@
 import { xunfeiAppId, xunfeiAppKey } from '../utils/conf';
 import OfflineRecognizer from './offlineRecognizer';
 export default class XfBase {
-    public callback: (value) => void
+    public callback!: (value: any) => void
     public audioplay?: (url: string, host?: string) => Promise<void>;
-    public offlineRecognizer: OfflineRecognizer;
+    public offlineRecognizer!: OfflineRecognizer;
 
     private _audioPlayUrl = "http://h5.xf-yun.com/audioStream/";
 
@@ -19,14 +19,14 @@ export default class XfBase {
         'reconnectionDelay': 30000
     });
     /* 音频播放对象 */
-    private _audioElement: HTMLAudioElement;
+    private _audioElement!: HTMLAudioElement;
     /* 音频播放状态 0:未播放且等待音频数据状态，1:正播放且等待音频数据状态，2：未播放且不等待音频数据*/
     private _audioState = 0;
     private _iatResult = "";
     private _micOpen = false;
-    private _micResolve: (value?: string | PromiseLike<string>) => void
-    private _micReject: (reason?: any) => void
-    private _iatSession;
+    private _micResolve!: (value?: string | PromiseLike<string>) => void
+    private _micReject!: (reason?: any) => void
+    private _iatSession: any;
 
     constructor(audioplay?: (url: string, host?: string) => Promise<void>) {
         this.audioplay = audioplay;
@@ -142,7 +142,7 @@ export default class XfBase {
 
     /************** iat  ******************/
 
-    private onResult(err, result) {
+    private onResult(err: any, result: any) {
         var error: number | string = 0;
         /* 若回调的err为空或错误码为0，则会话成功，可提取识别结果进行显示*/
         if (err == null || err == undefined || err == 0) {
@@ -167,7 +167,7 @@ export default class XfBase {
         }
         // volumeEvent.stop();
     }
-    private onProcess(status) {
+    private onProcess(status: string) {
         switch (status) {
             case 'onStart':
                 // tip.innerHTML = "服务初始化...";
@@ -194,7 +194,7 @@ export default class XfBase {
         this._micOpen = false;
         // volumeEvent.stop();
     }
-    private onVolume(volume) {
+    private onVolume(volume: any) {
         // volumeEvent.listen(volume);
     }
 }

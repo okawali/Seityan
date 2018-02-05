@@ -1,11 +1,11 @@
 import * as React from "react";
-import { TextField, RaisedButton, TouchTapEvent, FlatButton } from "material-ui"
+import { TextField, RaisedButton, FlatButton } from "material-ui"
 import axios from 'axios';
 import { remote } from 'electron';
 import * as loader from "../utils/pluginLoader"
 
 export default class Settings extends React.Component<any, any> {
-    constructor(props) {
+    constructor(props: any) {
         super(props);
         this.state = {
             list: []

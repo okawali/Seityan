@@ -5,7 +5,7 @@ import { shell } from 'electron'
 
 class RobotInfo extends ZMPlugin {
     intent = "robot_info"
-    public zmRobot: ZMRobot
+    public zmRobot!: ZMRobot
     public async response(data: ZMReturn, query: string): Promise<string> {
         let ans = await this.zmRobot.ask("谜之二人开发了我，要看看咱的项目主页吗？")
         console.log('ans:', ans);

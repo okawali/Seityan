@@ -5,7 +5,7 @@ import {show} from '../utils/dialog'
 import "./actions";
 
 export default class ActionRunner {
-    public zmRobot: ZMRobot
+    public zmRobot!: ZMRobot
     
     // name 是一个intent code
     public async run(name: string, entitys: Entity[]) {

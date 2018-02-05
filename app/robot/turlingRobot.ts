@@ -5,7 +5,7 @@ import {turlingKey} from '../utils/conf'
 export default class TurlingRobot {
     private api_url = 'http://www.tuling123.com/openapi/api'
     public xf: XfBase
-    public callback: (ret:string) => Promise<void>
+    public callback!: (ret:string) => Promise<void>
 
     constructor(xf:XfBase) {
         this.xf = xf;

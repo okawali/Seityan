@@ -64,7 +64,7 @@ export class AppTray {
         this._modelLoadStack[0] = "blanc";
     }
 
-    on(event: string | symbol, listener): AppTray {
+    on(event: string | symbol, listener: (...args: any[]) => void): AppTray {
         this._eventEmitter.on(event, listener);
         return this;
     }
@@ -108,7 +108,7 @@ export class AppTray {
     private onLoadExternalModel(menuItem: Electron.MenuItem,
         browserWindow: Electron.BrowserWindow,
         event: Electron.Event) {
-         this.addToModelStack("open model");
+        this.addToModelStack("open model");
         this._eventEmitter.emit("loadExternalModel");
     }
 

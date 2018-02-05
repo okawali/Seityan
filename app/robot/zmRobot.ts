@@ -7,7 +7,7 @@ import ActionManager from './actionManager'
 import ActionRunner from './actionRunner'
 
 export default class ZMRobt {
-    public callback: (ret: string) => Promise<void>
+    public callback!: (ret: string) => Promise<void>
     public static readonly URL = "http://dev.zhimabot.com:8080/zhimabot/analysis";
     public xf: XfBase
 

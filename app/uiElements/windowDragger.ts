@@ -2,7 +2,7 @@ import { remote } from "electron";
 
 export class WindowDragger {
     private _element: HTMLElement | null;
-    private _dragging: boolean;
+    private _dragging!: boolean;
     private _wX: number;
     private _wY: number;
     private _boundaryWindowMouseMove: (event: MouseEvent) => void;
@@ -14,6 +14,9 @@ export class WindowDragger {
         this._element!.addEventListener("mousedown", this.onMouseDown.bind(this), true);
         this._boundaryWindowMouseMove = this.onWindowMouseMove.bind(this);
         this._boundaryWindowMouseUp = this.onWindowMouseUp.bind(this);
+        this._dragging = false;
+        this._wX = 0;
+        this._wY = 0;
     }
 
     private onMouseDown(event: MouseEvent): void {

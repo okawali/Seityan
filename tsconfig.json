@@ -7,9 +7,11 @@
         "moduleResolution": "node",
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
-        "strictNullChecks": true,
         "baseUrl": ".",
         "jsx": "react",
+        "strict": true,
+        "pretty": true,
+        "allowJs": true,
         "lib": [
             "dom",
             "es2016"

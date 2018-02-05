@@ -13,8 +13,8 @@ export class CopyActions {
 }
 
 export class MailActions {
-    private username: Email;
-    private password: string;
+    private username!: Email;
+    private password!: string;
 
     @robotAction('发邮件', '收件人', '内容')
     public sendMail(to: Email, content: string) {

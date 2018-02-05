@@ -20,7 +20,7 @@ export function listInstalled(): Promise<{ [key: string]: Seityan.Plugin.PluginI
     return pluginAction<{ [key: string]: Seityan.Plugin.PluginItem | undefined }>("listInstalledPlugins");
 }
 
-function pluginAction<T>(action: string, ...params): Promise<T> {
+function pluginAction<T>(action: string, ...params: any[]): Promise<T> {
     return new Promise<T>((resolve, reject) => {
         sendAction<T>(action, uuid(), params, (value, error) => {
             if (error) {

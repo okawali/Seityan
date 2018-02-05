@@ -4,7 +4,7 @@ import { DialogConfig } from "../dialog";
 export * from '../dialog';
 var actionMapper: Map<string, (value?: any, error?: any) => void> = new Map<string, (value?: any, error?: any) => void>();
 
-export function show<T>(options: DialogConfig): Promise<T> {
+export function show<T = any>(options: DialogConfig): Promise<T> {
     return new Promise<T>((resolve, reject) => {
         showDialog<T>(options, uuid(), (value, error) => {
             if (error) {

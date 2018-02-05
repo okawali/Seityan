@@ -15,8 +15,8 @@ let tray: AppTray;
 electronDL();
 
 var loader = new PluginLoader();
-global['pluginLoader'] = loader;
-global['RobotAPI'] = RobotAPI;
+(global as any)['pluginLoader'] = loader;
+(global as any)['RobotAPI'] = RobotAPI;
 loader.load();
 
 if (os.platform() == 'linux') {

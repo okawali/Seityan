@@ -155,7 +155,7 @@ export class PluginLoader {
             v1parts: string[] | number[] = v1.split('.'),
             v2parts: string[] | number[] = v2.split('.');
 
-        function isValidPart(x) {
+        function isValidPart(x: string) {
             return (lexicographical ? /^\d+[A-Za-z]*$/ : /^\d+$/).test(x);
         }
 

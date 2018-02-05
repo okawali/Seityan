@@ -17,7 +17,7 @@ export abstract class Plugin implements Seityan.Plugin.PluginItem {
      * @type {string}
      * @memberof Plugin
      */
-    name: string
+    name!: string
 
     /**
      * version of this plugin
@@ -25,7 +25,7 @@ export abstract class Plugin implements Seityan.Plugin.PluginItem {
      * @type {string}
      * @memberof Plugin
      */
-    version: string
+    version!: string
 
     /**
      * storage of the plugin instance, it will be save automatically when the 

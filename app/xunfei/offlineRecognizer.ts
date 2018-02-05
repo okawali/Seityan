@@ -1,13 +1,13 @@
 export default class OfflineRecognizer {
-    recognizer: Worker
-    recorder: AudioRecorder
-    vad: VAD
+    recognizer!: Worker
+    recorder!: AudioRecorder
+    vad!: VAD
     callbackManager: CallbackManager
-    audioContext: AudioContext
+    audioContext!: AudioContext
     isRecorderReady = false;
     isRecognizerReady = false;
-    nameCallback;
-    bothReadyCallback;
+    nameCallback!: (...args: any[]) => void;
+    bothReadyCallback: (...args: any[]) => void;
     vadRecording = true;
 
     // This is the list of words that need to be added to the recognizer
@@ -27,12 +27,12 @@ export default class OfflineRecognizer {
         })
     }
 
-    constructor(callback) {
+    constructor(callback: (...args: any[]) => void) {
         this.bothReadyCallback = callback;
         this.feedGrammar = this.feedGrammar.bind(this);
         this.callbackManager = new CallbackManager();
         let callbackManager = this.callbackManager;
-        let wordListChinese = this._wordListChinese;
+        let wordListChinese: { [K: string]: string } = this._wordListChinese;
         this.spawnWorker("lib/pocketsphinx/recognizer.js", (worker) => {
             // This is the onmessage function, once the worker is fully loaded
             worker.onmessage = (e) => {
@@ -51,7 +51,7 @@ export default class OfflineRecognizer {
                 if (e.data.hasOwnProperty('hyp')) {
 
                     var newHyp = e.data.hyp.split(' ');
-                    var newHypChinese = newHyp.map(function (x) { return wordListChinese[x]; });
+                    var newHypChinese = newHyp.map((x: string) => { return wordListChinese[x]; });
 
                     if (newHypChinese[newHyp.length - 1] == '西莉酱' || newHypChinese[newHyp.length - 1] == '小倩')
                         if (this.nameCallback) { // 触发呼叫名字
@@ -110,7 +110,7 @@ export default class OfflineRecognizer {
 
     // Callback function once the user authorises access to the microphone
     // in it, we instanciate the recorder
-    startUserMedia(stream) {
+    startUserMedia(stream: MediaStream) {
         var input = this.audioContext.createMediaStreamSource(stream);
 
         // Setup options
@@ -127,7 +127,7 @@ export default class OfflineRecognizer {
         // Notice that for this Chinese acoustic model, audio must be at 8kHz, so we should
         // request it from the recorder
         var audioRecorderConfig = {
-            errorCallback: (x) => console.log("Error from recorder: " + x),
+            errorCallback: (x: Error) => console.log("Error from recorder: " + x),
             outputSampleRate: 8000
         };
         this.recorder = new AudioRecorder(this.vad.analyser, audioRecorderConfig); // 把VAD的分析器节点接到Recorder的输入上，延后本批次声音数据的处理
@@ -140,17 +140,17 @@ export default class OfflineRecognizer {
         console.log("Audio recorder ready");
     };
 
-    feedWords(words) {
+    feedWords(words: any) {
         this.postRecognizerJob({ command: 'addWords', data: words },
             () => this.feedGrammar(this._grammars, 0));
     };
 
-    feedGrammar(g, index, id?) {
+    feedGrammar(g: any, index: number, id?: any) {
         if (id && (this._grammarIds.length > 0)) this._grammarIds[0].id = id.id;
         if (index < g.length) {
             this._grammarIds.unshift({ title: g[index].title })
             this.postRecognizerJob({ command: 'addGrammar', data: g[index].g },
-                (id) => { this.feedGrammar(this._grammars, index + 1, { id: id }); });
+                (id: any) => { this.feedGrammar(this._grammars, index + 1, { id: id }); });
         } else {
             this.isRecognizerReady = true;
             if (this.isRecorderReady) this.bothReadyCallback();
@@ -159,7 +159,7 @@ export default class OfflineRecognizer {
 
     // A convenience function to post a message to the recognizer and associate
     // a callback to its response
-    postRecognizerJob(message, callback?) {
+    postRecognizerJob(message: any, callback?: (...args: any[]) => void) {
         var msg = message || {};
         if (this.callbackManager && callback) msg.callbackId = this.callbackManager.add(callback);
         if (this.recognizer) this.recognizer.postMessage(msg);
