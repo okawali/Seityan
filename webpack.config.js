@@ -4,7 +4,7 @@ const webpack = require('webpack');
 const mode = process.env.NODE_ENV === 'production' ? 'production' : 'development';
 
 module.exports = [{
-	mode,
+    mode,
     target: "electron-renderer",
     entry: {
         index: ["./app/index.ts"],
@@ -17,7 +17,7 @@ module.exports = [{
     resolve: {
         extensions: ['.ts', '.tsx', '.js']
     },
-    
+
     module: {
         rules: [
             {
@@ -37,7 +37,7 @@ module.exports = [{
         ]
     }
 }, {
-	mode,
+    mode,
     target: "electron-main",
     node: {
         __dirname: false,
