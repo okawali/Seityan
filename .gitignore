@@ -3,10 +3,12 @@ node_modules
 .vscode
 !webpack.config.js
 !test/dialog-lancher.js
-!dist/lib/*.js
-!dist/lib/**/*.js
+!src/lib/*.js
+!src/lib/**/*.js
+!gulpfile.js
 npm-debug*
 release-builds/
 app/utils/conf.ts
 .DS_Store
 .vs
+dist/
