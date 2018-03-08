@@ -5,7 +5,7 @@
   "main": "dist/main.js",
   "scripts": {
     "start": "cd dist && electron .",
-    "build": "gulp build",
+    "build": "gulp build --max_old_space_size=2048",
     "test": "mocha -r ts-node/register test/main-test.ts test/test.ts",
     "test-api": "mocha -r ts-node/register test/apitest.ts",
     "package": "npm run package-win32-x64 && npm run package-linux-x64 && npm run package-osx-x64",
