@@ -7,8 +7,8 @@ module.exports = [{
     mode,
     target: "electron-renderer",
     entry: {
-        index: ["./app/index.ts"],
-        dialog: ["./app/dialog.tsx"]
+        index: ["./src/app/index.ts"],
+        dialog: ["./src/app/dialog.tsx"]
     },
     output: {
         path: path.resolve(__dirname, "dist"),
@@ -17,13 +17,13 @@ module.exports = [{
     resolve: {
         extensions: ['.ts', '.tsx', '.js']
     },
-
+    devtool: false,
     module: {
         rules: [
             {
                 test: /\.tsx?$/,
                 include: [
-                    path.resolve(__dirname, "app")
+                    path.resolve(__dirname, "src", "app")
                 ],
                 exclude: [
                     /node_modules/,
@@ -35,7 +35,10 @@ module.exports = [{
                 ]
             }
         ]
-    }
+    },
+    plugins: [
+        new webpack.DefinePlugin({ VERSION: JSON.stringify(require('./package.json').version) })
+    ]
 }, {
     mode,
     target: "electron-main",
@@ -43,7 +46,7 @@ module.exports = [{
         __dirname: false,
         __filename: false,
     },
-    entry: { main: "./main.ts" },
+    entry: { main: "./src/main.ts" },
     output: {
         path: path.resolve(__dirname, "dist"),
         filename: "[name].js"
@@ -51,6 +54,7 @@ module.exports = [{
     resolve: {
         extensions: ['.ts', '.tsx', '.js']
     },
+    devtool: false,
     module: {
         rules: [
             {
@@ -67,5 +71,8 @@ module.exports = [{
                 ]
             }
         ]
-    }
+    },
+    plugins: [
+        new webpack.DefinePlugin({ VERSION: JSON.stringify(require('./package.json').version) })
+    ]
 }];

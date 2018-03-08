@@ -1,4 +1,7 @@
 {
+    "include": [
+        "src"
+    ],
     "compilerOptions": {
         "removeComments": true,
         "outDir": "./dist/",
@@ -18,7 +21,7 @@
         ],
         "paths": {
             "robot-api": [
-                "./app/api"
+                "src/app/api"
             ]
         },
         "typeRoots": [

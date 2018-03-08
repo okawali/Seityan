@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {Version} from '../app/api'
+import {Version} from '../src/app/api'
 
 describe('Version check', function() {
     this.timeout(10000);
