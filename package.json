@@ -5,13 +5,13 @@
   "main": "dist/main.js",
   "scripts": {
     "start": "cd dist && electron .",
-    "build": "gulp build --max_old_space_size=4096",
+    "build": "gulp build",
     "test": "mocha -r ts-node/register test/main-test.ts test/test.ts",
     "test-api": "mocha -r ts-node/register test/apitest.ts",
     "package": "npm run package-win32-x64 && npm run package-linux-x64 && npm run package-osx-x64",
-    "package-win32-x64": "electron-packager ./dist seityan --overwrite --asar=true --platform=win32 --arch=x64 --out=release-builds --icon=src/assets/image/win.ico",
-    "package-linux-x64": "electron-packager ./dist seityan --overwrite --asar=true --platform=linux --arch=x64 --out=release-builds",
-    "package-osx-x64": "electron-packager ./dist seityan --overwrite --asar=true --platform=darwin --arch=x64 --out=release-builds --icon=src/assets/image/mac.icns",
+    "package-win32-x64": "electron-packager ./dist seityan --overwrite --asar --platform=win32 --arch=x64 --out=release-builds --icon=src/assets/image/win.ico",
+    "package-linux-x64": "electron-packager ./dist seityan --overwrite --asar --platform=linux --arch=x64 --out=release-builds",
+    "package-osx-x64": "electron-packager ./dist seityan --overwrite --asar --platform=darwin --arch=x64 --out=release-builds --icon=src/assets/image/mac.icns",
     "dialog-test": "electron test/dialog-lancher.js",
     "weather-test": "electron test/weather-lancher.js",
     "build-doc": "typedoc --out ./doc/html --exclude '**/utils/conf.ts' --excludeExternals ./app"
