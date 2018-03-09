@@ -76,11 +76,11 @@ gulp.task('build-source', () => {
     });
 });
 
-gulp.task('build', ['clean'], () => {
-    return runSequence(
+gulp.task('build', ['clean'], (done) => {
+    return runSequence([
         'copy',
         'build-html',
         'create-package',
         'build-source'
-    )
+    ], done);
 })
