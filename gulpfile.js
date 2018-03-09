@@ -6,6 +6,7 @@ const pug = require('pug');
 const path = require('path');
 const webpackConfig = require('./webpack.config');
 const PluginError = require('plugin-error');
+const log = require('fancy-log');
 
 gulp.task('clean', () => {
     return fse.remove(path.resolve(__dirname, 'dist'))
@@ -61,6 +62,14 @@ gulp.task('build-source', () => {
             if (buildError) {
                 reject(new PluginError('webpack', buildError));
             } else {
+                log('[webpack]', stats.toString({
+                    colors: true,
+                    version: false,
+                    hash: false,
+                    timings: false,
+                    chunks: false,
+                    chunkModules: false,
+                }));
                 resolve();
             }
         });
