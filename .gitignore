@@ -8,7 +8,7 @@ node_modules
 !gulpfile.js
 npm-debug*
 release-builds/
-app/utils/conf.ts
+src/app/utils/conf.ts
 .DS_Store
 .vs
 dist/

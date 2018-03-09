@@ -1,9 +1,0 @@
-export var xunfeiAppId = "58eb9708";
-export var xunfeiAppKey = "1f206e24ec8be679";
-export var faceppKey = "qgX3iKgKAjUxc0vJytB6CKFypEpezo4c";
-export var faceppSecret = "4QlNRJIsyOZsPZk9el6dbUiqhRSSIeTa";
-export var yyyKey = "B1I4w9x1d8G3j4j6Y3n2eY8J7nioOWjKIfHfpDse";
-export var zhimaAppId = "10146";
-export var weatherAppId = "U3FACF1137";
-export var weatherAppKey = "rittol1fzrzluby7";
-export var turlingKey = "80f969758c6e24aac14843b3df66ec31";
