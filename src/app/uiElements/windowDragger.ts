@@ -35,7 +35,7 @@ export class WindowDragger {
             let yLoc = event.screenY - this._wY;
 
             try {
-                remote.BrowserWindow.getFocusedWindow().setPosition(xLoc, yLoc);
+                remote.BrowserWindow.getFocusedWindow()!.setPosition(xLoc, yLoc);
             } catch (err) {
                 console.log(err);
             }

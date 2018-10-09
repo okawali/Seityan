@@ -38,7 +38,7 @@ function sendAction<T>(action: string, id: string, params: any[], callback: (val
     ipcRenderer.send(action, id, params);
 }
 
-function onLoaderResult(event: Electron.IpcRendererEvent, id: string, value?: any, error?: any) {
+function onLoaderResult(event: Electron.IpcMessageEvent, id: string, value?: any, error?: any) {
     var action = actionMapper.get(id);
     if (action) {
         action(value, error);

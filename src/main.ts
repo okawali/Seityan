@@ -103,23 +103,23 @@ function createWindow() {
         }
     });
 
-    ipcMain.on("resize", (event, arg) => {
+    ipcMain.on("resize", (event: any, arg: any) => {
         win && win.setSize(Math.ceil(arg.width), Math.ceil(arg.height));
     })
 
-    ipcMain.on("showDialog", (event, options: any, id: string) => {
+    ipcMain.on("showDialog", (event: any, options: any, id: string) => {
         if (dialogWin) {
             dialogWin.show();
             dialogWin.webContents.send("showDialog", options, id);
         }
     })
 
-    ipcMain.on("onDialogClose", (event, id: string, value?: any, error?: any) => {
+    ipcMain.on("onDialogClose", (event: any, id: string, value?: any, error?: any) => {
         dialogWin && dialogWin.hide();
         win && win.webContents.send("onDialogClose", id, value, error);
     })
 
-    ipcMain.on("installPlugin", (event, id: string, params: any[]) => {
+    ipcMain.on("installPlugin", (event: any, id: string, params: any[]) => {
         loader.install(params[0])
             .then(_ => {
                 event.sender.send("onLoaderResult", id);
@@ -129,7 +129,7 @@ function createWindow() {
             })
     });
 
-    ipcMain.on("unInstallPlugin", (event, id: string, params: any[]) => {
+    ipcMain.on("unInstallPlugin", (event: any, id: string, params: any[]) => {
         loader.uninstall(params[0])
             .then(_ => {
                 event.sender.send("onLoaderResult", id);
@@ -139,15 +139,15 @@ function createWindow() {
             })
     });
 
-    ipcMain.on("listAllPlugins", (event, id: string, params: any[]) => {
+    ipcMain.on("listAllPlugins", (event: any, id: string, params: any[]) => {
         event.sender.send("onLoaderResult", id, loader.listAll());
     });
 
-    ipcMain.on("listInstalledPlugins", (event, id: string, params: any[]) => {
+    ipcMain.on("listInstalledPlugins", (event: any, id: string, params: any[]) => {
         event.sender.send("onLoaderResult", id, loader.listInstalled());
     });
 
-    ipcMain.on("loadModelFailed", _ => {
+    ipcMain.on("loadModelFailed", () => {
         tray.restorePrevSelectedModel();
     });
 

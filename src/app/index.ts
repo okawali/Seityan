@@ -89,9 +89,9 @@ async function createModelAsync(modelDescription: ModelDescription) {
 renderer.view.addEventListener('mousewheel', event => {
     var currentSize = { width: renderer.width, height: renderer.height }
     var scale = 1
-    if (event.wheelDelta < 0) {
+    if ((event as any).wheelDelta < 0) {
         scale -= 0.05;
-    } else if (event.wheelDelta > 0) {
+    } else if ((event as any).wheelDelta > 0) {
         scale += 0.05;
     }
 

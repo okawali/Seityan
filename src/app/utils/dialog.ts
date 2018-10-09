@@ -22,7 +22,7 @@ function showDialog<T>(options: DialogConfig, id: string, callback: (value?: T, 
     ipcRenderer.send("showDialog", options, id);
 }
 
-function onDiaglogClose(event: Electron.IpcRendererEvent, id: string, value?: any, error?: any) {
+function onDiaglogClose(event: Electron.IpcMessageEvent, id: string, value?: any, error?: any) {
     var action = actionMapper.get(id);
     if (action) {
         action(value, error);

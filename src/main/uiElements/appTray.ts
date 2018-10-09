@@ -81,7 +81,7 @@ export class AppTray {
 
         for (let menu of this._contextMenu.items) {
             if (menu.label == "models") {
-                let submenu = menu.submenu as Electron.Menu;
+                let submenu = (menu as any).submenu as Electron.Menu;
                 for (let item of submenu.items) {
                     if (item.label == model) {
                         item.checked = true;
@@ -118,7 +118,7 @@ export class AppTray {
         this._eventEmitter.emit("openSettings");
     }
 
-    private onTrayClick(modifiers: Electron.Modifiers, bounds: Electron.Rectangle): void {
+    private onTrayClick(modifiers: Electron.Event, bounds: Electron.Rectangle): void {
         if (this._minimized) {
             this._eventEmitter.emit("restore");
         } else {

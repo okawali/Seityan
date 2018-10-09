@@ -51,7 +51,7 @@ class App extends React.Component<{}, { open: boolean, options: DialogConfig, ty
         ipcRenderer.send("onDialogClose", this.id, ans);
     };
 
-    onShowDialog(event: Electron.IpcRendererEvent, options: DialogConfig, id: string) {
+    onShowDialog(event: Electron.IpcMessageEvent, options: DialogConfig, id: string) {
         this.id = id;
         var type = "";
         if (options.form) type = "form";
@@ -90,7 +90,7 @@ class App extends React.Component<{}, { open: boolean, options: DialogConfig, ty
                     actions={actions}
                     modal={true}
                     open={this.state.open}
-                    overlayStyle={{ background: null }}
+                    overlayStyle={{ background: undefined }}
                 >
                     {this.state.type == 'form' ? <Autoform ref="form" config={this.state.options.form!} /> : null}
                     {this.state.type == 'weather' ? <Weather config={this.state.options.weather!} /> : null}
