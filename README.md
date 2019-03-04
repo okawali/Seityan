@@ -1,5 +1,5 @@
-[![Build Status](https://travis-ci.org/Norgerman/Seityan.svg?branch=master)](https://travis-ci.org/Norgerman/Seityan)
-[![Build Status](https://ci.appveyor.com/api/projects/status/github/Norgerman/Seityan?svg=true)](https://ci.appveyor.com/project/Norgerman/Seityan)
+[![Build Status](https://travis-ci.org/okawali/Seityan.svg?branch=master)](https://travis-ci.org/okawali/Seityan)
+[![Build Status](https://ci.appveyor.com/api/projects/status/github/okawali/Seityan?svg=true)](https://ci.appveyor.com/project/okawali/Seityan)
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](./LICENSE)
 
 ![./doc/img/show.gif](./doc/img/show.gif)
