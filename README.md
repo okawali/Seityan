@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/okawali/Seityan.svg?branch=master)](https://travis-ci.org/okawali/Seityan)
 [![Build Status](https://ci.appveyor.com/api/projects/status/github/okawali/Seityan?svg=true)](https://ci.appveyor.com/project/Norgerman/Seityan)
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](./LICENSE)
-[![LICENSE](https://img.shields.io/badge/license-NPL%20(The%20996%20Prohibited%20License)-blue.svg)](https://github.com/996icu/996.ICU/blob/master/LICENSE)
+[![LICENSE](https://img.shields.io/badge/license-Anti%20996-blue.svg)](https://github.com/996icu/996.ICU/blob/master/LICENSE)
 
 ![./doc/img/show.gif](./doc/img/show.gif)
 
